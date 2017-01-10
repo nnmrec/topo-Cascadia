@@ -1,0 +1,511 @@
+ 
+%% ncdump('ocean_his_0001.nc')   %% Generated 23-Dec-2016 11:49:03
+ 
+nc = netcdf('ocean_his_0001.nc', 'noclobber');
+if isempty(nc), return, end
+ 
+%% Global attributes:
+ 
+nc.file = ncchar(''../OUT/ocean_his_0001.nc'');
+nc.format = ncchar(''netCDF-3 classic file'');
+nc.Conventions = ncchar(''CF-1.4'');
+nc.type = ncchar(''ROMS/TOMS history file'');
+nc.title = ncchar(''Admiralty Inlet Run'');
+nc.rst_file = ncchar(''../OUT/ocean_rst.nc'');
+nc.his_base = ncchar(''../OUT/ocean_his'');
+nc.grd_file = ncchar(''../grid.nc'');
+nc.ini_file = ncchar(''../Ocn/ocean_ini_1.nc'');
+nc.frc_file_01 = ncchar(''../Atm/Uwind.nc'');
+nc.frc_file_02 = ncchar(''../Atm/lwrad_down.nc'');
+nc.frc_file_03 = ncchar(''../Atm/Pair.nc'');
+nc.frc_file_04 = ncchar(''../Atm/rain.nc'');
+nc.frc_file_05 = ncchar(''../Atm/swrad.nc'');
+nc.frc_file_06 = ncchar(''../Atm/Tair.nc'');
+nc.frc_file_07 = ncchar(''../Atm/Qair.nc'');
+nc.frc_file_08 = ncchar(''../Atm/Vwind.nc'');
+nc.bry_file = ncchar(''../Ocn/ocean_bry_1.nc'');
+nc.clm_file = ncchar(''../Ocn/ocean_clm_1.nc'');
+nc.script_file = ncchar(''ainlet_1.in'');
+nc.svn_url = ncchar(''https://www.myroms.org/svn/src/trunk'');
+nc.svn_rev = ncchar(''542M'');
+nc.code_dir = ncchar(''/pmraid1/kthyng/ROMS'');
+nc.header_dir = ncchar(''/pmraid1/kthyng/runs/grid65cropnewr2_2006_1'');
+nc.header_file = ncchar(''ainlet.h'');
+nc.os = ncchar(''Linux'');
+nc.cpu = ncchar(''x86_64'');
+nc.compiler_system = ncchar(''ifort'');
+nc.compiler_command = ncchar(''/usr/local/openmpi-ifortib/bin/mpif90 -I /usr/include'');
+nc.compiler_flags = ncchar('' -ip -O3 -xW -ffree-form -ffree-form'');
+nc.tiling = ncchar(''008x012'');
+nc.history = ncchar(''ROMS/TOMS, Version 3.4, Saturday - March 26, 2011 -  9:41:25 AM'');
+nc.ana_file = ncchar(''ROMS/Functionals/ana_btflux.h, ROMS/Functionals/ana_nudgcoef.h, ROMS/Functionals/ana_stflux.h'');
+nc.CPP_options = ncchar(''AINLET, ANA_BSFLUX, ANA_BTFLUX, ANA_SSFLUX, ASSUMED_SHAPE, BULK_FLUXES, CANUTO_A DJ_GRADPS, DOUBLE_PRECISION, EAST_FSCHAPMAN, EAST_M2FLATHER, EAST_M3NUDGING, EAST_M3RADIATION, EAST_TNUDGING, EAST_TRADIATION, GLS_MIXING, LONGWAVE_OUT, M2CLIMATOLOGY, M2CLM_NUDGING, M3CLIMATOLOGY, M3CLM_NUDGING, MASKING, MIX_GEO_TS, MPI, NONLINEAR, NONLIN_EOS, NORTH_FSCHAPMAN, NORTH_M2FLATHER, NORTH_M3NUDGING, NORTH_M3RADIATION, NORTH_TNUDGING, NORTH_TRADIATION, N2S2_HORAVG, POWER_LAW, PROFILE, K_GSCHEME, RADIATION_2D, !RST_SINGLE, SALINITY, SOLAR_SOURCE, SOLVE3D, SOUTH_FSCHAPMAN, SOUTH_M2FLATHER, SOUTH_M3NUDGING, SOUTH_M3RADIATION, SOUTH_TNUDGING, SOUTH_TRADIATION, SPLINES, SPHERICAL, TCLIMATOLOGY, TCLM_NUDGING, THREE_GHOST, TS_MPDATA, TS_DIF2, UV_ADV, UV_COR, UV_U3HADVECTION, UV_C4VADVECTION, UV_QDRAG, VAR_RHO_2D, WEST_FSCHAPMAN, WEST_M2FLATHER, WEST_M3NUDGING, WEST_M3RADIATION, WEST_TNUDGING, WEST_TRADIATION, ZCLIMATOLOGY, ZCLM_NUDGING'');
+ 
+%% Dimensions:
+ 
+nc('xi_rho') = 298;
+nc('xi_u') = 297;
+nc('xi_v') = 298;
+nc('xi_psi') = 297;
+nc('eta_rho') = 446;
+nc('eta_u') = 446;
+nc('eta_v') = 445;
+nc('eta_psi') = 445;
+nc('N') = 20;
+nc('s_rho') = 20;
+nc('s_w') = 21;
+nc('tracer') = 2;
+nc('boundary') = 4;
+nc('ocean_time') = 1; %% (record dimension)
+ 
+%% Variables and attributes:
+ 
+nc{'ntimes'} = nclong; %% 1 element.
+nc{'ntimes'}.long_name = ncchar(''number of long time-steps'');
+ 
+nc{'ndtfast'} = nclong; %% 1 element.
+nc{'ndtfast'}.long_name = ncchar(''number of short time-steps'');
+ 
+nc{'dt'} = ncdouble; %% 1 element.
+nc{'dt'}.long_name = ncchar(''size of long time-steps'');
+nc{'dt'}.units = ncchar(''second'');
+ 
+nc{'dtfast'} = ncdouble; %% 1 element.
+nc{'dtfast'}.long_name = ncchar(''size of short time-steps'');
+nc{'dtfast'}.units = ncchar(''second'');
+ 
+nc{'dstart'} = ncdouble; %% 1 element.
+nc{'dstart'}.long_name = ncchar(''time stamp assigned to model initilization'');
+nc{'dstart'}.units = ncchar(''days since 2006-01-01 00:00:00'');
+ 
+nc{'nHIS'} = nclong; %% 1 element.
+nc{'nHIS'}.long_name = ncchar(''number of time-steps between history records'');
+ 
+nc{'ndefHIS'} = nclong; %% 1 element.
+nc{'ndefHIS'}.long_name = ncchar(''number of time-steps between the creation of history files'');
+ 
+nc{'nRST'} = nclong; %% 1 element.
+nc{'nRST'}.long_name = ncchar(''number of time-steps between restart records'');
+ 
+nc{'Falpha'} = ncdouble; %% 1 element.
+nc{'Falpha'}.long_name = ncchar(''Power-law shape barotropic filter parameter'');
+ 
+nc{'Fbeta'} = ncdouble; %% 1 element.
+nc{'Fbeta'}.long_name = ncchar(''Power-law shape barotropic filter parameter'');
+ 
+nc{'Fgamma'} = ncdouble; %% 1 element.
+nc{'Fgamma'}.long_name = ncchar(''Power-law shape barotropic filter parameter'');
+ 
+nc{'nl_tnu2'} = ncdouble('tracer'); %% 2 elements.
+nc{'nl_tnu2'}.long_name = ncchar(''nonlinear model Laplacian mixing coefficient for tracers'');
+nc{'nl_tnu2'}.units = ncchar(''meter2 second-1'');
+ 
+nc{'Akt_bak'} = ncdouble('tracer'); %% 2 elements.
+nc{'Akt_bak'}.long_name = ncchar(''background vertical mixing coefficient for tracers'');
+nc{'Akt_bak'}.units = ncchar(''meter2 second-1'');
+ 
+nc{'Akv_bak'} = ncdouble; %% 1 element.
+nc{'Akv_bak'}.long_name = ncchar(''background vertical mixing coefficient for momentum'');
+nc{'Akv_bak'}.units = ncchar(''meter2 second-1'');
+ 
+nc{'Akk_bak'} = ncdouble; %% 1 element.
+nc{'Akk_bak'}.long_name = ncchar(''background vertical mixing coefficient for turbulent energy'');
+nc{'Akk_bak'}.units = ncchar(''meter2 second-1'');
+ 
+nc{'Akp_bak'} = ncdouble; %% 1 element.
+nc{'Akp_bak'}.long_name = ncchar(''background vertical mixing coefficient for length scale'');
+nc{'Akp_bak'}.units = ncchar(''meter2 second-1'');
+ 
+nc{'rdrg'} = ncdouble; %% 1 element.
+nc{'rdrg'}.long_name = ncchar(''linear drag coefficient'');
+nc{'rdrg'}.units = ncchar(''meter second-1'');
+ 
+nc{'rdrg2'} = ncdouble; %% 1 element.
+nc{'rdrg2'}.long_name = ncchar(''quadratic drag coefficient'');
+ 
+nc{'Zob'} = ncdouble; %% 1 element.
+nc{'Zob'}.long_name = ncchar(''bottom roughness'');
+nc{'Zob'}.units = ncchar(''meter'');
+ 
+nc{'Zos'} = ncdouble; %% 1 element.
+nc{'Zos'}.long_name = ncchar(''surface roughness'');
+nc{'Zos'}.units = ncchar(''meter'');
+ 
+nc{'gls_p'} = ncdouble; %% 1 element.
+nc{'gls_p'}.long_name = ncchar(''stability exponent'');
+ 
+nc{'gls_m'} = ncdouble; %% 1 element.
+nc{'gls_m'}.long_name = ncchar(''turbulent kinetic energy exponent'');
+ 
+nc{'gls_n'} = ncdouble; %% 1 element.
+nc{'gls_n'}.long_name = ncchar(''turbulent length scale exponent'');
+ 
+nc{'gls_cmu0'} = ncdouble; %% 1 element.
+nc{'gls_cmu0'}.long_name = ncchar(''stability coefficient'');
+ 
+nc{'gls_c1'} = ncdouble; %% 1 element.
+nc{'gls_c1'}.long_name = ncchar(''shear production coefficient'');
+ 
+nc{'gls_c2'} = ncdouble; %% 1 element.
+nc{'gls_c2'}.long_name = ncchar(''dissipation coefficient'');
+ 
+nc{'gls_c3m'} = ncdouble; %% 1 element.
+nc{'gls_c3m'}.long_name = ncchar(''buoyancy production coefficient (minus)'');
+ 
+nc{'gls_c3p'} = ncdouble; %% 1 element.
+nc{'gls_c3p'}.long_name = ncchar(''buoyancy production coefficient (plus)'');
+ 
+nc{'gls_sigk'} = ncdouble; %% 1 element.
+nc{'gls_sigk'}.long_name = ncchar(''constant Schmidt number for TKE'');
+ 
+nc{'gls_sigp'} = ncdouble; %% 1 element.
+nc{'gls_sigp'}.long_name = ncchar(''constant Schmidt number for PSI'');
+ 
+nc{'gls_Kmin'} = ncdouble; %% 1 element.
+nc{'gls_Kmin'}.long_name = ncchar(''minimum value of specific turbulent kinetic energy'');
+ 
+nc{'gls_Pmin'} = ncdouble; %% 1 element.
+nc{'gls_Pmin'}.long_name = ncchar(''minimum Value of dissipation'');
+ 
+nc{'Charnok_alpha'} = ncdouble; %% 1 element.
+nc{'Charnok_alpha'}.long_name = ncchar(''Charnok factor for surface roughness'');
+ 
+nc{'Zos_hsig_alpha'} = ncdouble; %% 1 element.
+nc{'Zos_hsig_alpha'}.long_name = ncchar(''wave amplitude factor for surface roughness'');
+ 
+nc{'sz_alpha'} = ncdouble; %% 1 element.
+nc{'sz_alpha'}.long_name = ncchar(''surface flux from wave dissipation'');
+ 
+nc{'CrgBan_cw'} = ncdouble; %% 1 element.
+nc{'CrgBan_cw'}.long_name = ncchar(''surface flux due to Craig and Banner wave breaking'');
+ 
+nc{'Znudg'} = ncdouble; %% 1 element.
+nc{'Znudg'}.long_name = ncchar(''free-surface nudging/relaxation inverse time scale'');
+nc{'Znudg'}.units = ncchar(''day-1'');
+ 
+nc{'M2nudg'} = ncdouble; %% 1 element.
+nc{'M2nudg'}.long_name = ncchar(''2D momentum nudging/relaxation inverse time scale'');
+nc{'M2nudg'}.units = ncchar(''day-1'');
+ 
+nc{'M3nudg'} = ncdouble; %% 1 element.
+nc{'M3nudg'}.long_name = ncchar(''3D momentum nudging/relaxation inverse time scale'');
+nc{'M3nudg'}.units = ncchar(''day-1'');
+ 
+nc{'Tnudg'} = ncdouble('tracer'); %% 2 elements.
+nc{'Tnudg'}.long_name = ncchar(''Tracers nudging/relaxation inverse time scale'');
+nc{'Tnudg'}.units = ncchar(''day-1'');
+ 
+nc{'FSobc_in'} = ncdouble('boundary'); %% 4 elements.
+nc{'FSobc_in'}.long_name = ncchar(''free-surface inflow, nudging inverse time scale'');
+nc{'FSobc_in'}.units = ncchar(''second-1'');
+ 
+nc{'FSobc_out'} = ncdouble('boundary'); %% 4 elements.
+nc{'FSobc_out'}.long_name = ncchar(''free-surface outflow, nudging inverse time scale'');
+nc{'FSobc_out'}.units = ncchar(''second-1'');
+ 
+nc{'M2obc_in'} = ncdouble('boundary'); %% 4 elements.
+nc{'M2obc_in'}.long_name = ncchar(''2D momentum inflow, nudging inverse time scale'');
+nc{'M2obc_in'}.units = ncchar(''second-1'');
+ 
+nc{'M2obc_out'} = ncdouble('boundary'); %% 4 elements.
+nc{'M2obc_out'}.long_name = ncchar(''2D momentum outflow, nudging inverse time scale'');
+nc{'M2obc_out'}.units = ncchar(''second-1'');
+ 
+nc{'Tobc_in'} = ncdouble('boundary', 'tracer'); %% 8 elements.
+nc{'Tobc_in'}.long_name = ncchar(''tracers inflow, nudging inverse time scale'');
+nc{'Tobc_in'}.units = ncchar(''second-1'');
+ 
+nc{'Tobc_out'} = ncdouble('boundary', 'tracer'); %% 8 elements.
+nc{'Tobc_out'}.long_name = ncchar(''tracers outflow, nudging inverse time scale'');
+nc{'Tobc_out'}.units = ncchar(''second-1'');
+ 
+nc{'M3obc_in'} = ncdouble('boundary'); %% 4 elements.
+nc{'M3obc_in'}.long_name = ncchar(''3D momentum inflow, nudging inverse time scale'');
+nc{'M3obc_in'}.units = ncchar(''second-1'');
+ 
+nc{'M3obc_out'} = ncdouble('boundary'); %% 4 elements.
+nc{'M3obc_out'}.long_name = ncchar(''3D momentum outflow, nudging inverse time scale'');
+nc{'M3obc_out'}.units = ncchar(''second-1'');
+ 
+nc{'rho0'} = ncdouble; %% 1 element.
+nc{'rho0'}.long_name = ncchar(''mean density used in Boussinesq approximation'');
+nc{'rho0'}.units = ncchar(''kilogram meter-3'');
+ 
+nc{'gamma2'} = ncdouble; %% 1 element.
+nc{'gamma2'}.long_name = ncchar(''slipperiness parameter'');
+ 
+nc{'spherical'} = nclong; %% 1 element.
+nc{'spherical'}.long_name = ncchar(''grid type logical switch'');
+nc{'spherical'}.flag_values = nclong([0 1]);
+nc{'spherical'}.flag_meanings = ncchar(''Cartesian spherical'');
+ 
+nc{'xl'} = ncdouble; %% 1 element.
+nc{'xl'}.long_name = ncchar(''domain length in the XI-direction'');
+nc{'xl'}.units = ncchar(''meter'');
+ 
+nc{'el'} = ncdouble; %% 1 element.
+nc{'el'}.long_name = ncchar(''domain length in the ETA-direction'');
+nc{'el'}.units = ncchar(''meter'');
+ 
+nc{'Vtransform'} = nclong; %% 1 element.
+nc{'Vtransform'}.long_name = ncchar(''vertical terrain-following transformation equation'');
+ 
+nc{'Vstretching'} = nclong; %% 1 element.
+nc{'Vstretching'}.long_name = ncchar(''vertical terrain-following stretching function'');
+ 
+nc{'theta_s'} = ncdouble; %% 1 element.
+nc{'theta_s'}.long_name = ncchar(''S-coordinate surface control parameter'');
+ 
+nc{'theta_b'} = ncdouble; %% 1 element.
+nc{'theta_b'}.long_name = ncchar(''S-coordinate bottom control parameter'');
+ 
+nc{'Tcline'} = ncdouble; %% 1 element.
+nc{'Tcline'}.long_name = ncchar(''S-coordinate surface/bottom layer width'');
+nc{'Tcline'}.units = ncchar(''meter'');
+ 
+nc{'hc'} = ncdouble; %% 1 element.
+nc{'hc'}.long_name = ncchar(''S-coordinate parameter, critical depth'');
+nc{'hc'}.units = ncchar(''meter'');
+ 
+nc{'s_rho'} = ncdouble('s_rho'); %% 20 elements.
+nc{'s_rho'}.long_name = ncchar(''S-coordinate at RHO-points'');
+nc{'s_rho'}.valid_min = ncdouble(-1);
+nc{'s_rho'}.valid_max = ncdouble(0);
+nc{'s_rho'}.positive = ncchar(''up'');
+nc{'s_rho'}.standard_name = ncchar(''ocean_s_coordinate_g1'');
+nc{'s_rho'}.formula_terms = ncchar(''s: s_rho C: Cs_r eta: zeta depth: h depth_c: hc'');
+nc{'s_rho'}.field = ncchar(''s_rho, scalar'');
+ 
+nc{'s_w'} = ncdouble('s_w'); %% 21 elements.
+nc{'s_w'}.long_name = ncchar(''S-coordinate at W-points'');
+nc{'s_w'}.valid_min = ncdouble(-1);
+nc{'s_w'}.valid_max = ncdouble(0);
+nc{'s_w'}.positive = ncchar(''up'');
+nc{'s_w'}.standard_name = ncchar(''ocean_s_coordinate_g1'');
+nc{'s_w'}.formula_terms = ncchar(''s: s_w C: Cs_w eta: zeta depth: h depth_c: hc'');
+nc{'s_w'}.field = ncchar(''s_w, scalar'');
+ 
+nc{'Cs_r'} = ncdouble('s_rho'); %% 20 elements.
+nc{'Cs_r'}.long_name = ncchar(''S-coordinate stretching curves at RHO-points'');
+nc{'Cs_r'}.valid_min = ncdouble(-1);
+nc{'Cs_r'}.valid_max = ncdouble(0);
+nc{'Cs_r'}.field = ncchar(''Cs_r, scalar'');
+ 
+nc{'Cs_w'} = ncdouble('s_w'); %% 21 elements.
+nc{'Cs_w'}.long_name = ncchar(''S-coordinate stretching curves at W-points'');
+nc{'Cs_w'}.valid_min = ncdouble(-1);
+nc{'Cs_w'}.valid_max = ncdouble(0);
+nc{'Cs_w'}.field = ncchar(''Cs_w, scalar'');
+ 
+nc{'h'} = ncdouble('eta_rho', 'xi_rho'); %% 132908 elements.
+nc{'h'}.long_name = ncchar(''bathymetry at RHO-points'');
+nc{'h'}.units = ncchar(''meter'');
+nc{'h'}.coordinates = ncchar(''lon_rho lat_rho'');
+nc{'h'}.field = ncchar(''bath, scalar'');
+ 
+nc{'f'} = ncdouble('eta_rho', 'xi_rho'); %% 132908 elements.
+nc{'f'}.long_name = ncchar(''Coriolis parameter at RHO-points'');
+nc{'f'}.units = ncchar(''second-1'');
+nc{'f'}.coordinates = ncchar(''lon_rho lat_rho'');
+nc{'f'}.field = ncchar(''coriolis, scalar'');
+ 
+nc{'pm'} = ncdouble('eta_rho', 'xi_rho'); %% 132908 elements.
+nc{'pm'}.long_name = ncchar(''curvilinear coordinate metric in XI'');
+nc{'pm'}.units = ncchar(''meter-1'');
+nc{'pm'}.coordinates = ncchar(''lon_rho lat_rho'');
+nc{'pm'}.field = ncchar(''pm, scalar'');
+ 
+nc{'pn'} = ncdouble('eta_rho', 'xi_rho'); %% 132908 elements.
+nc{'pn'}.long_name = ncchar(''curvilinear coordinate metric in ETA'');
+nc{'pn'}.units = ncchar(''meter-1'');
+nc{'pn'}.coordinates = ncchar(''lon_rho lat_rho'');
+nc{'pn'}.field = ncchar(''pn, scalar'');
+ 
+nc{'lon_rho'} = ncdouble('eta_rho', 'xi_rho'); %% 132908 elements.
+nc{'lon_rho'}.long_name = ncchar(''longitude of RHO-points'');
+nc{'lon_rho'}.units = ncchar(''degree_east'');
+nc{'lon_rho'}.standard_name = ncchar(''longitude'');
+nc{'lon_rho'}.field = ncchar(''lon_rho, scalar'');
+ 
+nc{'lat_rho'} = ncdouble('eta_rho', 'xi_rho'); %% 132908 elements.
+nc{'lat_rho'}.long_name = ncchar(''latitude of RHO-points'');
+nc{'lat_rho'}.units = ncchar(''degree_north'');
+nc{'lat_rho'}.standard_name = ncchar(''latitude'');
+nc{'lat_rho'}.field = ncchar(''lat_rho, scalar'');
+ 
+nc{'lon_u'} = ncdouble('eta_u', 'xi_u'); %% 132462 elements.
+nc{'lon_u'}.long_name = ncchar(''longitude of U-points'');
+nc{'lon_u'}.units = ncchar(''degree_east'');
+nc{'lon_u'}.standard_name = ncchar(''longitude'');
+nc{'lon_u'}.field = ncchar(''lon_u, scalar'');
+ 
+nc{'lat_u'} = ncdouble('eta_u', 'xi_u'); %% 132462 elements.
+nc{'lat_u'}.long_name = ncchar(''latitude of U-points'');
+nc{'lat_u'}.units = ncchar(''degree_north'');
+nc{'lat_u'}.standard_name = ncchar(''latitude'');
+nc{'lat_u'}.field = ncchar(''lat_u, scalar'');
+ 
+nc{'lon_v'} = ncdouble('eta_v', 'xi_v'); %% 132610 elements.
+nc{'lon_v'}.long_name = ncchar(''longitude of V-points'');
+nc{'lon_v'}.units = ncchar(''degree_east'');
+nc{'lon_v'}.standard_name = ncchar(''longitude'');
+nc{'lon_v'}.field = ncchar(''lon_v, scalar'');
+ 
+nc{'lat_v'} = ncdouble('eta_v', 'xi_v'); %% 132610 elements.
+nc{'lat_v'}.long_name = ncchar(''latitude of V-points'');
+nc{'lat_v'}.units = ncchar(''degree_north'');
+nc{'lat_v'}.standard_name = ncchar(''latitude'');
+nc{'lat_v'}.field = ncchar(''lat_v, scalar'');
+ 
+nc{'lon_psi'} = ncdouble('eta_psi', 'xi_psi'); %% 132165 elements.
+nc{'lon_psi'}.long_name = ncchar(''longitude of PSI-points'');
+nc{'lon_psi'}.units = ncchar(''degree_east'');
+nc{'lon_psi'}.standard_name = ncchar(''longitude'');
+nc{'lon_psi'}.field = ncchar(''lon_psi, scalar'');
+ 
+nc{'lat_psi'} = ncdouble('eta_psi', 'xi_psi'); %% 132165 elements.
+nc{'lat_psi'}.long_name = ncchar(''latitude of PSI-points'');
+nc{'lat_psi'}.units = ncchar(''degree_north'');
+nc{'lat_psi'}.standard_name = ncchar(''latitude'');
+nc{'lat_psi'}.field = ncchar(''lat_psi, scalar'');
+ 
+nc{'mask_rho'} = ncdouble('eta_rho', 'xi_rho'); %% 132908 elements.
+nc{'mask_rho'}.long_name = ncchar(''mask on RHO-points'');
+nc{'mask_rho'}.flag_values = ncdouble([0 1]);
+nc{'mask_rho'}.flag_meanings = ncchar(''land water'');
+nc{'mask_rho'}.coordinates = ncchar(''lon_rho lat_rho'');
+ 
+nc{'mask_u'} = ncdouble('eta_u', 'xi_u'); %% 132462 elements.
+nc{'mask_u'}.long_name = ncchar(''mask on U-points'');
+nc{'mask_u'}.flag_values = ncdouble([0 1]);
+nc{'mask_u'}.flag_meanings = ncchar(''land water'');
+nc{'mask_u'}.coordinates = ncchar(''lon_u lat_u'');
+ 
+nc{'mask_v'} = ncdouble('eta_v', 'xi_v'); %% 132610 elements.
+nc{'mask_v'}.long_name = ncchar(''mask on V-points'');
+nc{'mask_v'}.flag_values = ncdouble([0 1]);
+nc{'mask_v'}.flag_meanings = ncchar(''land water'');
+nc{'mask_v'}.coordinates = ncchar(''lon_v lat_v'');
+ 
+nc{'mask_psi'} = ncdouble('eta_psi', 'xi_psi'); %% 132165 elements.
+nc{'mask_psi'}.long_name = ncchar(''mask on psi-points'');
+nc{'mask_psi'}.flag_values = ncdouble([0 1]);
+nc{'mask_psi'}.flag_meanings = ncchar(''land water'');
+nc{'mask_psi'}.coordinates = ncchar(''lon_psi lat_psi'');
+ 
+nc{'ocean_time'} = ncdouble('ocean_time'); %% 1 element.
+nc{'ocean_time'}.long_name = ncchar(''time since initialization'');
+nc{'ocean_time'}.units = ncchar(''seconds since 2006-01-01 00:00:00'');
+nc{'ocean_time'}.calendar = ncchar(''gregorian'');
+nc{'ocean_time'}.field = ncchar(''time, scalar, series'');
+ 
+nc{'zeta'} = ncfloat('ocean_time', 'eta_rho', 'xi_rho'); %% 132908 elements.
+nc{'zeta'}.long_name = ncchar(''free-surface'');
+nc{'zeta'}.units = ncchar(''meter'');
+nc{'zeta'}.time = ncchar(''ocean_time'');
+nc{'zeta'}.coordinates = ncchar(''lon_rho lat_rho ocean_time'');
+nc{'zeta'}.field = ncchar(''free-surface, scalar, series'');
+nc{'zeta'}.FillValue_ = ncfloat(9.99999993381581e+36);
+ 
+nc{'ubar'} = ncfloat('ocean_time', 'eta_u', 'xi_u'); %% 132462 elements.
+nc{'ubar'}.long_name = ncchar(''vertically integrated u-momentum component'');
+nc{'ubar'}.units = ncchar(''meter second-1'');
+nc{'ubar'}.time = ncchar(''ocean_time'');
+nc{'ubar'}.coordinates = ncchar(''lon_u lat_u ocean_time'');
+nc{'ubar'}.field = ncchar(''ubar-velocity, scalar, series'');
+nc{'ubar'}.FillValue_ = ncfloat(9.99999993381581e+36);
+ 
+nc{'vbar'} = ncfloat('ocean_time', 'eta_v', 'xi_v'); %% 132610 elements.
+nc{'vbar'}.long_name = ncchar(''vertically integrated v-momentum component'');
+nc{'vbar'}.units = ncchar(''meter second-1'');
+nc{'vbar'}.time = ncchar(''ocean_time'');
+nc{'vbar'}.coordinates = ncchar(''lon_v lat_v ocean_time'');
+nc{'vbar'}.field = ncchar(''vbar-velocity, scalar, series'');
+nc{'vbar'}.FillValue_ = ncfloat(9.99999993381581e+36);
+ 
+nc{'u'} = ncfloat('ocean_time', 's_rho', 'eta_u', 'xi_u'); %% 2649240 elements.
+nc{'u'}.long_name = ncchar(''u-momentum component'');
+nc{'u'}.units = ncchar(''meter second-1'');
+nc{'u'}.time = ncchar(''ocean_time'');
+nc{'u'}.coordinates = ncchar(''lon_u lat_u s_rho ocean_time'');
+nc{'u'}.field = ncchar(''u-velocity, scalar, series'');
+nc{'u'}.FillValue_ = ncfloat(9.99999993381581e+36);
+ 
+nc{'v'} = ncfloat('ocean_time', 's_rho', 'eta_v', 'xi_v'); %% 2652200 elements.
+nc{'v'}.long_name = ncchar(''v-momentum component'');
+nc{'v'}.units = ncchar(''meter second-1'');
+nc{'v'}.time = ncchar(''ocean_time'');
+nc{'v'}.coordinates = ncchar(''lon_v lat_v s_rho ocean_time'');
+nc{'v'}.field = ncchar(''v-velocity, scalar, series'');
+nc{'v'}.FillValue_ = ncfloat(9.99999993381581e+36);
+ 
+nc{'w'} = ncfloat('ocean_time', 's_w', 'eta_rho', 'xi_rho'); %% 2791068 elements.
+nc{'w'}.long_name = ncchar(''vertical momentum component'');
+nc{'w'}.units = ncchar(''meter second-1'');
+nc{'w'}.time = ncchar(''ocean_time'');
+nc{'w'}.coordinates = ncchar(''lon_rho lat_rho s_w ocean_time'');
+nc{'w'}.field = ncchar(''w-velocity, scalar, series'');
+nc{'w'}.FillValue_ = ncfloat(9.99999993381581e+36);
+ 
+nc{'omega'} = ncfloat('ocean_time', 's_w', 'eta_rho', 'xi_rho'); %% 2791068 elements.
+nc{'omega'}.long_name = ncchar(''S-coordinate vertical momentum component'');
+nc{'omega'}.units = ncchar(''meter second-1'');
+nc{'omega'}.time = ncchar(''ocean_time'');
+nc{'omega'}.coordinates = ncchar(''lon_rho lat_rho s_w ocean_time'');
+nc{'omega'}.field = ncchar(''omega, scalar, series'');
+nc{'omega'}.FillValue_ = ncfloat(9.99999993381581e+36);
+ 
+nc{'temp'} = ncfloat('ocean_time', 's_rho', 'eta_rho', 'xi_rho'); %% 2658160 elements.
+nc{'temp'}.long_name = ncchar(''potential temperature'');
+nc{'temp'}.units = ncchar(''Celsius'');
+nc{'temp'}.time = ncchar(''ocean_time'');
+nc{'temp'}.coordinates = ncchar(''lon_rho lat_rho s_rho ocean_time'');
+nc{'temp'}.field = ncchar(''temperature, scalar, series'');
+nc{'temp'}.FillValue_ = ncfloat(9.99999993381581e+36);
+ 
+nc{'salt'} = ncfloat('ocean_time', 's_rho', 'eta_rho', 'xi_rho'); %% 2658160 elements.
+nc{'salt'}.long_name = ncchar(''salinity'');
+nc{'salt'}.time = ncchar(''ocean_time'');
+nc{'salt'}.coordinates = ncchar(''lon_rho lat_rho s_rho ocean_time'');
+nc{'salt'}.field = ncchar(''salinity, scalar, series'');
+nc{'salt'}.FillValue_ = ncfloat(9.99999993381581e+36);
+ 
+nc{'rho'} = ncfloat('ocean_time', 's_rho', 'eta_rho', 'xi_rho'); %% 2658160 elements.
+nc{'rho'}.long_name = ncchar(''density anomaly'');
+nc{'rho'}.units = ncchar(''kilogram meter-3'');
+nc{'rho'}.time = ncchar(''ocean_time'');
+nc{'rho'}.coordinates = ncchar(''lon_rho lat_rho s_rho ocean_time'');
+nc{'rho'}.field = ncchar(''density, scalar, series'');
+nc{'rho'}.FillValue_ = ncfloat(9.99999993381581e+36);
+ 
+nc{'AKv'} = ncfloat('ocean_time', 's_w', 'eta_rho', 'xi_rho'); %% 2791068 elements.
+nc{'AKv'}.long_name = ncchar(''vertical viscosity coefficient'');
+nc{'AKv'}.units = ncchar(''meter2 second-1'');
+nc{'AKv'}.time = ncchar(''ocean_time'');
+nc{'AKv'}.coordinates = ncchar(''lon_rho lat_rho s_w ocean_time'');
+nc{'AKv'}.field = ncchar(''AKv, scalar, series'');
+ 
+nc{'AKs'} = ncfloat('ocean_time', 's_w', 'eta_rho', 'xi_rho'); %% 2791068 elements.
+nc{'AKs'}.long_name = ncchar(''salinity vertical diffusion coefficient'');
+nc{'AKs'}.units = ncchar(''meter2 second-1'');
+nc{'AKs'}.time = ncchar(''ocean_time'');
+nc{'AKs'}.coordinates = ncchar(''lon_rho lat_rho s_w ocean_time'');
+nc{'AKs'}.field = ncchar(''AKs, scalar, series'');
+ 
+nc{'tke'} = ncfloat('ocean_time', 's_w', 'eta_rho', 'xi_rho'); %% 2791068 elements.
+nc{'tke'}.long_name = ncchar(''turbulent kinetic energy'');
+nc{'tke'}.units = ncchar(''meter2 second-2'');
+nc{'tke'}.time = ncchar(''ocean_time'');
+nc{'tke'}.coordinates = ncchar(''lon_rho lat_rho s_w ocean_time'');
+nc{'tke'}.field = ncchar(''tke, scalar, series'');
+ 
+nc{'gls'} = ncfloat('ocean_time', 's_w', 'eta_rho', 'xi_rho'); %% 2791068 elements.
+nc{'gls'}.long_name = ncchar(''turbulent generic length scale'');
+nc{'gls'}.units = ncchar(''meter3 second-2'');
+nc{'gls'}.time = ncchar(''ocean_time'');
+nc{'gls'}.coordinates = ncchar(''lon_rho lat_rho s_w ocean_time'');
+nc{'gls'}.field = ncchar(''gls, scalar, series'');
+ 
+endef(nc)
+close(nc)
+>> 

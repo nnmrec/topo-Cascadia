@@ -1,0 +1,16 @@
+Release version:
+=============== 
+ROMSTOOLS Utilities: 
+ 
+	Roms_tools/export_fig   
+  Roms_tools/m_map1.4f    
+  Roms_tools/air_sea      
+  Roms_tools/mask         
+  Roms_tools/mex60        
+  Roms_tools/mexcdf       
+  Roms_tools/netcdf_g77   
+  Roms_tools/netcdf_ifc   
+  Roms_tools/netcdf_x86_64
+ 
+Release date : 21_12_2012
+SVN revision (https://gforge.inria.fr/projects/romsagrif) : rev 1009

@@ -1,0 +1,17 @@
+
+# some of the example input files are too large to store with GitHub
+# these specific examples can be downloaded from the NNMREC website
+/inputs/bathymetry/topo/2_psdem/ocean_his_0001.nc
+
+# ignore temporary Matlab files
+*.m~
+
+# ignore temporary STAR-CCM+ files
+/cases/
+# the completed meshing and simulation files of STAR-CCM+
+# can be downloaded from the NNMREC website
+/cases/Admiralty_Inlet_nesting_ROMS_2017/
+/cases/*
+
+# system and compiler dependent
+

@@ -1,0 +1,91 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+% Modeling Package
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%
+
+[I] Installation (for a linux i686 computer with g77) :
+
+# 1 Copy the gzip tar file roms_package.tar.gz from the CDROM 
+
+# 2 uncompress it (gunzip) and untar it (tar -xvf)
+
+# 3 log as root (su root)
+
+# 4 cd ~/Roms_tools/ and install xanim and ppm2fli for animations
+(rpm -ivh xanim-2.80.1-12.i386.rpm ; rpm -ivh ppm2fli-2.1-1.i386.rpm)
+
+# 5 (exit)
+
+# 6 cd ~/Roms_tools/Run
+
+# 7 run ./jobcomp to test model compilation
+
+[II] Model preparation
+
+# 8 launch matlab in ~/Roms_tools/Run
+
+# 9 run start in matlab (matlab paths)
+
+# 10 edit ~/Roms_tools/Preprocessing_tools/make_grid.m
+
+# 11 give the title, the grid file name, the r smoothing parameter
+(r=max(|grad H|/H)), the grid positions (lonmin, lonmax, latmin, latmax),
+the grid resolution (in degrees), and the minimum depth (hmin).  
+
+# 12 run make_grid in matlab
+
+# 13 edit ~/Roms_tools/Preprocessing_tools/make_forcing.m
+
+# 14 give the title, the grid file name, and the forcing file name
+ 
+# 15 run make_forcing in matlab
+
+# 16 edit ~/Roms_tools/Preprocessing_tools/make_clim.m
+
+# 17 give the title, the grid file name, the forcing file name,
+the climatology file name, the initial file name, the objective analysis file name,
+the vertical grid parameters (theta_s=6.,theta_b=0.,hc=10.,N=32), 
+the switches for open boundaries, the level of reference for geostrophy,
+and the day of initialisation.
+
+# 18 run make_clim in matlab
+
+# 19 edit ~/Roms_tools/Tides/make_tides.m
+
+# 20 run make_tides in matlab
+
+[III] Model compilation
+
+# 21 edit ~/Roms_tools/Run/param.h
+
+# 22 give the grid dimensions (Lm,Mm,N)
+
+# 23 edit ~/Roms_tools/Run/cppdefs.h
+
+# 24 activate the cpp keys corresponding to the different model options
+(attention to the opne boundaries: should be conform to make_clim.m)
+
+# 25 cd ~/Roms_tools/Run
+
+# 26 run ./jobcomp for compilation
+
+[IV] Model Run
+
+# 27 edit ~/Roms_tools/Run/roms.in to give the mdel run parameters (dt,ndtfast,etc..)
+
+# 28 run ./roms roms.in 
+
+[V] Visualization
+
+# 29 run roms_gui in matlab
+
+[VI] Zooms
+
+# 30 run nestgui in matlab
+
+# 31 activate the cpp key AGRIF in cppdefs.h
+
+
+
+
