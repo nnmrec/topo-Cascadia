@@ -80,8 +80,11 @@ public class export_STAR_mesh_CSV extends StarMacro {
 
     xyzInternalTable_1.setPresentationName("mesh_centroids_boundaries");
 
-    xyzInternalTable_1.export("/mnt/data-RAID-1/danny/marine-star-master/topo-Cascadia/cases/test_ROMS_nesting/mesh_centroids_boundaries.csv", ",");
 
-    xyzInternalTable_2.export("/mnt/data-RAID-1/danny/marine-star-master/topo-Cascadia/cases/test_ROMS_nesting/mesh_centroids_domain.csv", ",");
+    // xyzInternalTable_1.export("/mnt/data-RAID-1/danny/marine-star-master/topo-Cascadia/cases/test_ROMS_nesting/mesh_centroids_boundaries.csv", ",");
+    xyzInternalTable_1.export("mesh_centroids_boundaries.csv", ",");
+
+    // xyzInternalTable_2.export("/mnt/data-RAID-1/danny/marine-star-master/topo-Cascadia/cases/test_ROMS_nesting/mesh_centroids_domain.csv", ",");
+    xyzInternalTable_2.export("mesh_centroids_domain.csv", ",");
   }
 }

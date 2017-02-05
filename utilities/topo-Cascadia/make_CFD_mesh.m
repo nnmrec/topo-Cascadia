@@ -115,8 +115,8 @@ file_dxf = [pwd filesep OPTIONS.dir_case filesep 'coastline_DXF'];
 stl_coast_x = [Topo.Coast.yEast ; Topo.Coast.yEast(end) ;  Topo.Coast.yEast(1)];
 stl_coast_y = [Topo.Coast.xNorth; Topo.Coast.xNorth(1);  Topo.Coast.xNorth(1)];
 % stl_coast_y = [Topo.Coast.xNorth; Topo.Coast.xNorth(end);  Topo.Coast.xNorth(1)];
-figure; 
-plot(stl_coast_x, stl_coast_y, 'o-k')
+% figure; 
+% plot(stl_coast_x, stl_coast_y, 'o-k')
 
 % NOTE: writedxf and dxf_open did not write compatible files with latest
 % OpenSCAD, but writedxfline works

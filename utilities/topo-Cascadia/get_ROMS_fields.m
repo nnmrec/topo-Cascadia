@@ -460,18 +460,18 @@ dlmwrite(csv_filename_aa, xyzuvw_aa, '-append', 'precision', '%.6f', 'delimiter'
 % ROMS.yEast  = yEast;
 % ROMS.zDown  = zDown;
 % 
-% ROMS.xNorth_aa = xNorth_aa;
-% ROMS.yEast_aa  = yEast_aa;
-% ROMS.zDown_aa  = zDown_aa;
+ROMS.xNorth_aa = xNorth_aa;
+ROMS.yEast_aa  = yEast_aa;
+ROMS.zDown_aa  = zDown_aa;
 % 
 % ROMS.u_rho   = u_rho;
 % ROMS.v_rho   = v_rho;
 % ROMS.w_rho   = w_rho;
 % ROMS.spd_rho = spd_rho;
 % 
-% ROMS.u_rho_aa   = u_rho_aa;
-% ROMS.v_rho_aa   = v_rho_aa;
-% ROMS.w_rho_aa   = w_rho_aa;
+ROMS.u_rho_aa   = u_rho_aa;
+ROMS.v_rho_aa   = v_rho_aa;
+ROMS.w_rho_aa   = w_rho_aa;
 % ROMS.spd_rho_aa = spd_rho_aa;
 % 
 % ROMS.z_rho = z_rho;
