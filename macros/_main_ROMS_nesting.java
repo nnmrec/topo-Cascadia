@@ -80,12 +80,17 @@ public class _main_ROMS_nesting extends StarMacro {
 
 
     // 
-    // EXPORT THE MESH, and MAP SOLUTION FROM A DIFFERENT MESH
+    // IMPORT THE ROMS MESH AND SOLUTION FIELDS
     // 
     // export the mesh cell centroids
-    new StarScript(getActiveSimulation(), new java.io.File(resolvePath("export_STAR_mesh_CSV.java"))).play();
-    new StarScript(getActiveSimulation(), new java.io.File(resolvePath("run_Matlab_mapping.java"))).play();
+    // new StarScript(getActiveSimulation(), new java.io.File(resolvePath("export_STAR_mesh_CSV.java"))).play();
+    // new StarScript(getActiveSimulation(), new java.io.File(resolvePath("run_Matlab_mapping.java"))).play();
     new StarScript(getActiveSimulation(), new java.io.File(resolvePath("load_ROMS_tables.java"))).play(); 
+    
+    // continue the solver from last state
+    new StarScript(getActiveSimulation(), new java.io.File(resolvePath("solver_Run.java"))).play();
+
+
     // 
     // ADD MORE PHYSICS MODELS, RE-RUN MESHING, AND RESTART SOLVER
     // 
@@ -106,6 +111,7 @@ public class _main_ROMS_nesting extends StarMacro {
     new StarScript(getActiveSimulation(), new java.io.File(resolvePath("export_PointProbes.java"))).play(); 
     new StarScript(getActiveSimulation(), new java.io.File(resolvePath("export_VirtualDisks.java"))).play(); 
     new StarScript(getActiveSimulation(), new java.io.File(resolvePath("scene_SaveHardcopies.java"))).play();
+    new StarScript(getActiveSimulation(), new java.io.File(resolvePath("save_ClearedMeshAndSolution.java"))).play();
 
     
 

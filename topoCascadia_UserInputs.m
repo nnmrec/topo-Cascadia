@@ -60,7 +60,8 @@
 %  \___/\____/\____/\_| \_|  \___/\_| \_/\_|    \___/  \_/ \____/ 
 %                                                                                                                                  
 % OPTIONS.casename            = '1_testCase_v2';     % the most importatnt thing ... to help keep track of things ...
-OPTIONS.casename            = 'topo-Cascadia-ROMS-nesting';     % the most importatnt thing ... to help keep track of things ...
+% OPTIONS.casename            = 'topo-Cascadia-ROMS-nesting';     % the most importatnt thing ... to help keep track of things ...
+OPTIONS.casename            = 'Feb2';     % the most importatnt thing ... to help keep track of things ...
 
 OPTIONS.resample_factor     = 4;               	% resample the original coastline file with this factor of points
 OPTIONS.resample_factor_bz  = 4;          	    % resample the normal projected Bezier interpolated coastline file with this factor of points
@@ -95,9 +96,9 @@ OPTIONS.fileTopo_ROMS       = '/mnt/data-RAID-1/danny/ainlet_2006_3/OUT/ocean_hi
 OPTIONS.typeDEM = 'shadem';
 
 % OPTIONS.casename            = 'mets2016_psdem9m_domainBig';
-OPTIONS.aa                  = [-122.7355 -122.6783 48.1473 48.1821];    % Alberto's choice ~6 milld?
+% OPTIONS.aa                  = [-122.7355 -122.6783 48.1473 48.1821];    % Alberto's choice ~6 milld?
 % OPTIONS.casename            = 'mets2016_psdem9m_domainSmall';
-% OPTIONS.aa                  = [-122.69 -122.68 48.152 48.1569];         % ULTRA TINY smaller ~3 million cells test domain (try and keep correct aspect ratio for 'ccm+ masters') 
+OPTIONS.aa                  = [-122.69 -122.68 48.152 48.1569];         % ULTRA TINY smaller ~3 million cells test domain (try and keep correct aspect ratio for 'ccm+ masters') 
 
 %% END OF USER INPUTS %%
 

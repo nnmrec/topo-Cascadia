@@ -1,4 +1,4 @@
-CASE_NAME,test_ROMS_nesting_METS2016,,,,,,,,,,,,,,,,
+CASE_NAME,topo-Cascadia-ROMS-nesting,,,,,,,,,,,,,,,,
 file_turbines,turbines_ROMS_nesting,input,file,for,the,turbine,specifications,[-],,,,,,,,,
 file_probes_points,probes_points_ROMS_nesting,input,file,for,the,point,probes,[-],,,,,,,,,
 file_probes_lines,probes_lines_ROMS_nesting,input,file,for,the,line,probes,[-],,,,,,,,,

@@ -7,6 +7,7 @@ import java.util.*;
 import star.common.*;
 import star.base.neo.*;
 import star.flow.*;
+import star.vis.*;
 
 public class load_ROMS_tables extends StarMacro {
 
@@ -19,8 +20,13 @@ public class load_ROMS_tables extends StarMacro {
     Simulation simulation_0 = 
       getActiveSimulation();
 
+    SimpleAnnotation caseName = 
+        ((SimpleAnnotation) simulation_0.getAnnotationManager().getObject("CASE_NAME"));
+
     FileTable fileTable_0 = 
-      (FileTable) simulation_0.getTableManager().createFromFile(resolvePath("ROMS_xyzuvw_area_interest.csv"));
+      // (FileTable) simulation_0.getTableManager().createFromFile(resolvePath("ROMS_xyzuvw_area_interest.csv"));
+      (FileTable) simulation_0.getTableManager().createFromFile(resolvePath("../cases/" + caseName.getText()  + "/ROMS_xyzuvw_area_interest.csv"));
+      
 
     PhysicsContinuum physicsContinuum_0 = 
       ((PhysicsContinuum) simulation_0.getContinuumManager().getContinuum("Physics 1"));
