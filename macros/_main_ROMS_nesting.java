@@ -64,7 +64,7 @@ public class _main_ROMS_nesting extends StarMacro {
     new StarScript(getActiveSimulation(), new java.io.File(resolvePath("solver_OptimalSettings.java"))).play();
     new StarScript(getActiveSimulation(), new java.io.File(resolvePath("solver_InitSolution.java"))).play();    
     // run the solver
-    new StarScript(getActiveSimulation(), new java.io.File(resolvePath("solver_Run.java"))).play();
+    // new StarScript(getActiveSimulation(), new java.io.File(resolvePath("solver_Run.java"))).play();
 
     // 
     // POST-PROCESSING
@@ -84,8 +84,10 @@ public class _main_ROMS_nesting extends StarMacro {
     // 
     // export the mesh cell centroids
     new StarScript(getActiveSimulation(), new java.io.File(resolvePath("export_STAR_mesh_CSV.java"))).play();
-    // new StarScript(getActiveSimulation(), new java.io.File(resolvePath("run_Matlab_mapping.java"))).play();
-    new StarScript(getActiveSimulation(), new java.io.File(resolvePath("load_ROMS_tables.java"))).play(); 
+    new StarScript(getActiveSimulation(), new java.io.File(resolvePath("run_Matlab_mapping.java"))).play();
+    // new StarScript(getActiveSimulation(), new java.io.File(resolvePath("load_ROMS_tables.java"))).play();
+    new StarScript(getActiveSimulation(), new java.io.File(resolvePath("load_ROMS_BoundaryConditions.java"))).play();
+    
     
     // continue the solver from last state
     new StarScript(getActiveSimulation(), new java.io.File(resolvePath("solver_Run.java"))).play();

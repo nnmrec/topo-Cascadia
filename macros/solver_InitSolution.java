@@ -40,6 +40,8 @@ public class solver_InitSolution extends StarMacro {
 
     iterationUpdateFrequency_0.setIterations(50);
 
+    simulation_0.saveState(getSimulation().getPresentationName()+".sim");
+
 
   }
 }

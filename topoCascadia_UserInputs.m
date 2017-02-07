@@ -94,6 +94,8 @@ OPTIONS.fileTopo_ROMS       = '/mnt/data-RAID-1/danny/ainlet_2006_3/OUT/ocean_hi
 
 % OPTIONS.typeDEM = 'dem';
 OPTIONS.typeDEM = 'shadem';
+OPTIONS.runOnHPC = false;
+OPTIONS.nCPUs    = 16;
 
 % OPTIONS.casename            = 'mets2016_psdem9m_domainBig';
 % OPTIONS.aa                  = [-122.7355 -122.6783 48.1473 48.1821];    % Alberto's choice ~6 milld?

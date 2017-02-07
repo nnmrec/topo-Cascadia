@@ -76,6 +76,23 @@ public class load_ROMS_BoundaryConditions extends StarMacro {
 
     velocityProfile_2.getMethod(XyzTabularVectorProfileMethod.class).setZData("w");
 
+
+
+    VelocityProfile velocityProfile_3 =
+      physicsContinuum_0.getInitialConditions().get(VelocityProfile.class);
+
+    velocityProfile_3.getMethod(XyzTabularVectorProfileMethod.class).setTable(fileTable_2);
+
+    velocityProfile_3.getMethod(XyzTabularVectorProfileMethod.class).setXData("u");
+
+    velocityProfile_3.getMethod(XyzTabularVectorProfileMethod.class).setYData("v");
+
+    velocityProfile_3.getMethod(XyzTabularVectorProfileMethod.class).setZData("w");
+
+
+
+
+
     Solution solution_0 = 
       simulation_0.getSolution();
 
