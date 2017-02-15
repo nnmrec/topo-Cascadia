@@ -492,7 +492,7 @@ ROMS.w_rho_aa   = w_rho_aa;
 % ROMS.spd_rho_aa = spd_rho_aa;
 
 ROMS.tke_aa     = tke_aa;
-ROMS.gls_aa     = gls_aa;
+ROMS.gls_aa     = GLS_CMU0^(3 + gls_p/gls_n) .* (tke_aa).^(3/2 + gls_m/gls_n) .* gls_aa.^(-1/gls_n);
 
 
 

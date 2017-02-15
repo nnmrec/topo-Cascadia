@@ -103,6 +103,8 @@ public class _main_ROMS_nesting_step2_Solution extends StarMacro {
     new StarScript(getActiveSimulation(), new java.io.File(resolvePath("physics_VirtualDisks.java"))).play();         // for the PolyHedral Mesh
     new StarScript(getActiveSimulation(), new java.io.File(resolvePath("scene_VirtualDisks_Reports.java"))).play();   // for the PolyHedral Mesh 
     new StarScript(getActiveSimulation(), new java.io.File(resolvePath("parts_SectionPlanesTurbines.java"))).play(); 
+    new StarScript(getActiveSimulation(), new java.io.File(resolvePath("scene_Topography_Turbines.java"))).play(); 
+    
     
     // re-mesh with the new mesh refinements around the turbines
     new StarScript(getActiveSimulation(), new java.io.File(resolvePath("mesh_MeshAll.java"))).play();
