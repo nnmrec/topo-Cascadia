@@ -21,8 +21,9 @@ public class _main_ROMS_nesting_step2_Solution extends StarMacro {
 
   private void execute0() {
     // 
-    // as of Dec 21, 2016 try this:
+    // as of Feb 14, 2017, try this:
     // 
+    Simulation simulation_0 = getActiveSimulation();
 
     // 
     // // READ USER INPUTS
@@ -86,7 +87,8 @@ public class _main_ROMS_nesting_step2_Solution extends StarMacro {
     // new StarScript(getActiveSimulation(), new java.io.File(resolvePath("export_STAR_mesh_CSV.java"))).play();
     // new StarScript(getActiveSimulation(), new java.io.File(resolvePath("run_Matlab_mapping.java"))).play();
     // new StarScript(getActiveSimulation(), new java.io.File(resolvePath("load_ROMS_tables.java"))).play();
-    new StarScript(getActiveSimulation(), new java.io.File(resolvePath("load_ROMS_BoundaryConditions.java"))).play();
+    // new StarScript(getActiveSimulation(), new java.io.File(resolvePath("load_ROMS_BoundaryConditions.java"))).play();
+    new StarScript(getActiveSimulation(), new java.io.File(resolvePath("load_ROMS_BoundaryConditions_KEpsilon.java"))).play();
     
     
     // continue the solver from last state
@@ -116,7 +118,7 @@ public class _main_ROMS_nesting_step2_Solution extends StarMacro {
     new StarScript(getActiveSimulation(), new java.io.File(resolvePath("scene_SaveHardcopies.java"))).play();
     // new StarScript(getActiveSimulation(), new java.io.File(resolvePath("save_ClearedMeshAndSolution.java"))).play();
 
-    
+    simulation_0.saveState(getSimulation().getPresentationName()+".sim");
 
   }
 }

@@ -21,7 +21,7 @@ public class _main_ROMS_nesting_step1_Meshing extends StarMacro {
 
   private void execute0() {
     // 
-    // as of Dec 21, 2016 try this:
+    // as of Feb 14, 2017, try this:
     // 
     Simulation simulation_0 = getActiveSimulation();
 
@@ -43,9 +43,13 @@ public class _main_ROMS_nesting_step1_Meshing extends StarMacro {
     // PHYSICS MODELS
     // 
     // setup the physics models
-    new StarScript(getActiveSimulation(), new java.io.File(resolvePath("physics_SST_KOmega.java"))).play();
+    // new StarScript(getActiveSimulation(), new java.io.File(resolvePath("physics_SST_KOmega.java"))).play();
+    new StarScript(getActiveSimulation(), new java.io.File(resolvePath("physics_KEpsilon_Standard_2Layer.java"))).play();
+    
     // Assign the BC values to inlet and outlet regions (to-do: combine the inlets to specify ambient turbulence)
-    new StarScript(getActiveSimulation(), new java.io.File(resolvePath("physics_BC_InflowUniform.java"))).play();
+    // new StarScript(getActiveSimulation(), new java.io.File(resolvePath("physics_BC_InflowUniform_SSTKOmega.java"))).play();
+    new StarScript(getActiveSimulation(), new java.io.File(resolvePath("physics_BC_InflowUniform_KEpsilon.java"))).play();
+
     // Assign BC values to the seabed regions
     new StarScript(getActiveSimulation(), new java.io.File(resolvePath("physics_BC_RoughSurface.java"))).play();
 
@@ -62,7 +66,8 @@ public class _main_ROMS_nesting_step1_Meshing extends StarMacro {
     // RUN THE SOLVER
     // 
     // initialize the solver
-    new StarScript(getActiveSimulation(), new java.io.File(resolvePath("solver_OptimalSettings.java"))).play();
+    // new StarScript(getActiveSimulation(), new java.io.File(resolvePath("solver_OptimalSettings_SSTKOmega.java"))).play();
+    new StarScript(getActiveSimulation(), new java.io.File(resolvePath("solver_OptimalSettings_KEpsilon.java"))).play();
     new StarScript(getActiveSimulation(), new java.io.File(resolvePath("solver_InitSolution.java"))).play();    
     // run the solver
     // new StarScript(getActiveSimulation(), new java.io.File(resolvePath("solver_Run.java"))).play();

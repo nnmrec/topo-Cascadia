@@ -1,15 +1,16 @@
-// STAR-CCM+ macro: physics_BC_InflowUniform.java
+// STAR-CCM+ macro: physics_BC_InflowUniform_KEpsilon.java
 // Written by STAR-CCM+ 11.02.010
 package macro;
 
 import java.util.*;
 
 import star.turbulence.*;
-import star.kwturb.*;
+// import star.kwturb.*;
+import star.keturb.*;
 import star.common.*;
 import star.flow.*;
 
-public class physics_BC_InflowUniform extends StarMacro {
+public class physics_BC_InflowUniform_KEpsilon extends StarMacro {
 
   public void execute() {
     execute0();
@@ -96,7 +97,8 @@ public class physics_BC_InflowUniform extends StarMacro {
      // Set Initial Conditions
     //   
 
-    physicsContinuum_0.getInitialConditions().get(KwTurbSpecOption.class).setSelected(KwTurbSpecOption.Type.INTENSITY_LENGTH_SCALE);
+    // physicsContinuum_0.getInitialConditions().get(KwTurbSpecOption.class).setSelected(KwTurbSpecOption.Type.INTENSITY_LENGTH_SCALE);
+    physicsContinuum_0.getInitialConditions().get(KeTurbSpecOption.class).setSelected(KeTurbSpecOption.Type.INTENSITY_LENGTH_SCALE);
 
     TurbulenceIntensityProfile turbulenceIntensityProfile_0 = 
       physicsContinuum_0.getInitialConditions().get(TurbulenceIntensityProfile.class);
@@ -147,7 +149,9 @@ public class physics_BC_InflowUniform extends StarMacro {
     // // region_0.getBoundaryManager().getBoundary("Block.Inlet");
     // region_0.getBoundaryManager().getBoundary("Subtract.north");
 
-    boundary_1.getConditions().get(KwTurbSpecOption.class).setSelected(KwTurbSpecOption.Type.INTENSITY_LENGTH_SCALE);
+    // boundary_1.getConditions().get(KwTurbSpecOption.class).setSelected(KwTurbSpecOption.Type.INTENSITY_LENGTH_SCALE);
+    boundary_1.getConditions().get(KeTurbSpecOption.class).setSelected(KeTurbSpecOption.Type.INTENSITY_LENGTH_SCALE);
+
     boundary_1.getConditions().get(InletVelocityOption.class).setSelected(InletVelocityOption.Type.COMPONENTS);
 
     TurbulenceIntensityProfile turbulenceIntensityProfile_1 = 
@@ -191,7 +195,9 @@ public class physics_BC_InflowUniform extends StarMacro {
 //     // region_0.getBoundaryManager().getBoundary("Block.Inlet");
 //     region_0.getBoundaryManager().getBoundary("Subtract.west");
 
-    boundary_2.getConditions().get(KwTurbSpecOption.class).setSelected(KwTurbSpecOption.Type.INTENSITY_LENGTH_SCALE);
+    // boundary_2.getConditions().get(KwTurbSpecOption.class).setSelected(KwTurbSpecOption.Type.INTENSITY_LENGTH_SCALE);
+    boundary_2.getConditions().get(KeTurbSpecOption.class).setSelected(KeTurbSpecOption.Type.INTENSITY_LENGTH_SCALE);
+
     boundary_2.getConditions().get(InletVelocityOption.class).setSelected(InletVelocityOption.Type.COMPONENTS);
 
     TurbulenceIntensityProfile turbulenceIntensityProfile_2 = 
@@ -232,7 +238,8 @@ public class physics_BC_InflowUniform extends StarMacro {
     //   // region_0.getBoundaryManager().getBoundary("Block.Outlet");
     //   region_0.getBoundaryManager().getBoundary("Subtract.south");
 
-    boundary_3.getConditions().get(KwTurbSpecOption.class).setSelected(KwTurbSpecOption.Type.INTENSITY_LENGTH_SCALE);
+    // boundary_3.getConditions().get(KwTurbSpecOption.class).setSelected(KwTurbSpecOption.Type.INTENSITY_LENGTH_SCALE);
+    boundary_3.getConditions().get(KeTurbSpecOption.class).setSelected(KeTurbSpecOption.Type.INTENSITY_LENGTH_SCALE);
 
     TurbulenceIntensityProfile turbulenceIntensityProfile_3 = 
       boundary_3.getValues().get(TurbulenceIntensityProfile.class);
@@ -259,7 +266,8 @@ public class physics_BC_InflowUniform extends StarMacro {
     //   // region_0.getBoundaryManager().getBoundary("Block.Outlet");
     //   region_0.getBoundaryManager().getBoundary("Subtract.east");
 
-    boundary_4.getConditions().get(KwTurbSpecOption.class).setSelected(KwTurbSpecOption.Type.INTENSITY_LENGTH_SCALE);
+    // boundary_4.getConditions().get(KwTurbSpecOption.class).setSelected(KwTurbSpecOption.Type.INTENSITY_LENGTH_SCALE);
+    boundary_4.getConditions().get(KeTurbSpecOption.class).setSelected(KeTurbSpecOption.Type.INTENSITY_LENGTH_SCALE);
 
     TurbulenceIntensityProfile turbulenceIntensityProfile_4 = 
       boundary_4.getValues().get(TurbulenceIntensityProfile.class);

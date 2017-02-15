@@ -47,8 +47,9 @@ close(nc)
 
 % compute the depth of rho or w points for ROMS
 % get the depth at each lat lon index
-z_rho = squeeze(zlevs(h,zeta,theta_s,theta_b,hc,ROMS.S.N,'r',ROMS.S.Vtransform));
-z_w   = squeeze(zlevs(h,zeta,theta_s,theta_b,hc,ROMS.S.N,'w',ROMS.S.Vtransform));
+% z_rho = squeeze(zlevs(h,zeta,theta_s,theta_b,hc,ROMS.S.N,'r',ROMS.S.Vtransform));
+% z_w   = squeeze(zlevs(h,zeta,theta_s,theta_b,hc,ROMS.S.N,'w',ROMS.S.Vtransform));
+[z_rho,z_w] = Z_s2z(ROMS.G.h, zeta, ROMS.S);
 
 % u_rho = zeros(size(z_rho));
 % v_rho = zeros(size(z_rho));
@@ -88,6 +89,8 @@ yEast  = zeros(ROMS.S.N, ROMS.G.M, ROMS.G.L);
 zDown  = zeros(ROMS.S.N, ROMS.G.M, ROMS.G.L);
 for n = 1:ROMS.S.N;
     % note: this undoes the meshgridding
+    
+    % using the ROMS_AGRIF tools                                                           
     [xNorth(n,:,:), yEast(n,:,:), zDown(n,:,:)] = geodetic2ned(ROMS.G.lat_rho, ...
                                                                ROMS.G.lon_rho, ...
                                                                squeeze( z_w(n,:,:) ), ...
@@ -144,8 +147,10 @@ lat0_aa  = lat_aa(ilat0_aa, ilon0_aa);
 lon0_aa  = lon_aa(ilat0_aa, ilon0_aa);
 h_aa     =    h(lat_a:lat_b, lon_a:lon_b);
 zeta_aa  = zeta(lat_a:lat_b, lon_a:lon_b);
-z_rho_aa = squeeze(zlevs(h_aa,zeta_aa,theta_s,theta_b,hc,ROMS.S.N,'r',ROMS.S.Vtransform));
-z_w_aa   = squeeze(zlevs(h_aa,zeta_aa,theta_s,theta_b,hc,ROMS.S.N,'w',ROMS.S.Vtransform));
+% z_rho_aa = squeeze(zlevs(h_aa,zeta_aa,theta_s,theta_b,hc,ROMS.S.N,'r',ROMS.S.Vtransform));
+% z_w_aa   = squeeze(zlevs(h_aa,zeta_aa,theta_s,theta_b,hc,ROMS.S.N,'w',ROMS.S.Vtransform));
+[z_rho_aa, z_w_aa] = Z_s2z(ROMS.G.h(lat_a:lat_b, lon_a:lon_b), zeta_aa, ROMS.S);
+
 
 % dx_aa = ROMS.G.DX(lat_a:lat_b, lon_a:lon_b);
 % dy_aa = ROMS.G.DY(lat_a:lat_b, lon_a:lon_b);

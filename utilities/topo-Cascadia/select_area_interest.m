@@ -22,6 +22,7 @@ function [OPTIONS, ROMS, Topo] = select_area_interest(OPTIONS)
 %   T has time information
 [ROMS.G, ROMS.S, ROMS.T] = Z_get_basic_info(OPTIONS.fileTopo_ROMS);
 
+        
 % grd = roms_get_grid(grd_file,scoord,tindex,~)
 % GRD = roms_get_grid(OPTIONS.fileTopo_ROMS);
 
@@ -54,6 +55,8 @@ switch OPTIONS.Seabed_Source
         
         
     case 'ROMS'
+               
+        
         global nctbx_options
         % nctbx_options.theAutoNaN=0;
         % nctbx_options.theAutoscale=0;
@@ -62,21 +65,18 @@ switch OPTIONS.Seabed_Source
 
 
         tindex = 1;
-
-        nc = netcdf(OPTIONS.fileTopo_ROMS);
-
+        
         % Rutgers version
-        h       = nc{'h'}(:);
+        nc      = netcdf(OPTIONS.fileTopo_ROMS);
+%         h       = nc{'h'}(:);
         zeta    = squeeze(nc{'zeta'}(tindex,:,:));
-        theta_s = nc{'theta_s'}(:);
-        theta_b = nc{'theta_b'}(:);
-        Tcline  = nc{'Tcline'}(:);
-        hc      = min(min(h(:)), Tcline);
-
-        % u = nc{'u'}(tindex,:,:,:);
-        % v = nc{'v'}(tindex,:,:,:);
-        % w = nc{'w'}(tindex,:,:,:);
-
+%         theta_s = nc{'theta_s'}(:);
+%         theta_b = nc{'theta_b'}(:);
+%         Tcline  = nc{'Tcline'}(:);
+%         hc      = min(min(h(:)), Tcline);
+%         u       = nc{'u'}(tindex,:,:,:);
+%         v       = nc{'v'}(tindex,:,:,:);
+%         w       = nc{'w'}(tindex,:,:,:);
         close(nc)
 
         % %% mesh grid information
@@ -91,18 +91,20 @@ switch OPTIONS.Seabed_Source
         % [ROMS.G, ROMS.S, ROMS.T] = Z_get_basic_info(OPTIONS.fileTopo_ROMS);
 
         %% RHO points
+        
+        % (update Feb 2017, rewrite this section using Pandora toolbox, and
+        % deal with the case when theta_s = theta_b = 0 for a uniform
+        % spacing mesh
 
         % I think I want RHO points in horizontal and W points in vertical
         % compute the depth of rho or w points for ROMS
         % get the depth at each lat lon index
-        z_rho = squeeze(zlevs(h,zeta,theta_s,theta_b,hc,ROMS.S.N,'r',ROMS.S.Vtransform));
-        z_w   = squeeze(zlevs(h,zeta,theta_s,theta_b,hc,ROMS.S.N,'w',ROMS.S.Vtransform));
+%         z_rho = squeeze(zlevs(h,zeta,theta_s,theta_b,hc,ROMS.S.N,'r',ROMS.S.Vtransform));
+%         z_w   = squeeze(zlevs(h,zeta,theta_s,theta_b,hc,ROMS.S.N,'w',ROMS.S.Vtransform));
 
         % 1st index means at the seabed, compare the RHO and W grid points
-        % (first RHO point off the seabed)
-%         zz_rho = squeeze( z_rho(1,:,:) );
-        % (first W point on the seabed ... should be the same as the PSI points?)
-        zz_w   = squeeze( z_w(1,:,:) );
+%         zz_rho = squeeze( z_rho(1,:,:) );       % first RHO point off the seabed
+%         zz_w   = squeeze( z_w(1,:,:) );         % first W point on the seabed
         
         % the PSI points should be on the actual seabed
         
@@ -115,9 +117,13 @@ switch OPTIONS.Seabed_Source
 %         w_lon   = ROMS.G.lon_psi(:);
 %         w_lat   = ROMS.G.lat_psi(:);
         
-        % choose from the PSI points (and reshape into column vectors)
+        % choose from the RHO points (and reshape into column vectors)
 %         zz     = zz_w(:);       
-        zz     = zz_w;       
+%         zz     = zz_w;              % ROMS_AGRIF method
+%         zz     = -1 .* ROMS.G.h;    % Pandora method
+        
+        [z_rho,z_w] = Z_s2z(ROMS.G.h, zeta, ROMS.S);
+        zz     = squeeze( z_w(1,:,:) );
         lon    = ROMS.G.lon_rho(1,:);
         lat    = ROMS.G.lat_rho(:,1);
 %         zz     = zz_rho(:);       

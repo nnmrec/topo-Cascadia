@@ -1,4 +1,4 @@
-// STAR-CCM+ macro: physics_BC_InflowUniform.java
+// STAR-CCM+ macro: physics_BC_InflowUniform_SSTKOmega.java
 // Written by STAR-CCM+ 11.02.010
 package macro;
 
@@ -9,7 +9,7 @@ import star.kwturb.*;
 import star.common.*;
 import star.flow.*;
 
-public class physics_BC_InflowUniform extends StarMacro {
+public class physics_BC_InflowUniform_SSTKOmega extends StarMacro {
 
   public void execute() {
     execute0();

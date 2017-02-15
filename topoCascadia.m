@@ -64,9 +64,9 @@ addpath(genpath('utilities/topo-Cascadia'))
 %     javaaddpath('utilities/mexcdf/R2013a-and-above/netcdfAll-4.3.jar');
 %     javaaddpath('utilities/mexcdf/R2013a-and-above/snctools/classes');
 % if you have a different version of Matlab you may need a different version of MexCDF
-addpath(genpath('utilities/mexcdf/R2010b-to-R2012b'))
-    javaaddpath('utilities/mexcdf/R2010b-to-R2012b/netcdfAll-4.2.jar');
-    javaaddpath('utilities/mexcdf/R2010b-to-R2012b/snctools/classes');
+% addpath(genpath('utilities/mexcdf/R2010b-to-R2012b'))
+%     javaaddpath('utilities/mexcdf/R2010b-to-R2012b/netcdfAll-4.2.jar');
+%     javaaddpath('utilities/mexcdf/R2010b-to-R2012b/snctools/classes');
 % addpath(genpath('utilities/mexcdf'))    
 addpath('utilities/Inpaint_nans')    
 addpath('utilities/interparc')
@@ -211,14 +211,17 @@ save(['cases' filesep OPTIONS.casename filesep 'mesh_ROMS.mat'], ...
 
 cwd = pwd;
 
+% run the starccm meshing
 cd(OPTIONS.dir_case)
-system(OPTIONS.run_starccm_command1);
+status1 = system(OPTIONS.run_starccm_command1);
 cd(cwd)
 
+% perform interpolation from ROMS RHO points to the STAR-CCM+ cell centroids
 mesh_mapping(OPTIONS, ROMS)
 
+% load ROMS boundary conditions to starccm and then run solver
 cd(OPTIONS.dir_case)
-system(OPTIONS.run_starccm_command2);
+status2 = system(OPTIONS.run_starccm_command2);
 cd(cwd)
 
  

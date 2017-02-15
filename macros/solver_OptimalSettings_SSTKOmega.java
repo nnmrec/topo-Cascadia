@@ -1,4 +1,4 @@
-// STAR-CCM+ macro: solver_OptimalSettings.java
+// STAR-CCM+ macro: solver_OptimalSettings_SSTKOmega.java
 // Written by STAR-CCM+ 11.04.010
 package macro;
 
@@ -9,7 +9,7 @@ import star.common.*;
 import star.base.neo.*;
 import star.segregatedflow.*;
 
-public class solver_OptimalSettings extends StarMacro {
+public class solver_OptimalSettings_SSTKOmega extends StarMacro {
 
   public void execute() {
     execute0();
@@ -23,12 +23,12 @@ public class solver_OptimalSettings extends StarMacro {
     PhysicsContinuum physicsContinuum_0 = 
       ((PhysicsContinuum) simulation_0.getContinuumManager().getContinuum("Physics 1"));
 
-    // KwAllYplusWallTreatment kwAllYplusWallTreatment_0 = 
-    //   physicsContinuum_0.getModelManager().getModel(KwAllYplusWallTreatment.class);
+    KwAllYplusWallTreatment kwAllYplusWallTreatment_0 = 
+      physicsContinuum_0.getModelManager().getModel(KwAllYplusWallTreatment.class);
 
-    // kwAllYplusWallTreatment_0.setIterativeUstarOption(true);
+    kwAllYplusWallTreatment_0.setIterativeUstarOption(true);
 
-    // kwAllYplusWallTreatment_0.setIterativeUstarOption(false);
+    kwAllYplusWallTreatment_0.setIterativeUstarOption(false);
 
     SegregatedFlowModel segregatedFlowModel_0 = 
       physicsContinuum_0.getModelManager().getModel(SegregatedFlowModel.class);

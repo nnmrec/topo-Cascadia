@@ -28,9 +28,17 @@ theta_b = nc{'theta_b'}(:);
 Tcline  = nc{'Tcline'}(:);
 hc      = min(min(h(:)), Tcline);
 
-u = nc{'u'}(tindex,:,:,:);
-v = nc{'v'}(tindex,:,:,:);
-w = nc{'w'}(tindex,:,:,:);
+u   = nc{'u'}(tindex,:,:,:);
+v   = nc{'v'}(tindex,:,:,:);
+w   = nc{'w'}(tindex,:,:,:);
+
+% NOTE: tke is on the W grid, and does not seem to contain NaN values
+tke      = nc{'tke'}(tindex,:,:,:);
+GLS_CMU0 = nc{'gls_cmu0'}(tindex,:,:,:);
+gls_m = nc{'gls_m'}(tindex,:,:,:);
+gls_n = nc{'gls_n'}(tindex,:,:,:);
+gls_p = nc{'gls_p'}(tindex,:,:,:);
+gls   = nc{'gls'}(tindex,:,:,:);
 
 close(nc)
 
@@ -49,7 +57,8 @@ close(nc)
 
 % compute the depth of rho or w points for ROMS
 % get the depth at each lat lon index
-z_rho = squeeze(zlevs(h,zeta,theta_s,theta_b,hc,ROMS.S.N,'r',ROMS.S.Vtransform));
+% z_rho = squeeze(zlevs(h,zeta,theta_s,theta_b,hc,ROMS.S.N,'r',ROMS.S.Vtransform));
+[z_rho,z_w] = Z_s2z(ROMS.G.h, zeta, ROMS.S);
 
 u_rho = zeros(size(z_rho));
 v_rho = zeros(size(z_rho));
@@ -58,7 +67,10 @@ for n = 1:size(z_rho,1);
     u_rho(n,:,:) = u2rho_2d( squeeze( u(n,:,:) ));
     v_rho(n,:,:) = v2rho_2d( squeeze( v(n,:,:) ));
     % the rho points of the w grid can be found by midpoints of the w points
-    w_rho(n,:,:) = (w(n,:,:) + w(n+1,:,:)) ./ 2;
+    w_rho(n,:,:)   = (w(n,:,:) + w(n+1,:,:)) ./ 2;
+    tke_rho(n,:,:) = (tke(n,:,:) + tke(n+1,:,:)) ./ 2;
+    gls_rho(n,:,:) = (gls(n,:,:) + gls(n+1,:,:)) ./ 2;
+    
 end
 spd_rho = sqrt(u_rho.^2 + u_rho.^2 + w_rho.^2);
 
@@ -181,7 +193,8 @@ v_rho_aa   = v_rho(:, lat_a:lat_b, lon_a:lon_b);
 w_rho_aa   = w_rho(:, lat_a:lat_b, lon_a:lon_b);
 spd_rho_aa = spd_rho(:, lat_a:lat_b, lon_a:lon_b);
 
-
+tke_aa     = tke_rho(:, lat_a:lat_b, lon_a:lon_b);
+gls_aa     = gls_rho(:, lat_a:lat_b, lon_a:lon_b);
 
 % Some of these other variables also have NaN that should be dealt with
 lon_aa   = ROMS.G.lon_rho(lat_a:lat_b, lon_a:lon_b);
@@ -191,10 +204,13 @@ ilon0_aa = floor( size(lon_aa,2)/2 );
 lat0_aa  = lat_aa(ilat0_aa, ilon0_aa);
 lon0_aa  = lon_aa(ilat0_aa, ilon0_aa);
 h_aa     =    h(lat_a:lat_b, lon_a:lon_b);
+
 zeta_aa  = zeta(lat_a:lat_b, lon_a:lon_b); % has NaN values
-    zeta_aa  = inpaint_nans(zeta_aa, 4);
+zeta_aa  = inpaint_nans(zeta_aa, 4);
     
-z_rho_aa = squeeze(zlevs(h_aa,zeta_aa,theta_s,theta_b,hc,ROMS.S.N,'r',ROMS.S.Vtransform)); % this has NaN
+% z_rho_aa = squeeze(zlevs(h_aa,zeta_aa,theta_s,theta_b,hc,ROMS.S.N,'r',ROMS.S.Vtransform)); % this has NaN
+[z_rho_aa, z_w_aa] = Z_s2z(ROMS.G.h(lat_a:lat_b, lon_a:lon_b), zeta_aa, ROMS.S);
+
 for n = 1:size(z_rho_aa,1)
     % fix the NaN, interpolate horizontally
     z_rho_aa(n,:,:) = inpaint_nans(squeeze( z_rho_aa(n,:,:) ), 4);
@@ -386,23 +402,24 @@ view([0 0 90])
 %% save data in CSV file format, for reading by STAR-CCM+
 
 % over entire domain
-csv_filename = [OPTIONS.dir_case filesep 'ROMS_xyzuvw.csv'];
-xyzuvw       = [xNorth(:) yEast(:) zDown(:) u_rho(:) v_rho(:) w_rho(:)];
-
-% if the file already exists, overwrite
-if exist(csv_filename, 'file')==2
-  delete(csv_filename);
-end
-
-% write the header and then append the data
-fid = fopen(csv_filename, 'w');
-fprintf(fid, 'X,Y,Z,u,v,w\n');
-fclose(fid);
-dlmwrite(csv_filename, xyzuvw, '-append', 'precision', '%.6f', 'delimiter', ',');
+% csv_filename = [OPTIONS.dir_case filesep 'ROMS_xyzuvw.csv'];
+% xyzuvw       = [xNorth(:) yEast(:) zDown(:) u_rho(:) v_rho(:) w_rho(:)];
+% 
+% % if the file already exists, overwrite
+% if exist(csv_filename, 'file')==2
+%   delete(csv_filename);
+% end
+% 
+% % write the header and then append the data
+% fid = fopen(csv_filename, 'w');
+% fprintf(fid, 'X,Y,Z,u,v,w\n');
+% fclose(fid);
+% dlmwrite(csv_filename, xyzuvw, '-append', 'precision', '%.6f', 'delimiter', ',');
 
 % over area of interest
 csv_filename_aa = [OPTIONS.dir_case filesep 'ROMS_xyzuvw_area_interest.csv'];
-xyzuvw_aa       = [xNorth_aa(:) yEast_aa(:) zDown_aa(:) u_rho_aa(:) v_rho_aa(:) w_rho_aa(:)];
+% xyzuvw_aa       = [xNorth_aa(:) yEast_aa(:) zDown_aa(:) u_rho_aa(:) v_rho_aa(:) w_rho_aa(:)];
+xyzuvw_aa       = [xNorth_aa(:) yEast_aa(:) zDown_aa(:) u_rho_aa(:) v_rho_aa(:) w_rho_aa(:) tke_aa(:) gls_aa(:)];
 
 % the NaNs do not cause any problems within Matlab for plotting
 % but STAR-CCM+ cannot handle a NaN ... so decide how to remove NaNs
@@ -434,7 +451,7 @@ end
 
 % write the header and then append the data
 fid = fopen(csv_filename_aa, 'w');
-fprintf(fid, 'X,Y,Z,u,v,w\n');
+fprintf(fid, 'X,Y,Z,u,v,w,tke,dissipation\n');
 fclose(fid);
 dlmwrite(csv_filename_aa, xyzuvw_aa, '-append', 'precision', '%.6f', 'delimiter', ',');
 
@@ -473,6 +490,29 @@ ROMS.u_rho_aa   = u_rho_aa;
 ROMS.v_rho_aa   = v_rho_aa;
 ROMS.w_rho_aa   = w_rho_aa;
 % ROMS.spd_rho_aa = spd_rho_aa;
+
+ROMS.tke_aa     = tke_aa;
+ROMS.gls_aa     = gls_aa;
+
+
+
+
+% compute specific dissipation rate
+% p = -1;
+% m = 1/2;
+% n = -1;
+
+
+
+%
+% generic_parameter = GLS_CMU0^p .* (ROMS.tke_aa).^m .* generic_length^n;
+% epsilon           = GLS_CMU0^(3 + p/n) .* (ROMS.tke_aa).^(3/2+m/n) .* generic_parameter.^(-1/n);
+% generic_length    = GLS_CMU0^3 .* (ROMS.tke_aa).^(3/2) .* epsilon.^(-1);
+
+% in Kristen's model, the k-epsilon scheme is used, so generic_parameter = epsilon
+
+
+
 % 
 % ROMS.z_rho = z_rho;
 % ROMS.z_rho_aa = z_rho_aa;

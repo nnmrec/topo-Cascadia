@@ -106,12 +106,28 @@ OPTIONS.aa                  = [-122.69 -122.68 48.152 48.1569];         % ULTRA 
 
 %% run the main topo_Cascadia program
 
+% OPTIONS.casename = 'topo-Cascadia-ROMS-nesting';
+% topoCascadia(OPTIONS);
+
+
+% try Kristen's dataset
 OPTIONS.casename = 'topo-Cascadia-ROMS-nesting';
+OPTIONS.fileTopo_ROMS = '/mnt/data-RAID-1/danny/ainlet_Kristen/supporting_files/pong.tamu.edu/~kthyng/ai65/OUT/ocean_his_0290.nc';
+OPTIONS.Seabed_Source = 'ROMS';
+topoCascadia(OPTIONS);
+
+% try Parker's dataset
+OPTIONS.casename       = 'topo-Cascadia-ROMS-nesting';
+OPTIONS.fileTopo_ROMS       = '/mnt/data-RAID-1/danny/ainlet_2006_3/OUT/ocean_his_0290.nc';
+OPTIONS.Seabed_Source = 'ROMS';
 topoCascadia(OPTIONS);
 
 OPTIONS.casename      = 'topo-Cascadia_example';
 OPTIONS.Seabed_Source = 'PSDEM';
 topoCascadia(OPTIONS);
+
+
+
 
 OPTIONS.casename = 'test_ROMS_nesting_METS2016';
 OPTIONS.aa                  = [-122.7355 -122.6783 48.1473 48.1821];    % area of interest. specify a box of lon, lat. (this was the METS 2016 PAPER ~6 mill cells?) % Area of interest, if it does not exist then user will be prompted to select by viewing a map
