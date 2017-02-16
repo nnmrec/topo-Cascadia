@@ -102,6 +102,9 @@ OPTIONS.nCPUs    = 16;
 % OPTIONS.casename            = 'mets2016_psdem9m_domainSmall';
 OPTIONS.aa                  = [-122.69 -122.68 48.152 48.1569];         % ULTRA TINY smaller ~3 million cells test domain (try and keep correct aspect ratio for 'ccm+ masters') 
 
+OPTIONS.DEBUG_LEVEL = 0;
+
+
 %% END OF USER INPUTS %%
 
 %% run the main topo_Cascadia program
@@ -109,6 +112,12 @@ OPTIONS.aa                  = [-122.69 -122.68 48.152 48.1569];         % ULTRA 
 % OPTIONS.casename = 'topo-Cascadia-ROMS-nesting';
 % topoCascadia(OPTIONS);
 
+% try Kristen's dataset on the METS 2016 'Big Domain'
+OPTIONS.casename = 'topo-Cascadia-ROMS-nesting';
+OPTIONS.aa = [-122.7355 -122.6783 48.1473 48.1821];    % Alberto's choice ~6 milld?
+OPTIONS.fileTopo_ROMS = '/mnt/data-RAID-1/danny/ainlet_Kristen/supporting_files/pong.tamu.edu/~kthyng/ai65/OUT/ocean_his_0290.nc';
+OPTIONS.Seabed_Source = 'ROMS';
+topoCascadia(OPTIONS);
 
 % try Kristen's dataset
 OPTIONS.casename = 'topo-Cascadia-ROMS-nesting';
@@ -116,11 +125,14 @@ OPTIONS.fileTopo_ROMS = '/mnt/data-RAID-1/danny/ainlet_Kristen/supporting_files/
 OPTIONS.Seabed_Source = 'ROMS';
 topoCascadia(OPTIONS);
 
+
+
 % try Parker's dataset
 OPTIONS.casename       = 'topo-Cascadia-ROMS-nesting';
 OPTIONS.fileTopo_ROMS       = '/mnt/data-RAID-1/danny/ainlet_2006_3/OUT/ocean_his_0290.nc';
 OPTIONS.Seabed_Source = 'ROMS';
 topoCascadia(OPTIONS);
+
 
 OPTIONS.casename      = 'topo-Cascadia_example';
 OPTIONS.Seabed_Source = 'PSDEM';

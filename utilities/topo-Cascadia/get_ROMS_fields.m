@@ -42,6 +42,7 @@ gls   = nc{'gls'}(tindex,:,:,:);
 
 close(nc)
 
+
 %% mesh grid information
 
 % uses Pandora toolbox to read (could also use snc_roms_get_grid to get
@@ -73,6 +74,7 @@ for n = 1:size(z_rho,1);
     
 end
 spd_rho = sqrt(u_rho.^2 + u_rho.^2 + w_rho.^2);
+
 
 %% now convert the ROMS into NED coordinates
 % define a reference datum, the center of domain seems a reasonable choice
@@ -195,6 +197,7 @@ spd_rho_aa = spd_rho(:, lat_a:lat_b, lon_a:lon_b);
 
 tke_aa     = tke_rho(:, lat_a:lat_b, lon_a:lon_b);
 gls_aa     = gls_rho(:, lat_a:lat_b, lon_a:lon_b);
+eps_aa     = GLS_CMU0^(3 + gls_p/gls_n) .* (tke_aa).^(3/2 + gls_m/gls_n) .* gls_aa.^(-1/gls_n);
 
 % Some of these other variables also have NaN that should be dealt with
 lon_aa   = ROMS.G.lon_rho(lat_a:lat_b, lon_a:lon_b);
@@ -316,53 +319,57 @@ zDown_aa = -1*zDown_aa; % prefer this convention better
 
 
 %% plot as a point cloud
-hfig_debug = figure;
-% for n = 1
-for n = 1:size(zDown_aa,1)
-    xxx = squeeze( yEast_aa(n,:,: ));
-    yyy = squeeze( xNorth_aa(n,:,: ));
-    zzz = squeeze( zDown_aa(n,:,: ));
-%     xxx = lon_aa;
-%     yyy = lat_aa;
-%     zzz = squeeze( z_rho_aa(n,:,: ));
-    fff = squeeze( spd_rho_aa(n,:,: ));
-    
-    
-    % try to shift the domain
-%     xxx = xxx - dx_aa;
-%     yyy = yyy + dy_aa;
-    
-    hold on
-    scatter3(xxx(:), yyy(:), zzz(:), fff(:), 'CData', fff(:))  
+
+if OPTIONS.DEBUG_LEVEL >= 3;
+
+    hfig_debug = figure;
+    % for n = 1
+    for n = 1:size(zDown_aa,1)
+        xxx = squeeze( yEast_aa(n,:,: ));
+        yyy = squeeze( xNorth_aa(n,:,: ));
+        zzz = squeeze( zDown_aa(n,:,: ));
+    %     xxx = lon_aa;
+    %     yyy = lat_aa;
+    %     zzz = squeeze( z_rho_aa(n,:,: ));
+        fff = squeeze( spd_rho_aa(n,:,: ));
+
+
+        % try to shift the domain
+    %     xxx = xxx - dx_aa;
+    %     yyy = yyy + dy_aa;
+
+        hold on
+        scatter3(xxx(:), yyy(:), zzz(:), fff(:), 'CData', fff(:))  
+    end
+    colorbar 
+    box on
+    axis equal
+    caxis([0.5 1.5]);
+
+    % load the STL file to add to plot
+    [vertices, faces, normals, name] = stlReadBinary([OPTIONS.dir_case filesep 'seabed.stl']);
+    stlPlot(vertices,faces,name,hfig_debug);
+    set(gca,'DataAspectRatio',[1 1 1/10]) % exaggerate the depth axis
+
+    % figure; hist(xNorth_aa(:), 100);
+    % figure; hist(yEast_aa(:), 100);
+    % figure; hist(zDown_aa(:), 100);
+    % 
+    % figure; hist(u_rho_aa(:), 100);
+    % figure; hist(v_rho_aa(:), 100);
+    % figure; hist(w_rho_aa(:), 100);
+    % figure; hist(spd_rho_aa(:), 100);
+    % 
+    % [max(xNorth_aa(:)) min(xNorth_aa(:))]
+    % [max(yEast_aa(:))  min(yEast_aa(:))]
+    % [max(zDown_aa(:))  min(zDown_aa(:))]
+    % [max(spd_rho_aa(:))  min(spd_rho_aa(:))]
+
+    view([0 90 0])
+    view([90 0 0])
+    view([0 0 90])
+
 end
-colorbar 
-box on
-axis equal
-caxis([0.5 1.5]);
-
-% load the STL file to add to plot
-[vertices, faces, normals, name] = stlReadBinary([OPTIONS.dir_case filesep 'seabed.stl']);
-stlPlot(vertices,faces,name,hfig_debug);
-set(gca,'DataAspectRatio',[1 1 1/10]) % exaggerate the depth axis
-
-% figure; hist(xNorth_aa(:), 100);
-% figure; hist(yEast_aa(:), 100);
-% figure; hist(zDown_aa(:), 100);
-% 
-% figure; hist(u_rho_aa(:), 100);
-% figure; hist(v_rho_aa(:), 100);
-% figure; hist(w_rho_aa(:), 100);
-% figure; hist(spd_rho_aa(:), 100);
-% 
-% [max(xNorth_aa(:)) min(xNorth_aa(:))]
-% [max(yEast_aa(:))  min(yEast_aa(:))]
-% [max(zDown_aa(:))  min(zDown_aa(:))]
-% [max(spd_rho_aa(:))  min(spd_rho_aa(:))]
-
-view([0 90 0])
-view([90 0 0])
-view([0 0 90])
-
 
 % This is where I realized that ROMS and the PSDEM2005 datasets have
 % different resolutions on the lat/lon grids ... and it is possible that
@@ -416,10 +423,12 @@ view([0 0 90])
 % fclose(fid);
 % dlmwrite(csv_filename, xyzuvw, '-append', 'precision', '%.6f', 'delimiter', ',');
 
+
 % over area of interest
 csv_filename_aa = [OPTIONS.dir_case filesep 'ROMS_xyzuvw_area_interest.csv'];
 % xyzuvw_aa       = [xNorth_aa(:) yEast_aa(:) zDown_aa(:) u_rho_aa(:) v_rho_aa(:) w_rho_aa(:)];
-xyzuvw_aa       = [xNorth_aa(:) yEast_aa(:) zDown_aa(:) u_rho_aa(:) v_rho_aa(:) w_rho_aa(:) tke_aa(:) gls_aa(:)];
+% xyzuvw_aa       = [xNorth_aa(:) yEast_aa(:) zDown_aa(:) u_rho_aa(:) v_rho_aa(:) w_rho_aa(:) tke_aa(:) gls_aa(:)];
+xyzuvw_aa       = [xNorth_aa(:) yEast_aa(:) zDown_aa(:) u_rho_aa(:) v_rho_aa(:) w_rho_aa(:) tke_aa(:) eps_aa(:)];
 
 % the NaNs do not cause any problems within Matlab for plotting
 % but STAR-CCM+ cannot handle a NaN ... so decide how to remove NaNs
@@ -491,27 +500,51 @@ ROMS.v_rho_aa   = v_rho_aa;
 ROMS.w_rho_aa   = w_rho_aa;
 % ROMS.spd_rho_aa = spd_rho_aa;
 
+% turbulent kinetic energy
 ROMS.tke_aa     = tke_aa;
-ROMS.gls_aa     = GLS_CMU0^(3 + gls_p/gls_n) .* (tke_aa).^(3/2 + gls_m/gls_n) .* gls_aa.^(-1/gls_n);
+% turbulent dissipation rate (for k-epsilon model)
+ROMS.eps_aa     = eps_aa;
+% specific dissipation rate (for k-omega model)
+ROMS.omg_aa     = eps_aa ./ (tke_aa .* GLS_CMU0^4);
 
 
 
-
-% compute specific dissipation rate
-% p = -1;
-% m = 1/2;
-% n = -1;
-
-
-
+%% for DEBUG
+% compare values of gls
 %
 % generic_parameter = GLS_CMU0^p .* (ROMS.tke_aa).^m .* generic_length^n;
 % epsilon           = GLS_CMU0^(3 + p/n) .* (ROMS.tke_aa).^(3/2+m/n) .* generic_parameter.^(-1/n);
 % generic_length    = GLS_CMU0^3 .* (ROMS.tke_aa).^(3/2) .* epsilon.^(-1);
 
+% from Equation 25 in Warner 2004, The parameter omega can be considered 
+% ‘‘a frequency characteristic of the turbulence decay process’’
+% and is related to dissipation by
+% omega = epsilon / (tke .* GLS_CMU0^4)
+
+
 % in Kristen's model, the k-epsilon scheme is used, so generic_parameter = epsilon
 
-
+% figure
+% hist(gls(:), 10000)
+% % hist(ROMS.gls_aa(:), 100)
+% ylabel('count')
+% xlabel('NetCDF variable "gls"')
+% 
+% figure
+% epsilon_Warner = GLS_CMU0^(3 + gls_p/gls_n) .* (tke).^(3/2 + gls_m/gls_n) .* gls.^(-1/gls_n);
+% % epsilon_Warner = GLS_CMU0^(3 + gls_p/gls_n) .* (tke_aa).^(3/2 + gls_m/gls_n) .* gls_aa.^(-1/gls_n);
+% hist(epsilon_Warner(:), 10000)
+% ylabel('count')
+% xlabel('epsilon, computed via Eqn. 12 Warner 2004')
+% 
+% figure
+% diff_gls = gls(:) - epsilon_Warner(:);
+% hist(diff_gls, 10000)
+% ylabel('count')
+% xlabel('epsilon_Warner_Eqn12 - gls')
+% 
+% min(diff_gls(:))
+% max(diff_gls(:))
 
 % 
 % ROMS.z_rho = z_rho;

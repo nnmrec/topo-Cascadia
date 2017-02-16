@@ -73,7 +73,7 @@ public class load_ROMS_BoundaryConditions_KEpsilon extends StarMacro {
 
     turbulentDissipationRateProfile_0.getMethod(XyzTabularScalarProfileMethod.class).setTable(fileTable_0);
 
-    turbulentDissipationRateProfile_0.getMethod(XyzTabularScalarProfileMethod.class).setData("gls");
+    turbulentDissipationRateProfile_0.getMethod(XyzTabularScalarProfileMethod.class).setData("eps");
 
     
 
@@ -165,9 +165,9 @@ public class load_ROMS_BoundaryConditions_KEpsilon extends StarMacro {
 
     turbulentDissipationRateProfile_1.getMethod(XyzTabularScalarProfileMethod.class).setTable(fileTable_0);
 
-    turbulentDissipationRateProfile_2.getMethod(XyzTabularScalarProfileMethod.class).setData("gls");
+    turbulentDissipationRateProfile_2.getMethod(XyzTabularScalarProfileMethod.class).setData("eps");
 
-    turbulentDissipationRateProfile_1.getMethod(XyzTabularScalarProfileMethod.class).setData("gls");
+    turbulentDissipationRateProfile_1.getMethod(XyzTabularScalarProfileMethod.class).setData("eps");
 
     
 
@@ -220,9 +220,9 @@ public class load_ROMS_BoundaryConditions_KEpsilon extends StarMacro {
 
     turbulentDissipationRateProfile_4.getMethod(XyzTabularScalarProfileMethod.class).setTable(fileTable_0);
 
-    turbulentDissipationRateProfile_3.getMethod(XyzTabularScalarProfileMethod.class).setData("gls");
+    turbulentDissipationRateProfile_3.getMethod(XyzTabularScalarProfileMethod.class).setData("eps");
 
-    turbulentDissipationRateProfile_4.getMethod(XyzTabularScalarProfileMethod.class).setData("gls");
+    turbulentDissipationRateProfile_4.getMethod(XyzTabularScalarProfileMethod.class).setData("eps");
 
 
 
