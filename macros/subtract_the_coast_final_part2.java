@@ -105,10 +105,14 @@ public class subtract_the_coast_final_part2 extends StarMacro {
 
 
 
-    // // MOVE THE BELOW CODE TO THE OTHER MACRO FROM TIDALCHANNEL
-    // // TO SETUP THE INFLOW?OUTFLOW TYPES AND ASSIGN VALUES
-    // // EITHER BY UNIFORM OR LOOKUP TABLE FROM ROMS
 
+    
+    new StarScript(getActiveSimulation(), new java.io.File(resolvePath("temp_combine_inlets_outlets.java"))).play();
+
+
+
+
+    // TO-DO
     // // assign Region types, inlet/outlet, from user inputs
 
     // // for the north
@@ -122,51 +126,6 @@ public class subtract_the_coast_final_part2 extends StarMacro {
     // // end
 
 
-
-    // Boundary boundary_1 = 
-    //   region_0.getBoundaryManager().getBoundary("Subtract.north");
-
-    // InletBoundary inletBoundary_0 = 
-    //   ((InletBoundary) simulation_0.get(ConditionTypeManager.class).get(InletBoundary.class));
-
-    // boundary_1.setBoundaryType(inletBoundary_0);
-
-    // Boundary boundary_2 = 
-    //   region_0.getBoundaryManager().getBoundary("Subtract.west");
-
-    // boundary_2.setBoundaryType(inletBoundary_0);
-
-    // Boundary boundary_3 = 
-    //   region_0.getBoundaryManager().getBoundary("Subtract.east");
-
-    // PressureBoundary pressureBoundary_0 = 
-    //   ((PressureBoundary) simulation_0.get(ConditionTypeManager.class).get(PressureBoundary.class));
-
-    // boundary_3.setBoundaryType(pressureBoundary_0);
-
-    // Boundary boundary_4 = 
-    //   region_0.getBoundaryManager().getBoundary("Subtract.south");
-
-    // boundary_4.setBoundaryType(pressureBoundary_0);
-
-
-    // Boundary boundary_5 = 
-    //   region_0.getBoundaryManager().getBoundary("Subtract.seasurface");
-
-    // boundary_5.getConditions().get(WallShearStressOption.class).setSelected(WallShearStressOption.Type.SLIP);
-
-    // Boundary boundary_6 = 
-    //   region_0.getBoundaryManager().getBoundary("Subtract.coast");
-
-    // boundary_6.getConditions().get(WallShearStressOption.class).setSelected(WallShearStressOption.Type.SLIP);
-
-
-    // Boundary boundary_7 = 
-    //   region_0.getBoundaryManager().getBoundary("Subtract.seabed");
-
-    // boundary_7.getConditions().get(WallShearStressOption.class).setSelected(WallShearStressOption.Type.NO_SLIP);
-
-    // boundary_7.getConditions().get(WallSurfaceOption.class).setSelected(WallSurfaceOption.Type.ROUGH);
 
   }
 }

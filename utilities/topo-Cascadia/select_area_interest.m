@@ -437,19 +437,12 @@ switch OPTIONS.Seabed_Source
         title([strrep(OPTIONS.fileTopo_ROMS,'_','\_') ', contours at ' num2str(OPTIONS.zz_step) ' meters'])
 end
 
-% % overlay the new coastline
-% set(0, 'currentfigure', OPTIONS.hfig2);  % for figures
-% hold on
-% plot(Topo.Coast.lon,Topo.Coast.lat,'-y','LineWidth',2)
-% 
-% % % Also add to the other figure
-% figure(OPTIONS.hfig2)
-% hold on
-% plot(xb_coast,yb_coast,'-y','LineWidth',2)
 
 
 
-
+% now pick a single point to compute time series from ALL the ROMS files
+disp('Now click a single point on the map, to compute time series from the ROMS history files ')
+[ROMS.point_x1, ROMS.point_y1] = ginput(1);
 
 
 

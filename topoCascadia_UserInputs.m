@@ -115,7 +115,7 @@ OPTIONS.DEBUG_LEVEL = 0;
 % try Kristen's dataset on the METS 2016 'Big Domain'
 OPTIONS.casename = 'topo-Cascadia-ROMS-nesting';
 OPTIONS.aa = [-122.7355 -122.6783 48.1473 48.1821];    % Alberto's choice ~6 milld?
-OPTIONS.fileTopo_ROMS = '/mnt/data-RAID-1/danny/ainlet_Kristen/supporting_files/pong.tamu.edu/~kthyng/ai65/OUT/ocean_his_0290.nc';
+OPTIONS.fileTopo_ROMS = '/mnt/data-RAID-1/danny/ainlet_Kristen/pong.tamu.edu/~kthyng/ai65/OUT/ocean_his_0290.nc';
 OPTIONS.Seabed_Source = 'ROMS';
 topoCascadia(OPTIONS);
 

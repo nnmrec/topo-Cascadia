@@ -143,6 +143,8 @@ OPTIONS = init_topoCascadia(OPTIONS);
 % Topography in lat/lon/elevation
 % and Coastline coordinates (in lat/lon and NED)
 
+OPTIONS = select_times_interest(OPTIONS);
+
 
 % convert Topography data to NED coordinate system, include coastline here
 [OPTIONS, Topo] = convert_LatLon_Topo(OPTIONS,Topo);
