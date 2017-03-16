@@ -1,44 +1,41 @@
-function [OPTIONS, ROMS] = get_ROMS_fields(OPTIONS)
-%UNTITLED3 Summary of this function goes here
-%   Detailed explanation goes here
+function [OPTIONS, ROMS] = get_ROMS_fields(ROMS_file,OPTIONS,ROMS,save_full_fields)
 
+% deal with "fill values" in NetCDF values ... it is easier to read them as
+% NaNs othwerwise they are doubles
 global nctbx_options
 % nctbx_options.theAutoNaN=0;
 % nctbx_options.theAutoscale=0;
 nctbx_options.theAutoNaN=1;
 nctbx_options.theAutoscale=1;
 
-%%
-% detect and overwrite outliers
-% deal with the "fill values" of NetCDf
-% overwrite the outliers, on the landmask ROMS will report "fill values" of like 1e38 ... makes no sense
-% outlier_thold = 1e6;
-% outlier_value = nan;    % convenient to replace with NAN in Matlab, but STAR-CCM+ has troubles with NAN values
 
-%% extract variables from the ROMS file, get entire domain
+%% extract variables from the ROMS file, get entire domain, one time index
 tindex = 1;
 
-nc = netcdf(OPTIONS.fileTopo_ROMS);
+% nc = netcdf(OPTIONS.fileTopo_ROMS);
+nc = netcdf(ROMS_file);
 
 % Rutgers version
 h       = nc{'h'}(:);
 zeta    = squeeze(nc{'zeta'}(tindex,:,:));
-theta_s = nc{'theta_s'}(:);
-theta_b = nc{'theta_b'}(:);
-Tcline  = nc{'Tcline'}(:);
-hc      = min(min(h(:)), Tcline);
-
+% theta_s = nc{'theta_s'}(:);
+% theta_b = nc{'theta_b'}(:);
+% Tcline  = nc{'Tcline'}(:);
+% hc      = min(min(h(:)), Tcline);
 u   = nc{'u'}(tindex,:,:,:);
 v   = nc{'v'}(tindex,:,:,:);
 w   = nc{'w'}(tindex,:,:,:);
+tke = nc{'tke'}(tindex,:,:,:);
+gls = nc{'gls'}(tindex,:,:,:);
+
 
 % NOTE: tke is on the W grid, and does not seem to contain NaN values
-tke      = nc{'tke'}(tindex,:,:,:);
+
 GLS_CMU0 = nc{'gls_cmu0'}(tindex,:,:,:);
-gls_m = nc{'gls_m'}(tindex,:,:,:);
-gls_n = nc{'gls_n'}(tindex,:,:,:);
-gls_p = nc{'gls_p'}(tindex,:,:,:);
-gls   = nc{'gls'}(tindex,:,:,:);
+gls_m    = nc{'gls_m'}(tindex,:,:,:);
+gls_n    = nc{'gls_n'}(tindex,:,:,:);
+gls_p    = nc{'gls_p'}(tindex,:,:,:);
+
 
 close(nc)
 
@@ -52,7 +49,7 @@ close(nc)
 %   G has horizontal grid info including bathymetry
 %   S has vertical S-coordinate information
 %   T has time information
-[ROMS.G, ROMS.S, ROMS.T] = Z_get_basic_info(OPTIONS.fileTopo_ROMS);
+[ROMS.G, ROMS.S, ROMS.T] = Z_get_basic_info(ROMS_file);
 
 %% RHO points
 
@@ -73,7 +70,7 @@ for n = 1:size(z_rho,1);
     gls_rho(n,:,:) = (gls(n,:,:) + gls(n+1,:,:)) ./ 2;
     
 end
-spd_rho = sqrt(u_rho.^2 + u_rho.^2 + w_rho.^2);
+spd_rho = sqrt(u_rho.^2 + v_rho.^2 + w_rho.^2);
 
 
 %% now convert the ROMS into NED coordinates
@@ -82,17 +79,14 @@ spd_rho = sqrt(u_rho.^2 + u_rho.^2 + w_rho.^2);
 % it is possible to use ROMS output to set z0
 
 % also need a reference spheroid
-spheroid    = referenceSphere('earth');
+spheroid = referenceSphere('earth');
 
 % over the entire ROMS domain
 % the reference point is center of the ROMS domain
-ilat0       = floor( size(ROMS.G.lat_rho,1)/2 );
-ilon0       = floor( size(ROMS.G.lon_rho,2)/2 );
-lat0        = ROMS.G.lat_rho(ilat0,ilon0);
-lon0        = ROMS.G.lon_rho(ilat0,ilon0);
-% xNorth = zeros(ROMS.S.N, ROMS.G.M, ROMS.G.L);
-% yEast  = zeros(ROMS.S.N, ROMS.G.M, ROMS.G.L);
-% zDown  = zeros(ROMS.S.N, ROMS.G.M, ROMS.G.L);
+ilat0  = floor( size(ROMS.G.lat_rho,1)/2 );
+ilon0  = floor( size(ROMS.G.lon_rho,2)/2 );
+lat0   = ROMS.G.lat_rho(ilat0,ilon0);
+lon0   = ROMS.G.lon_rho(ilat0,ilon0);
 xNorth = nan(ROMS.S.N, ROMS.G.M, ROMS.G.L);
 yEast  = nan(ROMS.S.N, ROMS.G.M, ROMS.G.L);
 zDown  = nan(ROMS.S.N, ROMS.G.M, ROMS.G.L);
@@ -108,79 +102,12 @@ for n = 1:ROMS.S.N;
 end
 % zDown = -1*zDown; % prefer this convention better
 
-% overwrite any outliers (DONT NEED TO DO THIS IF MEXCDF options are set to ignore the fill values)
-% xNorth(abs(xNorth) > outlier_thold) = outlier_value;
-% yEast(abs(yEast)   > outlier_thold) = outlier_value;
-% zDown(abs(zDown)   > outlier_thold) = outlier_value;
-% 
-% u_rho(abs(u_rho)   > outlier_thold) = outlier_value;
-% v_rho(abs(v_rho)   > outlier_thold) = outlier_value;
-% w_rho(abs(w_rho)   > outlier_thold) = outlier_value;
-% spd_rho(abs(spd_rho) > outlier_thold) = outlier_value;
-
-%% DEBUG figure
-% figure; hist(xNorth(:), 100);
-% figure; hist(yEast(:), 100);
-% figure; hist(zDown(:), 100);
-% 
-% figure; hist(u_rho(:), 100);
-% figure; hist(v_rho(:), 100);
-% figure; hist(w_rho(:), 100);
-% figure; hist(spd_rho(:), 100);
-% 
-% [max(xNorth(:)) min(xNorth(:))]
-% [max(yEast(:))  min(yEast(:))]
-% [max(zDown(:))  min(zDown(:))]
-% [max(spd_rho(:))  min(spd_rho(:))]
-% 
-% % plot as a point cloud
-% hfig_debug = figure;
-% for n = 1
-% % for n = 1:20
-%     xxx = squeeze( xNorth(n,:,: ));
-%     yyy = squeeze( yEast(n,:,: ));
-%     zzz = squeeze( zDown(n,:,: ));
-%     fff = squeeze( spd_rho(n,:,: ));
-%     scatter3(xxx(:), yyy(:), zzz(:), fff(:), 'CData', fff(:))  
-% end
-% colorbar
-% axis equal
-% % load the STL file to add to plot
-% [vertices, faces, normals, name] = stlReadBinary([OPTIONS.dir_case filesep 'seabed.stl']);
-% figure(hfig_debug)
-% hold on
-% stlPlot(vertices,faces,name);
 
 %%
 % over only the area of interest
 % the reference point is center of the ROMS area of interest domain
 % start/stop index of the area of interest
 
-
-%
-% extract the refinement zone
-% round to the nearest neighbor in the topo resolution
-% nn_lat    = interp1(lat,lat,y,'nearest','extrap');
-% nn_lon    = interp1(lon,lon,x,'nearest','extrap');
-% idx_lat_1 = find(lat==nn_lat(1),1);
-% idx_lat_2 = find(lat==nn_lat(2),1);
-% idx_lon_1 = find(lon==nn_lon(1),1);
-% idx_lon_2 = find(lon==nn_lon(2),1);
-% 
-% a_lat = min(idx_lat_1,idx_lat_2);
-% b_lat = max(idx_lat_1,idx_lat_2);
-% a_lon = min(idx_lon_1,idx_lon_2);
-% b_lon = max(idx_lon_1,idx_lon_2);
-% new_lat = lat(a_lat:b_lat);
-% new_lon = lon(a_lon:b_lon);
-% new_zz  = zz(a_lat:b_lat, a_lon:b_lon);
-
-% THIS PART MAY HAVE BUG ... THE AREA INTEREST SEEMS TOO SMALL AND WRONG ASPECT RATIO
-% lon_a      = find(ROMS.G.lon_rho(1,:) >= OPTIONS.aa(1),1,'first');
-% lon_b      = find(ROMS.G.lon_rho(1,:) >= OPTIONS.aa(2),1,'first');    
-% lat_a      = find(ROMS.G.lat_rho(:,1) >= OPTIONS.aa(3),1,'first');
-% lat_b      = find(ROMS.G.lat_rho(:,1) >= OPTIONS.aa(4),1,'first');
-% try this
 nn_lat    = interp1(ROMS.G.lat_rho(:,1),ROMS.G.lat_rho(:,1),OPTIONS.aa(3:4),'nearest','extrap');
 nn_lon    = interp1(ROMS.G.lon_rho(1,:),ROMS.G.lon_rho(1,:),OPTIONS.aa(1:2),'nearest','extrap');
 lon_a      = find(ROMS.G.lon_rho(1,:) >= nn_lon(1),1,'first');
@@ -229,8 +156,8 @@ for n = 1:size(z_rho_aa,1)
 end
     
     
-dx_aa = ROMS.G.DX(lat_a:lat_b, lon_a:lon_b);
-dy_aa = ROMS.G.DY(lat_a:lat_b, lon_a:lon_b);
+ROMS.dx_aa = ROMS.G.DX(lat_a:lat_b, lon_a:lon_b);
+ROMS.dy_aa = ROMS.G.DY(lat_a:lat_b, lon_a:lon_b);
 
 % xNorth_aa = zeros(ROMS.S.N, size(lon_aa,1), size(lat_aa,2));
 % yEast_aa  = zeros(ROMS.S.N, size(lon_aa,1), size(lat_aa,2));
@@ -250,6 +177,47 @@ for n = 1:ROMS.S.N;
 end
 zDown_aa = -1*zDown_aa; % prefer this convention better
 
+%% depth averaged profiles
+
+% time_idx = [1 100]; % begin and end time index
+% n_times = time_idx(2)-time_idx(1) + 1;
+% 
+% 
+%             
+%             
+% % point.zeta     = zeros(n_times, OPTIONS.n_points);
+% profile_speed_avg = zeros(n_times, OPTIONS.n_points);
+% % profile_spd_aa = zeros(n_times, OPTIONS.n_points);
+% for m = 1:numel(ROMS.point_x1)
+%     
+% %         ind_lon = findClosest(ROMS.G.lon_rho(1,:), ROMS.point_x1(m));
+% %         ind_lat = findClosest(ROMS.G.lat_rho(:,1), ROMS.point_y1(m));
+%         ind_lon = findClosest(lon_aa(1,:), ROMS.point_x1(m));
+%         ind_lat = findClosest(lat_aa(:,1), ROMS.point_y1(m));
+%         
+%     for n = 1:n_times+1
+%         
+% 
+% 
+%         % open NetCDF
+%         file_ROMS = ['/mnt/data-RAID-1/danny/ainlet_Kristen/pong.tamu.edu/~kthyng/ai65/OUT/ocean_his_' sprintf('%4.4d',n) '.nc'];
+%         
+% %         [~, profile_ROMS] = get_ROMS_fields(file_ROMS,OPTIONS,ROMS);
+%         
+%         nc = netcdf(file_ROMS);
+%     
+%         profile_speed     = spd_rho_aa(:,ind_lat,ind_lon);
+%         d_max = abs( min(z_rho_aa(:,ind_lat,ind_lon)) );
+%         zq = linspace(0, d_max, ROMS.S.N);
+%         profile_speed_avg(n,m) = trapz(zq, profile_speed) / d_max; 
+%         
+%         % close NetCDF
+%         close(nc)
+%     end
+% end
+
+
+%%
 
 %
 
@@ -407,65 +375,66 @@ end
 % set(gca,'DataAspectRatio',[1 1 1/10]) % exaggerate the depth axis
 
 %% save data in CSV file format, for reading by STAR-CCM+
+if save_full_fields
+    % over entire domain
+    % csv_filename = [OPTIONS.dir_case filesep 'ROMS_xyzuvw.csv'];
+    % xyzuvw       = [xNorth(:) yEast(:) zDown(:) u_rho(:) v_rho(:) w_rho(:)];
+    % 
+    % % if the file already exists, overwrite
+    % if exist(csv_filename, 'file')==2
+    %   delete(csv_filename);
+    % end
+    % 
+    % % write the header and then append the data
+    % fid = fopen(csv_filename, 'w');
+    % fprintf(fid, 'X,Y,Z,u,v,w\n');
+    % fclose(fid);
+    % dlmwrite(csv_filename, xyzuvw, '-append', 'precision', '%.6f', 'delimiter', ',');
 
-% over entire domain
-% csv_filename = [OPTIONS.dir_case filesep 'ROMS_xyzuvw.csv'];
-% xyzuvw       = [xNorth(:) yEast(:) zDown(:) u_rho(:) v_rho(:) w_rho(:)];
-% 
-% % if the file already exists, overwrite
-% if exist(csv_filename, 'file')==2
-%   delete(csv_filename);
-% end
-% 
-% % write the header and then append the data
-% fid = fopen(csv_filename, 'w');
-% fprintf(fid, 'X,Y,Z,u,v,w\n');
-% fclose(fid);
-% dlmwrite(csv_filename, xyzuvw, '-append', 'precision', '%.6f', 'delimiter', ',');
 
+    % over area of interest
+    csv_filename_aa = [OPTIONS.dir_case filesep 'ROMS_xyzuvw_area_interest.csv'];
+    % xyzuvw_aa       = [xNorth_aa(:) yEast_aa(:) zDown_aa(:) u_rho_aa(:) v_rho_aa(:) w_rho_aa(:)];
+    % xyzuvw_aa       = [xNorth_aa(:) yEast_aa(:) zDown_aa(:) u_rho_aa(:) v_rho_aa(:) w_rho_aa(:) tke_aa(:) gls_aa(:)];
+    xyzuvw_aa       = [xNorth_aa(:) yEast_aa(:) zDown_aa(:) u_rho_aa(:) v_rho_aa(:) w_rho_aa(:) tke_aa(:) eps_aa(:)];
 
-% over area of interest
-csv_filename_aa = [OPTIONS.dir_case filesep 'ROMS_xyzuvw_area_interest.csv'];
-% xyzuvw_aa       = [xNorth_aa(:) yEast_aa(:) zDown_aa(:) u_rho_aa(:) v_rho_aa(:) w_rho_aa(:)];
-% xyzuvw_aa       = [xNorth_aa(:) yEast_aa(:) zDown_aa(:) u_rho_aa(:) v_rho_aa(:) w_rho_aa(:) tke_aa(:) gls_aa(:)];
-xyzuvw_aa       = [xNorth_aa(:) yEast_aa(:) zDown_aa(:) u_rho_aa(:) v_rho_aa(:) w_rho_aa(:) tke_aa(:) eps_aa(:)];
+    % the NaNs do not cause any problems within Matlab for plotting
+    % but STAR-CCM+ cannot handle a NaN ... so decide how to remove NaNs
+    % % m = 1;
+    % % for n = 1:size(xyzuvw_aa,1)
+    % %     % if any variable contains a NaN, remove it
+    % %     numNaNs = sum( isnan(xyzuvw_aa(n,:)) );
+    % %     
+    % %     if numNaNs > 0
+    % %         indNaNs(m) = n;
+    % %         m = m+1;
+    % % %         xyzuvw_aa(n,:) = [];
+    % %     end
+    % % %     
+    % % %     a = sum( isnan( xyzuvw_aa(n,1) ) );
+    % % %     b = sum( isnan( xyzuvw_aa(n,2) ) );
+    % % %     c = sum( isnan( xyzuvw_aa(n,3) ) );
+    % % %     d = sum( isnan( xyzuvw_aa(n,4) ) );
+    % % %     e = sum( isnan( xyzuvw_aa(n,5) ) );
+    % % %     f = sum( isnan( xyzuvw_aa(n,6) ) );
+    % % 
+    % % end
+    % % xyzuvw_aa(indNaNs,:) = [];
 
-% the NaNs do not cause any problems within Matlab for plotting
-% but STAR-CCM+ cannot handle a NaN ... so decide how to remove NaNs
-% % m = 1;
-% % for n = 1:size(xyzuvw_aa,1)
-% %     % if any variable contains a NaN, remove it
-% %     numNaNs = sum( isnan(xyzuvw_aa(n,:)) );
-% %     
-% %     if numNaNs > 0
-% %         indNaNs(m) = n;
-% %         m = m+1;
-% % %         xyzuvw_aa(n,:) = [];
-% %     end
-% % %     
-% % %     a = sum( isnan( xyzuvw_aa(n,1) ) );
-% % %     b = sum( isnan( xyzuvw_aa(n,2) ) );
-% % %     c = sum( isnan( xyzuvw_aa(n,3) ) );
-% % %     d = sum( isnan( xyzuvw_aa(n,4) ) );
-% % %     e = sum( isnan( xyzuvw_aa(n,5) ) );
-% % %     f = sum( isnan( xyzuvw_aa(n,6) ) );
-% % 
-% % end
-% % xyzuvw_aa(indNaNs,:) = [];
+    % if the file already exists, overwrite
+    if exist(csv_filename_aa, 'file')==2
+      delete(csv_filename_aa);
+    end
 
-% if the file already exists, overwrite
-if exist(csv_filename_aa, 'file')==2
-  delete(csv_filename_aa);
+    % write the header and then append the data
+    fid = fopen(csv_filename_aa, 'w');
+    fprintf(fid, 'X,Y,Z,u,v,w,tke,dissipation\n');
+    fclose(fid);
+    dlmwrite(csv_filename_aa, xyzuvw_aa, '-append', 'precision', '%.6f', 'delimiter', ',');
+
+    % figure
+    % scatter3(xyzuvw_aa(:,1), xyzuvw_aa(:,2), xyzuvw_aa(:,3), xyzuvw_aa(:,4), 'CData', xyzuvw_aa(:,4))
 end
-
-% write the header and then append the data
-fid = fopen(csv_filename_aa, 'w');
-fprintf(fid, 'X,Y,Z,u,v,w,tke,dissipation\n');
-fclose(fid);
-dlmwrite(csv_filename_aa, xyzuvw_aa, '-append', 'precision', '%.6f', 'delimiter', ',');
-
-% figure
-% scatter3(xyzuvw_aa(:,1), xyzuvw_aa(:,2), xyzuvw_aa(:,3), xyzuvw_aa(:,4), 'CData', xyzuvw_aa(:,4))
 
 %%
 % debug plot velocity profile in center of domain
@@ -482,6 +451,9 @@ dlmwrite(csv_filename_aa, xyzuvw_aa, '-append', 'precision', '%.6f', 'delimiter'
 
 
 %% Collect output
+ROMS.lon_aa = lon_aa;
+ROMS.lat_aa = lat_aa;
+ROMS.z_rho_aa = z_rho_aa;
 % ROMS.xNorth = xNorth;
 % ROMS.yEast  = yEast;
 % ROMS.zDown  = zDown;
@@ -498,7 +470,7 @@ ROMS.zDown_aa  = zDown_aa;
 ROMS.u_rho_aa   = u_rho_aa;
 ROMS.v_rho_aa   = v_rho_aa;
 ROMS.w_rho_aa   = w_rho_aa;
-% ROMS.spd_rho_aa = spd_rho_aa;
+ROMS.spd_rho_aa = spd_rho_aa;
 
 % turbulent kinetic energy
 ROMS.tke_aa     = tke_aa;
@@ -507,7 +479,7 @@ ROMS.eps_aa     = eps_aa;
 % specific dissipation rate (for k-omega model)
 ROMS.omg_aa     = eps_aa ./ (tke_aa .* GLS_CMU0^4);
 
-
+ROMS.zeta_aa = zeta_aa;
 
 %% for DEBUG
 % compare values of gls
@@ -1002,6 +974,25 @@ ROMS.omg_aa     = eps_aa ./ (tke_aa .* GLS_CMU0^4);
 
 %% save as a VTK file for visualization with VisIt or ParaView, or VAPOR
 
+% vtkwrite(OPTIONS.dir_case filesep 'ROMS_VTK.vtk', ...
+%          'structured_grid',x,y,z, 'vectors','mean_velocity',mean_u,mean_v,mean_w)
+vtk_x   = ROMS.yEast_aa;
+vtk_y   = ROMS.xNorth_aa;
+vtk_z   = ROMS.zDown_aa;
+vtk_u   = ROMS.u_rho_aa;
+vtk_v   = ROMS.v_rho_aa;
+vtk_w   = ROMS.w_rho_aa;
+vtk_spd = ROMS.spd_rho_aa;
+vtk_tke = ROMS.tke_aa;
+vtk_eps = ROMS.eps_aa;
+vtk_omg = ROMS.omg_aa;
+fake    = zeros(size(vtk_x));
+
+% this did not work
+% vtkwrite([OPTIONS.dir_case filesep 'ROMS_VTK_area_interest.vtk'], ...
+%          'structured_grid',ROMS.yEast_aa,ROMS.xNorth_aa,ROMS.zDown_aa, 'vectors','mean_velocity',ROMS.u_rho_aa,ROMS.v_rho_aa,ROMS.w_rho_aa);
+vtkwrite([OPTIONS.dir_case filesep 'ROMS_VTK_area_interest.vtk'], ...
+         'structured_grid',vtk_x,vtk_y,vtk_z, 'vectors','speed [m/s]',vtk_spd,fake,fake)     
 
 %% now use RSLICE to extract the flow fields at this bounding box
 

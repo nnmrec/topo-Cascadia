@@ -442,7 +442,7 @@ end
 
 % now pick a single point to compute time series from ALL the ROMS files
 disp('Now click a single point on the map, to compute time series from the ROMS history files ')
-[ROMS.point_x1, ROMS.point_y1] = ginput(1);
+[ROMS.point_x1, ROMS.point_y1] = ginput(OPTIONS.n_points);
 
 
 

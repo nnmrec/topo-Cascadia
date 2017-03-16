@@ -1,3 +1,14 @@
+
+function [] = data_comp_turb2model()
+
+addpath(genpath('/mnt/data-RAID-1/danny/GitHub-NNMREC/topo-Cascadia'))
+addpath(genpath('/mnt/data-RAID-1/danny/ainlet_Kristen/pong.tamu.edu/~kthyng/froude/matlab'))
+
+% cd('/mnt/data-RAID-1/danny/ainlet_Kristen/pong.tamu.edu/~kthyng/froude/matlab/')
+% cd('/mnt/data-RAID-1/danny/ainlet_Kristen/pong.tamu.edu/~kthyng/ai65/')
+cd('/mnt/data-RAID-1/danny/ainlet_Kristen/pong.tamu.edu/~kthyng/')
+
+%%
 % data_comp_turb2model
 % Want to compare high temporal resolution ADCP data, in TKE form, to model
 % TKE. Have to find similar tidal cycles to compare between since the time
@@ -40,16 +51,20 @@ end
 
 %% Load in Model Free Surface Output
 % load matfiles/zeta_adcpzetasites.mat
-grid=roms_get_grid('OUT/ocean_his_0073.nc','OUT/ocean_his_0073.nc');
+% grid=roms_get_grid('OUT/ocean_his_0073.nc','OUT/ocean_his_0073.nc');
+roms_out_file = '/mnt/data-RAID-1/danny/ainlet_Kristen/pong.tamu.edu/~kthyng/ai65/OUT/ocean_his_0073.nc'; % Danny: downloaded to local computer
+grid=roms_get_grid(roms_out_file, roms_out_file); 
 % model zeta pilot
-load matfiles/zeta_turblocs.mat
+% load matfiles/zeta_turblocs.mat
+load ai65/matfiles/zeta_turblocs.mat % DCS: try this file instead
 if dind == 4 % since dind=1 and dind=4 are some location
     mz = data(:,1); mtb = coords.tm(:,1);
 else
     mz = data(:,dind); mtb = coords.tm(:,dind);
 end
 % ai100
-load ../ai100/matfiles/zeta_turblocs.mat
+% load ../ai100/matfiles/zeta_turblocs.mat  % DCS: this file was not found
+load ai65/matfiles/zeta_turblocs.mat             
 if dind == 4 % since dind=1 and dind=4 are some location
     mz1 = data(:,1); mtb1 = coords.tm(:,1);
 else
@@ -88,7 +103,9 @@ end
 %% Load in Data
 % With new v data, try some new calculations horizontal components Uke and Vke:
 % also, skip n for ADV since small anyway
-load ~/grid/adcp/nnmrec/turb/TTT_ADV_Feb2011processed_300s.mat % new with v
+% load ~/grid/adcp/nnmrec/turb/TTT_ADV_Feb2011processed_300s.mat % new with v
+load /mnt/data-RAID-1/danny/ainlet_Kristen/pong.tamu.edu/~kthyng/froude/grid/adcp/nnmrec/turb/TTT_ADV_Feb2011processed_300s.mat % new with v, Danny: downloaded this onto local computer
+% load /mnt/data-RAID-1/danny/ainlet_Kristen/pong.tamu.edu/~kthyng/TTT_ADV_Feb2011_phasedespiked.mat % new with v, Danny dowloaded a different version, hopefully is similar .. conclusions: no it does not work
 Uke = .5*(nansum(ADV.Surawf*ADV.df));%-n^2); % U TKE (1 component)
 %         THIS IS BASICALLY IDENTICAL TO Uke
 %         uke2 = .5*(nansum(ADV.Suuf*ADV.df)-n^2); % U TKE (1 component)
@@ -102,7 +119,8 @@ Vkeiso = .5*(sum(ADV.Svrawf*ADV.df.*ind)-n^2);
 hkeiso = Ukeiso + Vkeiso;
 %%%
 % I=turbulence intensity; It= time for turbulence intensity
-load ~/grid/adcp/nnmrec/turb/Turbstats.mat %Jim's turb data
+% load ~/grid/adcp/nnmrec/turb/Turbstats.mat %Jim's turb data
+load /mnt/data-RAID-1/danny/ainlet_Kristen/pong.tamu.edu/~kthyng/Turbstats.mat %Jim's turb data, Danny re-downloaded it here
 switch dind
     case 1
         h = ADCP.z;
@@ -353,19 +371,24 @@ end
 % zindm21 = op_find_index(zm21,hh);
 % km2 = data(:,zindm21,dind); %model tke
 % velocities
-load matfiles/u_turblocs.mat
+% load matfiles/u_turblocs.mat
+load /mnt/data-RAID-1/danny/ainlet_Kristen/pong.tamu.edu/~kthyng/froude/ai65/matfiles/u_turblocs.mat % Danny: downloaded to local workstation
 % zm22 = coords.zm(1,:,dind);
 % zm22 = zm22 + max(max(abs(zm22))); % switch to be height from seabed to match data
 % zindm22 = op_find_index(zm22,hh);
 ufull = data; uc = coords;
 % u2 = squeeze(ufull(:,zindm22,dind)); % u at hub height and at location
-load matfiles/v_turblocs.mat
+load /mnt/data-RAID-1/danny/ainlet_Kristen/pong.tamu.edu/~kthyng/froude/ai65/matfiles/v_turblocs.mat % Danny: downloaded to local workstation
 vfull = data; vc = coords;
 % Hyperviscosity term
-load matfiles/dudy_turblocs.mat; dudy=data; clear data
-load matfiles/dvdy_turblocs.mat; dvdy=data; clear data
-load matfiles/dudx_turblocs.mat; dudx=data; clear data
-load matfiles/dvdx_turblocs.mat; dvdx=data; clear data
+% load matfiles/dudy_turblocs.mat; dudy=data; clear data
+% load matfiles/dvdy_turblocs.mat; dvdy=data; clear data
+% load matfiles/dudx_turblocs.mat; dudx=data; clear data
+% load matfiles/dvdx_turblocs.mat; dvdx=data; clear data
+load /mnt/data-RAID-1/danny/ainlet_Kristen/pong.tamu.edu/~kthyng/froude/ai65/matfiles/dudy_turblocs.mat; dudy=data; clear data % Danny: downloaded to local workstation
+load /mnt/data-RAID-1/danny/ainlet_Kristen/pong.tamu.edu/~kthyng/froude/ai65/matfiles/dvdy_turblocs.mat; dvdy=data; clear data % Danny: downloaded to local workstation
+load /mnt/data-RAID-1/danny/ainlet_Kristen/pong.tamu.edu/~kthyng/froude/ai65/matfiles/dudx_turblocs.mat; dudx=data; clear data % Danny: downloaded to local workstation
+load /mnt/data-RAID-1/danny/ainlet_Kristen/pong.tamu.edu/~kthyng/froude/ai65/matfiles/dvdx_turblocs.mat; dvdx=data; clear data % Danny: downloaded to local workstation
 viscu = DX/4*(ufull.*dudy.*dvdy-vfull.*dudy.*dudy);
 viscv = DX/4*(vfull.*dvdx.*dudx-ufull.*dvdx.*dvdx);
 viscut = squeeze(nansum(viscu)); % net visc in u
@@ -379,16 +402,17 @@ viscp = sqrt(nansum(cat(4,viscup.^2,viscvp.^2),4));
 viscn = sqrt(nansum(cat(4,viscun.^2,viscvn.^2),4));
 visc = sqrt(viscu.^2+viscv.^2);
 
-%%% ai100
+%%% ai100 DCS: I changed ai100 to ai65 because only files I have
 % numerical mixing rate
 DX1=100;
-load ../ai100/matfiles/u_turblocs.mat; ufull1=data; clear data
-load ../ai100/matfiles/v_turblocs.mat; vfull1=data; clear data
+DX1=65;
+load ai65/matfiles/u_turblocs.mat; ufull1=data; clear data
+load ai65/matfiles/v_turblocs.mat; vfull1=data; clear data
 vc1=coords; tm1=coords.tm(:,1,1);
-load ../ai100/matfiles/dudy_turblocs.mat; dudy1=data; clear data
-load ../ai100/matfiles/dvdy_turblocs.mat; dvdy1=data; clear data
-load ../ai100/matfiles/dudx_turblocs.mat; dudx1=data; clear data
-load ../ai100/matfiles/dvdx_turblocs.mat; dvdx1=data; clear data
+load ai65/matfiles/dudy_turblocs.mat; dudy1=data; clear data
+load ai65/matfiles/dvdy_turblocs.mat; dvdy1=data; clear data
+load ai65/matfiles/dudx_turblocs.mat; dudx1=data; clear data
+load ai65/matfiles/dvdx_turblocs.mat; dvdx1=data; clear data
 viscu1 = DX1/4*(ufull1.*dudy1.*dvdy1-vfull1.*dudy1.*dudy1);
 viscv1 = DX1/4*(vfull1.*dvdx1.*dudx1-ufull1.*dvdx1.*dvdx1);
 viscut = squeeze(nansum(viscu1)); % net visc in u
@@ -402,17 +426,17 @@ viscp1 = sqrt(nansum(cat(4,viscup1.^2,viscvp1.^2),4));
 viscn1 = sqrt(nansum(cat(4,viscun1.^2,viscvn1.^2),4));
 visc1 = sqrt(viscu1.^2+viscv1.^2);
 % Vertical Eddy Viscosity
-load ../ai100/matfiles/AKv_turblocs.mat; akvfull1 = data; akvc1 = datacoords;
+load ai65/matfiles/AKv_turblocs.mat; akvfull1 = data; akvc1 = datacoords;
 % Shear
 shearu1 = (ufull1(:,1:end-2,:)-ufull1(:,3:end,:))./(vc1.zm(:,1:end-2,:)-vc1.zm(:,3:end,:));
 shearv1 = (vfull1(:,1:end-2,:)-vfull1(:,3:end,:))./(vc1.zm(:,1:end-2,:)-vc1.zm(:,3:end,:));
 shearfull1 = sqrt(shearu1.^2+shearv1.^2);
 % drdz
-load ../ai100/matfiles/rho_turblocs.mat
+load ai65/matfiles/rho_turblocs.mat
 rho1 = data; rc1 = datacoords;
 drdzfull1 = (rho1(:,1:end-2,:)-rho1(:,3:end,:))./(rc1.zm(:,1:end-2,:)-rc1.zm(:,3:end,:));
 % Buoyancy Production: -Aks*-g/rho*drdz
-load ../ai100/matfiles/AKs_turblocs.mat
+load ai65/matfiles/AKs_turblocs.mat
 aks1 = data; aksc1 = datacoords;
 bpmfull1 = -op_resize(aks1,2)*-g/1024.*drdzfull1;
 %%%
@@ -428,43 +452,43 @@ shearu = (ufull(:,1:end-2,:)-ufull(:,3:end,:))./(vc.zm(:,1:end-2,:)-vc.zm(:,3:en
 shearv = (vfull(:,1:end-2,:)-vfull(:,3:end,:))./(vc.zm(:,1:end-2,:)-vc.zm(:,3:end,:));
 shearfull = sqrt(shearu.^2+shearv.^2);
 % AKv or vertical eddy viscosity
-load matfiles/AKv_turblocs.mat
+load ai65/matfiles/AKv_turblocs.mat
 akvfull = data; akvc = datacoords;
 % akv2 = squeeze(akvfull(:,zindm21,dind)); 
 % tke at turb locs 1-3 above
-load matfiles/tke_turblocs.mat 
+load ai65/matfiles/tke_turblocs.mat 
 kmfull = data; kmc = datacoords;
 tm = datacoords.tm(:,1,dind); %zm21 = coords.zm(1,:,dind);
 % Dissipation Rate
-load matfiles/gls_turblocs.mat
+load ai65/matfiles/gls_turblocs.mat
 emfull = data; ec = datacoords;
 % em2 = squeeze(emfull(:,zindm21,dind)); %model turbulent dissipation rate
 % drdz
-load matfiles/rho_turblocs.mat
+load ai65/matfiles/rho_turblocs.mat
 rho = data; rc = datacoords;
 drdzfull = (rho(:,1:end-2,:)-rho(:,3:end,:))./(rc.zm(:,1:end-2,:)-rc.zm(:,3:end,:));
 % Buoyancy Production: -Aks*-g/rho*drdz
-load matfiles/AKs_turblocs.mat
+load ai65/matfiles/AKs_turblocs.mat
 aks = data; aksc = datacoords;
 bpmfull = -op_resize(aks,2)*-g/1024.*drdzfull;
 % bpm2 = squeeze(bpmfull(:,zindm22-1,dind));
 % Vorticity: dvdx-dudy
-load matfiles/dvdx_turblocs.mat
+load ai65/matfiles/dvdx_turblocs.mat
 dvdx = data; dvdxc = datacoords;
-load matfiles/dudy_turblocs.mat
+load ai65/matfiles/dudy_turblocs.mat
 dudy = data; dudyc = datacoords;
 vort = dvdx-dudy;
 
 dt=15*60;
 % advection of tke terms
-load matfiles/dkdx_turblocs.mat; dkdx=data; clear data
+load ai65/matfiles/dkdx_turblocs.mat; dkdx=data; clear data
 % change kmfull to have 22 in z not 21
 dkdx = [nan(size(dkdx,1),1,size(dkdx,3)) op_resize(dkdx,2) nan(size(dkdx,1),1,size(dkdx,3))];
-load matfiles/dkdy_turblocs.mat; dkdy=data; clear data
+load ai65/matfiles/dkdy_turblocs.mat; dkdy=data; clear data
 dkdy = [nan(size(dkdy,1),1,size(dkdy,3)) op_resize(dkdy,2) nan(size(dkdy,1),1,size(dkdy,3))];
-load matfiles/w_turblocs.mat; w=data; clear data
+load ai65/matfiles/w_turblocs.mat; w=data; clear data
 w = [nan(size(w,1),1,size(w,3)) op_resize(w,2) nan(size(w,1),1,size(w,3))];
-load matfiles/dkdz_turblocs.mat; dkdz=data; clear data
+load ai65/matfiles/dkdz_turblocs.mat; dkdz=data; clear data
 dkdz = [nan(size(dkdz,1),1,size(dkdz,3)) op_resize(dkdz,2) nan(size(dkdz,1),1,size(dkdz,3))];
 kvisc = (-ufull.*dkdx-vfull.*dkdy-w.*dkdz+visc)*dt; % full tke from hor visc.
 sfull = sqrt(ufull.^2+vfull.^2); %s = op_resize(s,2);
@@ -850,7 +874,15 @@ for i = 1:size(dind2,1)-fin
         % other words, we want matching full tidal cycles, not just part of
         % a tidal cycle.
         out = data_compbyzeta_ncycles(mind,fin,i,j);
+        [i j]
         if out
+            disp('out')
+        else
+            disp('not out')
+        end
+        
+        if out
+            disp('out')
             switch wplot
                 case 'maxprofiles'
                     % Do top maxes for comparison periods and for each: speed, tke, gls, ri
@@ -909,6 +941,10 @@ for i = 1:size(dind2,1)-fin
 %         vecc=dind2(i,1)-50:dind2(i+fin,2)+50;
 %         vec=dind2(i,1):dind2(i+fin,2);
         vecb = mind(i,j,1):mind(i+fin,j+fin,2);
+        
+        disp(['start time index = ' num2str(vecb(1))])
+        disp(['end   time index = ' num2str(vecb(end))])
+        
         dat2=dat(vecc);
         dat2=(dat2-dat2(1))/datenum([0 0 0 1 0 0]); % in hours since start of comp
         mt2=mt(vecb);

@@ -102,6 +102,8 @@ OPTIONS.nCPUs    = 16;
 % OPTIONS.casename            = 'mets2016_psdem9m_domainSmall';
 OPTIONS.aa                  = [-122.69 -122.68 48.152 48.1569];         % ULTRA TINY smaller ~3 million cells test domain (try and keep correct aspect ratio for 'ccm+ masters') 
 
+OPTIONS.n_points = 2; % number of single-point comparisons
+
 OPTIONS.DEBUG_LEVEL = 0;
 
 
