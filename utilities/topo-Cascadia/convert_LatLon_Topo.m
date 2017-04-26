@@ -14,8 +14,8 @@ function [OPTIONS, Topo] = convert_LatLon_Topo(OPTIONS, Topo)
 % it is possible to use ROMS output to set z0?
 ilat0       = floor( size(LAT,1)/2 );
 llon0       = floor( size(LON,2)/2 );
-lat0        = LAT(ilat0,llon0)
-lon0        = LON(ilat0,llon0)
+lat0        = LAT(ilat0,llon0);
+lon0        = LON(ilat0,llon0);
 
 % also need a reference spheroid
 spheroid    = referenceSphere('earth');
@@ -66,10 +66,12 @@ Topo.zDown   = zDown;
 
 
 %% plot the coastline
-% overlay the coastline
-hold on
-plot(Topo.Coast.lon_aa,Topo.Coast.lat_aa,'-y','LineWidth',2)
-% plot_coastline_resampled(lat,lon,z,x_coast, y_coast, OPTIONS)
 
+if ~OPTIONS.runHeadless
+    % overlay the coastline
+    hold on
+    plot(Topo.Coast.lon_aa,Topo.Coast.lat_aa,'-y','LineWidth',2)
+    % plot_coastline_resampled(lat,lon,z,x_coast, y_coast, OPTIONS)
+end
 
 end

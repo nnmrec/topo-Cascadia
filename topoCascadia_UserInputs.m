@@ -71,6 +71,8 @@ OPTIONS.zz_step             = 10;               % for isobath plots (meters)
 OPTIONS.z0                  = 0;               	% zero?  NOTE: this should probably be set by the ROMS data, and it changes each time step
 
 % turbine parameters (user inputs)
+% OPTIONS.turbineFile         = [];               % name of turbine input file, can be [] if want to place turbines manually
+OPTIONS.turbineFile         = 'rotors.csv';               % name of turbine input file, can be [] if want to place turbines manually
 OPTIONS.nRotors             = 20;               % note: each turbine has two rotors
 OPTIONS.nRpT                = 2;                % rotors per turbine
 OPTIONS.diaRotor            = 20;               % rotor diamter
@@ -94,7 +96,8 @@ OPTIONS.fileTopo_ROMS       = '/mnt/data-RAID-1/danny/ainlet_2006_3/OUT/ocean_hi
 
 % OPTIONS.typeDEM = 'dem';
 OPTIONS.typeDEM = 'shadem';
-OPTIONS.runOnHPC = false;
+OPTIONS.runOnHPC = false;       % if true, modifies the STARCCM license server and commands
+OPTIONS.runHeadless = true;     % if true, does not open any figures, does not open any interactive prompts (reads input files for all probe, turbine, figure inputs)
 OPTIONS.nCPUs    = 16;
 
 % OPTIONS.casename            = 'mets2016_psdem9m_domainBig';
@@ -102,7 +105,11 @@ OPTIONS.nCPUs    = 16;
 % OPTIONS.casename            = 'mets2016_psdem9m_domainSmall';
 OPTIONS.aa                  = [-122.69 -122.68 48.152 48.1569];         % ULTRA TINY smaller ~3 million cells test domain (try and keep correct aspect ratio for 'ccm+ masters') 
 
-OPTIONS.n_points = 2; % number of single-point comparisons
+% OPTIONS.n_points = 2; % number of single-point comparisons
+% OPTIONS.point_x1 = [];  % x-coordinate NED, point probe to plot ROMS tidal cycles, can be empty or a vector
+% OPTIONS.point_y1 = [];  % y-coordinate NED, point probe to plot ROMS tidal cycles, can be empty or a vector
+OPTIONS.point_x1 = [-122.7268, -122.7129];   % x-coordinate LON-LAT, point probe to plot ROMS tidal cycles, can be empty or a vector
+OPTIONS.point_y1 = [48.1638,     48.1781];   % y-coordinate LON-LAT, point probe to plot ROMS tidal cycles, can be empty or a vector
 
 OPTIONS.DEBUG_LEVEL = 0;
 
@@ -117,8 +124,8 @@ OPTIONS.dir_ROMS = '/mnt/data-RAID-1/danny/ainlet_Kristen/pong.tamu.edu/~kthyng/
 
 % try Kristen's dataset on the METS 2016 'Small Test Domain'
 OPTIONS.casename = 'topo-Cascadia-ROMS-nesting';
-% OPTIONS.aa = [-122.69 -122.68 48.152 48.1569];         % ULTRA TINY smaller ~3 million cells test domain
-OPTIONS.aa = [-122.7355 -122.6783 48.1473 48.1821];    % Alberto's choice ~6 milld?
+OPTIONS.aa = [-122.69 -122.68 48.152 48.1569];         % ULTRA TINY smaller ~3 million cells test domain
+% OPTIONS.aa = [-122.7355 -122.6783 48.1473 48.1821];    % Alberto's choice ~6 milld?
 % OPTIONS.fileTopo_ROMS = '/mnt/data-RAID-1/danny/ainlet_Kristen/pong.tamu.edu/~kthyng/ai65/OUT/ocean_his_1812.nc'; % hour 5, flood
 OPTIONS.fileTopo_ROMS = 'inputs/ROMS/OUT/ocean_his_1812.nc'; % hour 5, flood
 OPTIONS.Seabed_Source = 'ROMS';

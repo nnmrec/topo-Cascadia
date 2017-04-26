@@ -150,8 +150,11 @@ OPTIONS = init_topoCascadia(OPTIONS);
 
 % convert Topography data to NED coordinate system, include coastline here
 [OPTIONS, Topo] = convert_LatLon_Topo(OPTIONS,Topo);
-% OPTIONS = plot_coastline_resampled(Topo.lat,Topo.lon,Topo.z,Topo, OPTIONS)
-OPTIONS = plot_NED(Topo.yEast, Topo.xNorth, Topo.zDown, Topo.Coast, OPTIONS);
+
+if ~OPTIONS.runHeadless
+    % OPTIONS = plot_coastline_resampled(Topo.lat,Topo.lon,Topo.z,Topo, OPTIONS)
+    OPTIONS = plot_NED(Topo.yEast, Topo.xNorth, Topo.zDown, Topo.Coast, OPTIONS);
+end
 
 %
 % interesting if SeabedSource='ROMS' the above and below plots should be
@@ -180,18 +183,32 @@ OPTIONS = plot_NED(Topo.yEast, Topo.xNorth, Topo.zDown, Topo.Coast, OPTIONS);
 roms_x = squeeze(ROMS.yEast(1,:,:));
 roms_y = squeeze(ROMS.xNorth(1,:,:));
 roms_z = -1 .* squeeze(ROMS.zDown(1,:,:));
-OPTIONS = plot_NED(roms_x,roms_y,roms_z, Topo.Coast, OPTIONS);
+if ~OPTIONS.runHeadless
+    OPTIONS = plot_NED(roms_x,roms_y,roms_z, Topo.Coast, OPTIONS);
+end
+
 % this will plot the area-of-interest ROMS domain in NED coordinates
 roms_x_aa = squeeze(ROMS.yEast_aa(1,:,:));
 roms_y_aa = squeeze(ROMS.xNorth_aa(1,:,:));
 roms_z_aa = squeeze(ROMS.zDown_aa(1,:,:));
-OPTIONS = plot_NED(roms_x_aa,roms_y_aa,roms_z_aa, Topo.Coast, OPTIONS);
+if ~OPTIONS.runHeadless
+    OPTIONS = plot_NED(roms_x_aa,roms_y_aa,roms_z_aa, Topo.Coast, OPTIONS);
+end
 
 
-% now use the point & click interface to add turbine locations
-% [OPTIONS, TURBS] = placeTurbines(xNorth, yEast, zDown, Coast, OPTIONS);
-OPTIONS = placeTurbines(Topo.xNorth, Topo.yEast, Topo.zDown, OPTIONS); % this requires the figure handle as input
-% OPTIONS = placeTurbines(ROMS.xNorth, ROMS.yEast, ROMS.zDown, OPTIONS);
+if isempty(OPTIONS.turbineFile)
+    % manually place the turbines to create the turbine input file
+    % now use the point & click interface to add turbine locations
+    % [OPTIONS, TURBS] = placeTurbines(xNorth, yEast, zDown, Coast, OPTIONS);
+    OPTIONS = plot_NED(roms_x_aa,roms_y_aa,roms_z_aa, Topo.Coast, OPTIONS);
+    OPTIONS = placeTurbines(Topo.xNorth, Topo.yEast, Topo.zDown, OPTIONS); % this requires the figure handle as input
+    % OPTIONS = placeTurbines(ROMS.xNorth, ROMS.yEast, ROMS.zDown, OPTIONS);
+
+else
+    % the turbine input file already exists, copy into case directory
+    system(['cp inputs' filesep OPTIONS.turbineFile ' cases' filesep OPTIONS.casename filesep 'rotors.csv']);
+end
+
 
 % now make the STL geometry used to build the STAR-CCM+ mesh
 %export STL files for starccm+ meshing

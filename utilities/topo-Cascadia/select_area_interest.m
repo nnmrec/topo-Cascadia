@@ -170,55 +170,61 @@ Topo.Coast = load(['inputs' filesep 'bathymetry' filesep 'coast' filesep OPTIONS
 
 if ~isfield(OPTIONS,'aa')
     
-    % plot the topography data so user can draw a new bounding box, area of interest
-    OPTIONS.hfig1 = figure;
-    pcolor(lon,lat,zz);
-    % Z_dar
-    shading flat
+    if ~OPTIONS.runHeadless
+
+        % plot the topography data so user can draw a new bounding box, area of interest
+        OPTIONS.hfig1 = figure;
+        pcolor(lon,lat,zz);
+        % Z_dar
+        shading flat
 
 
-    zlimits = [min(zz(:)) max(zz(:))];
-    demcmap(zlimits);
-    colorbar
-    % caxis([-200 200]);
+        zlimits = [min(zz(:)) max(zz(:))];
+        demcmap(zlimits);
+        colorbar
+        % caxis([-200 200]);
 
-    title(strrep(list_1(nn).name,'_','\_'))
-    xlabel('Longitude (deg)')
-    ylabel('Latitude (deg)')
+        title(strrep(list_1(nn).name,'_','\_'))
+        xlabel('Longitude (deg)')
+        ylabel('Latitude (deg)')
 
-    % add coastline if available
-    if isfield(OPTIONS,'fileCoast')
-       hold on
-       plot(Topo.Coast.lon, Topo.Coast.lat, '-k', 'LineWidth', 2)
+        % add coastline if available
+        if isfield(OPTIONS,'fileCoast')
+           hold on
+           plot(Topo.Coast.lon, Topo.Coast.lat, '-k', 'LineWidth', 2)
+        end
+
+    %     % plot coastline if available
+    %     % select the source nc file with gridded topography
+    %     if ~isfield(OPTIONS,'fileCoast') && isfield(OPTIONS,'dirCoast')
+    % 
+    %         disp('either OPTIONS.coastFile or OPTIONS.coastDir is not set, select a new file or skip.')
+    % 
+    %         list_2 = dir(['inputs' filesep 'bathymetry' filesep 'coast' filesep OPTIONS.dirCoast filesep '*.mat']);
+    %         for ii = 1:length(list_2); 
+    %             disp([num2str(ii),' = ',list_2(ii).name]); 
+    %         end
+    %         disp('0 = skip the coastline file');
+    % 
+    %         mm = input('Input number of coastline file to plot: ');
+    % 
+    %         OPTIONS.fileCoast = ['inputs' filesep 'bathymetry' filesep 'coast' filesep OPTIONS.dirCoast filesep list_2(mm).name];
+    % 
+    %         % coastline is available, add to the plot
+    %         Coast = load(OPTIONS.fileCoast);
+    % 
+    %         hold on
+    %         plot(Coast.lon, Coast.lat, '-k', 'LineWidth', 2)      
+    % 
+    %     end
+
+    %     fprintf(1, 'Select a box (2 clicks) from the NW corner to the SE corner \n');
+        fprintf(1, '\n Select a box by 2 corners (2 mouse clicks) \n');
+        [x,y] = ginput(2);
+        
     end
-
-%     % plot coastline if available
-%     % select the source nc file with gridded topography
-%     if ~isfield(OPTIONS,'fileCoast') && isfield(OPTIONS,'dirCoast')
-% 
-%         disp('either OPTIONS.coastFile or OPTIONS.coastDir is not set, select a new file or skip.')
-% 
-%         list_2 = dir(['inputs' filesep 'bathymetry' filesep 'coast' filesep OPTIONS.dirCoast filesep '*.mat']);
-%         for ii = 1:length(list_2); 
-%             disp([num2str(ii),' = ',list_2(ii).name]); 
-%         end
-%         disp('0 = skip the coastline file');
-% 
-%         mm = input('Input number of coastline file to plot: ');
-% 
-%         OPTIONS.fileCoast = ['inputs' filesep 'bathymetry' filesep 'coast' filesep OPTIONS.dirCoast filesep list_2(mm).name];
-% 
-%         % coastline is available, add to the plot
-%         Coast = load(OPTIONS.fileCoast);
-% 
-%         hold on
-%         plot(Coast.lon, Coast.lat, '-k', 'LineWidth', 2)      
-% 
-%     end
-
-%     fprintf(1, 'Select a box (2 clicks) from the NW corner to the SE corner \n');
-    fprintf(1, '\n Select a box by 2 corners (2 mouse clicks) \n');
-    [x,y] = ginput(2);
+    
+    
     
 else
     % area of interest is already determined
@@ -256,18 +262,24 @@ if ~isfield(OPTIONS, 'aa')
     
     OPTIONS.aa = [a b c d];
     
-    % draw a rectangle about the refinement zone
-    hold on;
-    plot([x(1) x(2)],[y(1) y(1)], '-r', 'LineWidth', 2)
-    plot([x(1) x(2)],[y(2) y(2)], '-r', 'LineWidth', 2)
-    plot([x(1) x(1)],[y(1) y(2)], '-r', 'LineWidth', 2)
-    plot([x(2) x(2)],[y(1) y(2)], '-r', 'LineWidth', 2)
+    if ~OPTIONS.runHeadless
+
+        % draw a rectangle about the refinement zone
+        hold on;
+        plot([x(1) x(2)],[y(1) y(1)], '-r', 'LineWidth', 2)
+        plot([x(1) x(2)],[y(2) y(2)], '-r', 'LineWidth', 2)
+        plot([x(1) x(1)],[y(1) y(2)], '-r', 'LineWidth', 2)
+        plot([x(2) x(2)],[y(1) y(2)], '-r', 'LineWidth', 2)
+
+    %     % add coastline if available
+    %     if isfield(OPTIONS,'fileCoast')
+    %        hold on
+    %        plot(Coast.lon, Coast.lat, '-k', 'LineWidth', 2)
+    %     end 
+        
+    end
     
-%     % add coastline if available
-%     if isfield(OPTIONS,'fileCoast')
-%        hold on
-%        plot(Coast.lon, Coast.lat, '-k', 'LineWidth', 2)
-%     end 
+
     
 end
 
@@ -353,97 +365,107 @@ Topo.z   = z;
 
 
 %% plot the refinement region, makie it pretty with releif shading or 3D, and coastlines/landmarks
-OPTIONS.hfig2 = figure;
-dem(lon,lat,z, ...
-    'Legend', ...
-    'LatLon', ...
-    'NoDecim');
-axis([min(lon),max(lon),min(lat),max(lat)]);
 
-
-% 
-% figure
-% pcolor(new_lon,new_lat,new_zz);
-% shading flat
-% new_zlimits = [min(new_zz(:)) max(new_zz(:))];
-% demcmap(new_zlimits);
-% colorbar
-
-get(gca,'OuterPosition');
-
-% add coastline if available
-if isfield(OPTIONS,'fileCoast')
-   hold on
-   plot(Topo.Coast.lon, Topo.Coast.lat, '-y', 'LineWidth', 2)
-end
+if ~OPTIONS.runHeadless
     
+    OPTIONS.hfig2 = figure;
+    dem(lon,lat,z, ...
+        'Legend', ...
+        'LatLon', ...
+        'NoDecim');
+    axis([min(lon),max(lon),min(lat),max(lat)]);
 
-switch OPTIONS.Seabed_Source
-    case 'PSDEM'
-        title(strrep(OPTIONS.fileTopo,'_','\_'))
-    case 'ROMS'
-        title(strrep(OPTIONS.fileTopo_ROMS,'_','\_'))
+
+    % 
+    % figure
+    % pcolor(new_lon,new_lat,new_zz);
+    % shading flat
+    % new_zlimits = [min(new_zz(:)) max(new_zz(:))];
+    % demcmap(new_zlimits);
+    % colorbar
+
+    get(gca,'OuterPosition');
+
+    % add coastline if available
+    if isfield(OPTIONS,'fileCoast')
+       hold on
+       plot(Topo.Coast.lon, Topo.Coast.lat, '-y', 'LineWidth', 2)
+    end
+
+
+    switch OPTIONS.Seabed_Source
+        case 'PSDEM'
+            title(strrep(OPTIONS.fileTopo,'_','\_'))
+        case 'ROMS'
+            title(strrep(OPTIONS.fileTopo_ROMS,'_','\_'))
+    end
+
+
+    % title(strrep(list_1(nn).name,'_','\_'))
+    xlabel('Longitude (deg)')
+    ylabel('Latitude (deg)')
+
+    % overlay the coastline
+    hold on
+    plot(Topo.Coast.lon_aa,Topo.Coast.lat_aa,'-y','LineWidth',2)
+
+
+    %% PLOTS
+    OPTIONS.hfig3 = figure;
+    hold on
+    % surf(lon,lat,z)
+    surf(lon,lat,z)
+    shading interp;
+    new_zlimits = [min(z(:)) max(z(:))];
+    demcmap(new_zlimits);
+    hcbar = colorbar;
+    ylabel(hcbar, 'elevation (meters)')
+
+    axis vis3d
+    grid on
+    % axis equal
+    % daspect([1 1 0.1]) % confusing in lat lon kinda
+
+    % overlay the isobaths
+    [C,h] = contour3(lon,lat,z + 2,...
+                    'ShowText','on', ...
+                    'LineColor',[117 74 74]./255, ...
+                    'LevelStep',OPTIONS.zz_step, ...
+                    'ShowText', 'on', ...
+                    'LineWidth', 2, ...
+                    'LabelSpacing', 100);
+    % clabel(C,h,'FontSize',12,'Color',[117 74 74]./255, 'FontWeight','bold', 'LabelSpacing', 100,'LineStyle',':')
+    clabel(C,h,'FontSize',12, 'FontWeight','bold', 'LabelSpacing', 100,'LineStyle',':')
+    % overlay the new coastline
+    % plot3(xb_coast,yb_coast,Z_bez,'-y','LineWidth',2)
+    hold on
+    plot(Topo.Coast.lon_aa,Topo.Coast.lat_aa,'-y','LineWidth',2)
+    % plot(xb_coast,yb_coast,'-y','LineWidth',2)
+
+    xlabel('lat (degrees)')
+    ylabel('lon (degrees)')
+
+    switch OPTIONS.Seabed_Source
+        case 'PSDEM'
+            title([strrep(OPTIONS.fileTopo,'_','\_') ', contours at ' num2str(OPTIONS.zz_step) ' meters'])
+        case 'ROMS'
+            title([strrep(OPTIONS.fileTopo_ROMS,'_','\_') ', contours at ' num2str(OPTIONS.zz_step) ' meters'])
+    end
+
+
+    if isempty(OPTIONS.point_x1) || isempty(OPTIONS.point_y1) 
+        % now pick a single point to compute time series from ALL the ROMS files
+        disp('Now click a single point on the map, to compute time series from the ROMS history files ')
+        [ROMS.point_x1, ROMS.point_y1] = ginput(OPTIONS.n_points);
+        
+    else
+        ROMS.point_x1 = OPTIONS.point_x1;
+        ROMS.point_y1 = OPTIONS.point_y1;  
+    end
+
+    
+    
 end
-
-
-% title(strrep(list_1(nn).name,'_','\_'))
-xlabel('Longitude (deg)')
-ylabel('Latitude (deg)')
-
-% overlay the coastline
-hold on
-plot(Topo.Coast.lon_aa,Topo.Coast.lat_aa,'-y','LineWidth',2)
-
-
-%% PLOTS
-OPTIONS.hfig3 = figure;
-hold on
-% surf(lon,lat,z)
-surf(lon,lat,z)
-shading interp;
-new_zlimits = [min(z(:)) max(z(:))];
-demcmap(new_zlimits);
-hcbar = colorbar;
-ylabel(hcbar, 'elevation (meters)')
-
-axis vis3d
-grid on
-% axis equal
-% daspect([1 1 0.1]) % confusing in lat lon kinda
-
-% overlay the isobaths
-[C,h] = contour3(lon,lat,z + 2,...
-                'ShowText','on', ...
-                'LineColor',[117 74 74]./255, ...
-                'LevelStep',OPTIONS.zz_step, ...
-                'ShowText', 'on', ...
-                'LineWidth', 2, ...
-                'LabelSpacing', 100);
-% clabel(C,h,'FontSize',12,'Color',[117 74 74]./255, 'FontWeight','bold', 'LabelSpacing', 100,'LineStyle',':')
-clabel(C,h,'FontSize',12, 'FontWeight','bold', 'LabelSpacing', 100,'LineStyle',':')
-% overlay the new coastline
-% plot3(xb_coast,yb_coast,Z_bez,'-y','LineWidth',2)
-hold on
-plot(Topo.Coast.lon_aa,Topo.Coast.lat_aa,'-y','LineWidth',2)
-% plot(xb_coast,yb_coast,'-y','LineWidth',2)
-
-xlabel('lat (degrees)')
-ylabel('lon (degrees)')
-
-switch OPTIONS.Seabed_Source
-    case 'PSDEM'
-        title([strrep(OPTIONS.fileTopo,'_','\_') ', contours at ' num2str(OPTIONS.zz_step) ' meters'])
-    case 'ROMS'
-        title([strrep(OPTIONS.fileTopo_ROMS,'_','\_') ', contours at ' num2str(OPTIONS.zz_step) ' meters'])
-end
-
-
-
-
-% now pick a single point to compute time series from ALL the ROMS files
-disp('Now click a single point on the map, to compute time series from the ROMS history files ')
-[ROMS.point_x1, ROMS.point_y1] = ginput(OPTIONS.n_points);
-
 
 
 
