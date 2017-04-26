@@ -92,7 +92,8 @@ OPTIONS.fileCoast         	= 'pnw_coast_detailed.mat';                 % if empt
 OPTIONS.aa                  = [-122.7355 -122.6783 48.1473 48.1821];    % area of interest. specify a box of lon, lat. (this was the METS 2016 PAPER ~6 mill cells?) % Area of interest, if it does not exist then user will be prompted to select by viewing a map
 
 % this is probably going to have to be a relative path because datasets are large
-OPTIONS.fileTopo_ROMS       = '/mnt/data-RAID-1/danny/ainlet_2006_3/OUT/ocean_his_0290.nc';
+% OPTIONS.fileTopo_ROMS       = '/mnt/data-RAID-1/danny/ainlet_2006_3/OUT/ocean_his_0290.nc';
+OPTIONS.fileTopo_ROMS       = 'inputs/ROMS/OUT/ocean_his_1812.nc';
 
 % OPTIONS.typeDEM = 'dem';
 OPTIONS.typeDEM = 'shadem';
@@ -113,7 +114,9 @@ OPTIONS.point_y1 = [48.1638,     48.1781];   % y-coordinate LON-LAT, point probe
 
 OPTIONS.DEBUG_LEVEL = 0;
 
-OPTIONS.dir_ROMS = '/mnt/data-RAID-1/danny/ainlet_Kristen/pong.tamu.edu/~kthyng/ai65/OUT'; % directory with ROMS *.nc output files
+% OPTIONS.dir_ROMS = '/mnt/data-RAID-1/danny/ainlet_Kristen/pong.tamu.edu/~kthyng/ai65/OUT'; % directory with ROMS *.nc output files
+OPTIONS.dir_ROMS = 'inputs/ROMS/OUT'; % directory with ROMS *.nc output files
+
 
 %% END OF USER INPUTS %%
 
@@ -124,48 +127,48 @@ OPTIONS.dir_ROMS = '/mnt/data-RAID-1/danny/ainlet_Kristen/pong.tamu.edu/~kthyng/
 
 % try Kristen's dataset on the METS 2016 'Small Test Domain'
 OPTIONS.casename = 'topo-Cascadia-ROMS-nesting';
-OPTIONS.aa = [-122.69 -122.68 48.152 48.1569];         % ULTRA TINY smaller ~3 million cells test domain
-% OPTIONS.aa = [-122.7355 -122.6783 48.1473 48.1821];    % Alberto's choice ~6 milld?
+% OPTIONS.aa = [-122.69 -122.68 48.152 48.1569];         % ULTRA TINY smaller ~3 million cells test domain
+OPTIONS.aa = [-122.7355 -122.6783 48.1473 48.1821];    % Alberto's choice ~6 milld?
 % OPTIONS.fileTopo_ROMS = '/mnt/data-RAID-1/danny/ainlet_Kristen/pong.tamu.edu/~kthyng/ai65/OUT/ocean_his_1812.nc'; % hour 5, flood
 OPTIONS.fileTopo_ROMS = 'inputs/ROMS/OUT/ocean_his_1812.nc'; % hour 5, flood
 OPTIONS.Seabed_Source = 'ROMS';
 topoCascadia(OPTIONS);
 
 % try Kristen's dataset on the METS 2016 'Big Domain'
-OPTIONS.casename = 'topo-Cascadia-ROMS-nesting';
-OPTIONS.aa = [-122.7355 -122.6783 48.1473 48.1821];    % Alberto's choice ~6 milld?
-OPTIONS.fileTopo_ROMS = '/mnt/data-RAID-1/danny/ainlet_Kristen/pong.tamu.edu/~kthyng/ai65/OUT/ocean_his_1812.nc'; % hour 5, flood
+%OPTIONS.casename = 'topo-Cascadia-ROMS-nesting';
+%OPTIONS.aa = [-122.7355 -122.6783 48.1473 48.1821];    % Alberto's choice ~6 milld?
+%OPTIONS.fileTopo_ROMS = '/mnt/data-RAID-1/danny/ainlet_Kristen/pong.tamu.edu/~kthyng/ai65/OUT/ocean_his_1812.nc'; % hour 5, flood
 % OPTIONS.fileTopo_ROMS = '/mnt/data-RAID-1/danny/ainlet_Kristen/pong.tamu.edu/~kthyng/ai65/OUT/ocean_his_1840.nc'; % hour 12, ebb
 % OPTIONS.fileTopo_ROMS = '/mnt/data-RAID-1/danny/ainlet_Kristen/pong.tamu.edu/~kthyng/ai65/OUT/ocean_his_1912.nc'; % hour 30, flood
 % OPTIONS.fileTopo_ROMS = '/mnt/data-RAID-1/danny/ainlet_Kristen/pong.tamu.edu/~kthyng/ai65/OUT/ocean_his_1936.nc'; % hour 36, ebb
-OPTIONS.Seabed_Source = 'ROMS';
-topoCascadia(OPTIONS);
+%OPTIONS.Seabed_Source = 'ROMS';
+%topoCascadia(OPTIONS);
 
 % try Kristen's dataset
-OPTIONS.casename = 'topo-Cascadia-ROMS-nesting';
-OPTIONS.fileTopo_ROMS = '/mnt/data-RAID-1/danny/ainlet_Kristen/supporting_files/pong.tamu.edu/~kthyng/ai65/OUT/ocean_his_0290.nc';
-OPTIONS.Seabed_Source = 'ROMS';
-topoCascadia(OPTIONS);
+%OPTIONS.casename = 'topo-Cascadia-ROMS-nesting';
+%OPTIONS.fileTopo_ROMS = '/mnt/data-RAID-1/danny/ainlet_Kristen/supporting_files/pong.tamu.edu/~kthyng/ai65/OUT/ocean_his_0290.nc';
+%OPTIONS.Seabed_Source = 'ROMS';
+%topoCascadia(OPTIONS);
 
 
 
 % try Parker's dataset
-OPTIONS.casename       = 'topo-Cascadia-ROMS-nesting';
-OPTIONS.fileTopo_ROMS       = '/mnt/data-RAID-1/danny/ainlet_2006_3/OUT/ocean_his_0290.nc';
-OPTIONS.Seabed_Source = 'ROMS';
-topoCascadia(OPTIONS);
+%OPTIONS.casename       = 'topo-Cascadia-ROMS-nesting';
+%OPTIONS.fileTopo_ROMS       = '/mnt/data-RAID-1/danny/ainlet_2006_3/OUT/ocean_his_0290.nc';
+%OPTIONS.Seabed_Source = 'ROMS';
+%topoCascadia(OPTIONS);
 
 
-OPTIONS.casename      = 'topo-Cascadia_example';
-OPTIONS.Seabed_Source = 'PSDEM';
-topoCascadia(OPTIONS);
+%OPTIONS.casename      = 'topo-Cascadia_example';
+%OPTIONS.Seabed_Source = 'PSDEM';
+%topoCascadia(OPTIONS);
 
 
 
 
-OPTIONS.casename = 'test_ROMS_nesting_METS2016';
-OPTIONS.aa                  = [-122.7355 -122.6783 48.1473 48.1821];    % area of interest. specify a box of lon, lat. (this was the METS 2016 PAPER ~6 mill cells?) % Area of interest, if it does not exist then user will be prompted to select by viewing a map
-topoCascadia(OPTIONS);
+%OPTIONS.casename = 'test_ROMS_nesting_METS2016';
+%OPTIONS.aa                  = [-122.7355 -122.6783 48.1473 48.1821];    % area of interest. specify a box of lon, lat. (this was the METS 2016 PAPER ~6 mill cells?) % Area of interest, if it does not exist then user will be prompted to select by viewing a map
+%topoCascadia(OPTIONS);
 
-OPTIONS.fileTopo_ROMS
-OPTIONS.fileTopo_ROMS = [pwd filesep 'ocean_his_0001.nc']
+%OPTIONS.fileTopo_ROMS
+%OPTIONS.fileTopo_ROMS = [pwd filesep 'ocean_his_0001.nc']

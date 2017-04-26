@@ -88,7 +88,7 @@ addpath('utilities/vtkwrite')
 addpath(genpath('utilities/ROMS_AGRIF'))
 addpath(genpath('utilities/quiver2'))
 addpath(genpath('utilities/arrow'))
-addpath('utilities/parfor_progress')
+% addpath('utilities/parfor_progress')
 % addpath(genpath('utilities/roms_wilkin'))
 % addpath('utilities/Arango_SVN_tools')
 
@@ -284,10 +284,10 @@ disp('all done. cool dude.')
 oldName  = [OPTIONS.dir_case filesep OPTIONS.casename '.sim'];          % the original file is setup always for Flood Tide
 initName = [OPTIONS.dir_case filesep OPTIONS.casename '__init.sim'];    % this file is temporary
 
-% nesting_times = [1812 1840 1912 1936];
-% nesting_tide  = {'flood' 'ebb' 'flood' 'ebb'};
-nesting_times = [1812 1840];
-nesting_tide  = {'flood' 'ebb'};
+nesting_times = [1812 1840 1912 1936];
+nesting_tide  = {'flood' 'ebb' 'flood' 'ebb'};
+% nesting_times = [1812 1840];
+% nesting_tide  = {'flood' 'ebb'};
 
 for n = 1:numel(nesting_times)
     
