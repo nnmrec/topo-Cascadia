@@ -1,4 +1,4 @@
-// STAR-CCM+ macro: _main_ROMS_nesting_step2_Solution.java
+// STAR-CCM+ macro: _main_ROMS_nesting_step4_Solution.java
 // Written by STAR-CCM+ 10.06.010
 // 
 // license: ?
@@ -12,7 +12,7 @@ import star.common.*;
 ///////////////////////////////////////////////////////////////////////////////
 // This is the MAIN driver, which calls all the other macros
 //
-public class _main_ROMS_nesting_step2_Solution extends StarMacro {
+public class _main_ROMS_nesting_step4_Solution extends StarMacro {
 
 
   public void execute() {
@@ -88,26 +88,27 @@ public class _main_ROMS_nesting_step2_Solution extends StarMacro {
     // new StarScript(getActiveSimulation(), new java.io.File(resolvePath("run_Matlab_mapping.java"))).play();
     // new StarScript(getActiveSimulation(), new java.io.File(resolvePath("load_ROMS_tables.java"))).play();
     // new StarScript(getActiveSimulation(), new java.io.File(resolvePath("load_ROMS_BoundaryConditions.java"))).play();
-    new StarScript(getActiveSimulation(), new java.io.File(resolvePath("load_ROMS_BoundaryConditions_KEpsilon.java"))).play();
+    // new StarScript(getActiveSimulation(), new java.io.File(resolvePath("load_ROMS_BoundaryConditions_SSTKOmega.java"))).play();
+    // new StarScript(getActiveSimulation(), new java.io.File(resolvePath("load_ROMS_BoundaryConditions_KEpsilon.java"))).play();
     
     
     // continue the solver from last state
     // new StarScript(getActiveSimulation(), new java.io.File(resolvePath("solver_Run.java"))).play();
 
 
-    // 
-    // ADD MORE PHYSICS MODELS, RE-RUN MESHING, AND RESTART SOLVER
-    // 
-    // add turbines via virtual disk model
-    // new StarScript(getActiveSimulation(), new java.io.File(resolvePath("createVirtualDisks.java"))).play();        // for the Trimmer Mesh
-    new StarScript(getActiveSimulation(), new java.io.File(resolvePath("physics_VirtualDisks.java"))).play();         // for the PolyHedral Mesh
-    new StarScript(getActiveSimulation(), new java.io.File(resolvePath("scene_VirtualDisks_Reports.java"))).play();   // for the PolyHedral Mesh 
-    new StarScript(getActiveSimulation(), new java.io.File(resolvePath("parts_SectionPlanesTurbines.java"))).play(); 
-    new StarScript(getActiveSimulation(), new java.io.File(resolvePath("scene_Topography_Turbines.java"))).play(); 
+    // // 
+    // // ADD MORE PHYSICS MODELS, RE-RUN MESHING, AND RESTART SOLVER
+    // // 
+    // // add turbines via virtual disk model
+    // new StarScript(getActiveSimulation(), new java.io.File(resolvePath("physics_VirtualDisks_Trimmer.java"))).play();        // for the Trimmer Mesh
+    // // new StarScript(getActiveSimulation(), new java.io.File(resolvePath("physics_VirtualDisks_Polyhedral.java"))).play();     // for the PolyHedral Mesh
+    // new StarScript(getActiveSimulation(), new java.io.File(resolvePath("scene_VirtualDisks_Reports.java"))).play();   
+    // new StarScript(getActiveSimulation(), new java.io.File(resolvePath("parts_SectionPlanesTurbines.java"))).play(); 
+    // // new StarScript(getActiveSimulation(), new java.io.File(resolvePath("scene_Topography_Turbines.java"))).play(); 
     
     
-    // re-mesh with the new mesh refinements around the turbines
-    new StarScript(getActiveSimulation(), new java.io.File(resolvePath("mesh_MeshAll.java"))).play();
+    // // re-mesh with the new mesh refinements around the turbines
+    // new StarScript(getActiveSimulation(), new java.io.File(resolvePath("mesh_MeshAll.java"))).play();
     // continue the solver from last state
     new StarScript(getActiveSimulation(), new java.io.File(resolvePath("solver_Run.java"))).play();
     

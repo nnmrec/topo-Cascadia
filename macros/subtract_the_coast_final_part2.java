@@ -105,10 +105,29 @@ public class subtract_the_coast_final_part2 extends StarMacro {
 
 
 
-
+    MeshManager meshManager_0 = 
+      simulation_0.getMeshManager();
     
-    new StarScript(getActiveSimulation(), new java.io.File(resolvePath("temp_combine_inlets_outlets.java"))).play();
+    // new StarScript(getActiveSimulation(), new java.io.File(resolvePath("temp_combine_inlets_outlets.java"))).play();
+    Boundary boundary_00 = 
+      region_0.getBoundaryManager().getBoundary("Subtract.north");
 
+    Boundary boundary_1 = 
+      region_0.getBoundaryManager().getBoundary("Subtract.west");
+
+    meshManager_0.combineBoundaries(new NeoObjectVector(new Object[] {boundary_00, boundary_1}));
+
+    boundary_00.setPresentationName("Inlet");
+
+    Boundary boundary_2 = 
+      region_0.getBoundaryManager().getBoundary("Subtract.east");
+
+    Boundary boundary_3 = 
+      region_0.getBoundaryManager().getBoundary("Subtract.south");
+
+    meshManager_0.combineBoundaries(new NeoObjectVector(new Object[] {boundary_2, boundary_3}));
+
+    boundary_2.setPresentationName("Outlet");
 
 
 

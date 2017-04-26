@@ -38,21 +38,31 @@ public class physics_BC_InflowUniform_SSTKOmega extends StarMacro {
       ((PressureBoundary) simulation_0.get(ConditionTypeManager.class).get(PressureBoundary.class));
 
 
-    Boundary boundary_1 = 
-      region_0.getBoundaryManager().getBoundary("Subtract.north");
-      boundary_1.setBoundaryType(inletBoundary_0);
+    Boundary boundary_12 = 
+      region_0.getBoundaryManager().getBoundary("Inlet");
 
-    Boundary boundary_2 = 
-      region_0.getBoundaryManager().getBoundary("Subtract.west");
-      boundary_2.setBoundaryType(inletBoundary_0);
+      boundary_12.setBoundaryType(inletBoundary_0);
 
-    Boundary boundary_3 = 
-      region_0.getBoundaryManager().getBoundary("Subtract.south");
-      boundary_3.setBoundaryType(pressureBoundary_0);
+    // Boundary boundary_1 = 
+    //   region_0.getBoundaryManager().getBoundary("Subtract.north");
+    //   boundary_1.setBoundaryType(inletBoundary_0);
 
-    Boundary boundary_4 = 
-      region_0.getBoundaryManager().getBoundary("Subtract.east");
-      boundary_4.setBoundaryType(pressureBoundary_0);
+    // Boundary boundary_2 = 
+    //   region_0.getBoundaryManager().getBoundary("Subtract.west");
+    //   boundary_2.setBoundaryType(inletBoundary_0);
+
+    Boundary boundary_34 = 
+      region_0.getBoundaryManager().getBoundary("Outlet");
+      
+      boundary_34.setBoundaryType(pressureBoundary_0);
+      
+    // Boundary boundary_3 = 
+    //   region_0.getBoundaryManager().getBoundary("Subtract.south");
+    //   boundary_3.setBoundaryType(pressureBoundary_0);
+
+    // Boundary boundary_4 = 
+    //   region_0.getBoundaryManager().getBoundary("Subtract.east");
+    //   boundary_4.setBoundaryType(pressureBoundary_0);
 
     Boundary boundary_5 = 
       region_0.getBoundaryManager().getBoundary("Subtract.seasurface");
@@ -147,11 +157,11 @@ public class physics_BC_InflowUniform_SSTKOmega extends StarMacro {
     // // region_0.getBoundaryManager().getBoundary("Block.Inlet");
     // region_0.getBoundaryManager().getBoundary("Subtract.north");
 
-    boundary_1.getConditions().get(KwTurbSpecOption.class).setSelected(KwTurbSpecOption.Type.INTENSITY_LENGTH_SCALE);
-    boundary_1.getConditions().get(InletVelocityOption.class).setSelected(InletVelocityOption.Type.COMPONENTS);
+    boundary_12.getConditions().get(KwTurbSpecOption.class).setSelected(KwTurbSpecOption.Type.INTENSITY_LENGTH_SCALE);
+    boundary_12.getConditions().get(InletVelocityOption.class).setSelected(InletVelocityOption.Type.COMPONENTS);
 
     TurbulenceIntensityProfile turbulenceIntensityProfile_1 = 
-      boundary_1.getValues().get(TurbulenceIntensityProfile.class);
+      boundary_12.getValues().get(TurbulenceIntensityProfile.class);
 
     turbulenceIntensityProfile_1.setMethod(FunctionScalarProfileMethod.class);
 
@@ -161,7 +171,7 @@ public class physics_BC_InflowUniform_SSTKOmega extends StarMacro {
     turbulenceIntensityProfile_1.getMethod(ConstantScalarProfileMethod.class).getQuantity().setValue(Double.parseDouble(userFieldFunction_init_TI.getDefinition()));
 
     TurbulentLengthScaleProfile turbulentLengthScaleProfile_1 = 
-      boundary_1.getValues().get(TurbulentLengthScaleProfile.class);
+      boundary_12.getValues().get(TurbulentLengthScaleProfile.class);
 
     turbulentLengthScaleProfile_1.setMethod(FunctionScalarProfileMethod.class);
 
@@ -171,7 +181,7 @@ public class physics_BC_InflowUniform_SSTKOmega extends StarMacro {
     turbulentLengthScaleProfile_1.getMethod(ConstantScalarProfileMethod.class).getQuantity().setValue(Double.parseDouble(userFieldFunction_init_Lturb.getDefinition()));
 
     VelocityProfile velocityProfile_1 = 
-      boundary_1.getValues().get(VelocityProfile.class);
+      boundary_12.getValues().get(VelocityProfile.class);
 
     // boundary_1.getConditions().get(InletVelocityOption.class).setSelected(InletVelocityOption.Type.COMPONENTS);
 
@@ -191,11 +201,11 @@ public class physics_BC_InflowUniform_SSTKOmega extends StarMacro {
 //     // region_0.getBoundaryManager().getBoundary("Block.Inlet");
 //     region_0.getBoundaryManager().getBoundary("Subtract.west");
 
-    boundary_2.getConditions().get(KwTurbSpecOption.class).setSelected(KwTurbSpecOption.Type.INTENSITY_LENGTH_SCALE);
-    boundary_2.getConditions().get(InletVelocityOption.class).setSelected(InletVelocityOption.Type.COMPONENTS);
+    boundary_12.getConditions().get(KwTurbSpecOption.class).setSelected(KwTurbSpecOption.Type.INTENSITY_LENGTH_SCALE);
+    boundary_12.getConditions().get(InletVelocityOption.class).setSelected(InletVelocityOption.Type.COMPONENTS);
 
     TurbulenceIntensityProfile turbulenceIntensityProfile_2 = 
-      boundary_2.getValues().get(TurbulenceIntensityProfile.class);
+      boundary_12.getValues().get(TurbulenceIntensityProfile.class);
 
     turbulenceIntensityProfile_2.setMethod(FunctionScalarProfileMethod.class);
 
@@ -205,7 +215,7 @@ public class physics_BC_InflowUniform_SSTKOmega extends StarMacro {
     turbulenceIntensityProfile_2.getMethod(ConstantScalarProfileMethod.class).getQuantity().setValue(Double.parseDouble(userFieldFunction_init_TI.getDefinition()));
 
     TurbulentLengthScaleProfile turbulentLengthScaleProfile_2 = 
-      boundary_2.getValues().get(TurbulentLengthScaleProfile.class);
+      boundary_12.getValues().get(TurbulentLengthScaleProfile.class);
 
     turbulentLengthScaleProfile_2.setMethod(FunctionScalarProfileMethod.class);
 
@@ -215,7 +225,7 @@ public class physics_BC_InflowUniform_SSTKOmega extends StarMacro {
     turbulentLengthScaleProfile_2.getMethod(ConstantScalarProfileMethod.class).getQuantity().setValue(Double.parseDouble(userFieldFunction_init_Lturb.getDefinition()));
 
     VelocityProfile velocityProfile_2 = 
-      boundary_2.getValues().get(VelocityProfile.class);
+      boundary_12.getValues().get(VelocityProfile.class);
 
     // boundary_2.getConditions().get(InletVelocityOption.class).setSelected(InletVelocityOption.Type.COMPONENTS);
 
@@ -232,10 +242,10 @@ public class physics_BC_InflowUniform_SSTKOmega extends StarMacro {
     //   // region_0.getBoundaryManager().getBoundary("Block.Outlet");
     //   region_0.getBoundaryManager().getBoundary("Subtract.south");
 
-    boundary_3.getConditions().get(KwTurbSpecOption.class).setSelected(KwTurbSpecOption.Type.INTENSITY_LENGTH_SCALE);
+    boundary_34.getConditions().get(KwTurbSpecOption.class).setSelected(KwTurbSpecOption.Type.INTENSITY_LENGTH_SCALE);
 
     TurbulenceIntensityProfile turbulenceIntensityProfile_3 = 
-      boundary_3.getValues().get(TurbulenceIntensityProfile.class);
+      boundary_34.getValues().get(TurbulenceIntensityProfile.class);
 
     turbulenceIntensityProfile_3.setMethod(FunctionScalarProfileMethod.class);
 
@@ -245,7 +255,7 @@ public class physics_BC_InflowUniform_SSTKOmega extends StarMacro {
     turbulenceIntensityProfile_3.getMethod(ConstantScalarProfileMethod.class).getQuantity().setValue(Double.parseDouble(userFieldFunction_init_TI.getDefinition()));
 
     TurbulentLengthScaleProfile turbulentLengthScaleProfile_3 = 
-      boundary_3.getValues().get(TurbulentLengthScaleProfile.class);
+      boundary_34.getValues().get(TurbulentLengthScaleProfile.class);
 
     turbulentLengthScaleProfile_3.setMethod(FunctionScalarProfileMethod.class);
 
@@ -259,10 +269,10 @@ public class physics_BC_InflowUniform_SSTKOmega extends StarMacro {
     //   // region_0.getBoundaryManager().getBoundary("Block.Outlet");
     //   region_0.getBoundaryManager().getBoundary("Subtract.east");
 
-    boundary_4.getConditions().get(KwTurbSpecOption.class).setSelected(KwTurbSpecOption.Type.INTENSITY_LENGTH_SCALE);
+    boundary_34.getConditions().get(KwTurbSpecOption.class).setSelected(KwTurbSpecOption.Type.INTENSITY_LENGTH_SCALE);
 
     TurbulenceIntensityProfile turbulenceIntensityProfile_4 = 
-      boundary_4.getValues().get(TurbulenceIntensityProfile.class);
+      boundary_34.getValues().get(TurbulenceIntensityProfile.class);
 
     turbulenceIntensityProfile_4.setMethod(FunctionScalarProfileMethod.class);
 
@@ -272,7 +282,7 @@ public class physics_BC_InflowUniform_SSTKOmega extends StarMacro {
     turbulenceIntensityProfile_4.getMethod(ConstantScalarProfileMethod.class).getQuantity().setValue(Double.parseDouble(userFieldFunction_init_TI.getDefinition()));
 
     TurbulentLengthScaleProfile turbulentLengthScaleProfile_4 = 
-      boundary_4.getValues().get(TurbulentLengthScaleProfile.class);
+      boundary_34.getValues().get(TurbulentLengthScaleProfile.class);
 
     turbulentLengthScaleProfile_4.setMethod(FunctionScalarProfileMethod.class);
 

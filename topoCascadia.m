@@ -86,6 +86,9 @@ addpath('utilities/vtkwrite')
 % csvwrite_with_headers
 % addpath(genpath('utilities/Roms_tools'))  note: this has errors related to function 'netcdf', use the mexcdf version included within ROMS_AGRIF
 addpath(genpath('utilities/ROMS_AGRIF'))
+addpath(genpath('utilities/quiver2'))
+addpath(genpath('utilities/arrow'))
+addpath('utilities/parfor_progress')
 % addpath(genpath('utilities/roms_wilkin'))
 % addpath('utilities/Arango_SVN_tools')
 
@@ -207,155 +210,9 @@ save(['cases' filesep OPTIONS.casename filesep 'mesh_ROMS.mat'], ...
      'OPTIONS','ROMS')
 
 %%
-% OPTIONS = select_times_interest(OPTIONS);
-% load the sea-surface elevation data
-% time_idx = [1 2880]; % begin and end time index
-% time_idx = [1 100]; % begin and end time index
-time_idx = [1792 1965]; % begin and end time index, from Kristen's paper
-% time_idx = [4 10]; % begin and end time index, from Kristen's paper
-n_times = time_idx(2)-time_idx(1) + 1;
+% select_times_interest(OPTIONS, ROMS);
 
-
-
-% u = squeeze(nc{'zeta'}(1,ind_lat,ind_lon));
-% v = squeeze(nc{'zeta'}(1,ind_lat,ind_lon));
-% w = squeeze(nc{'zeta'}(1,ind_lat,ind_lon));
-            
-% profile on
-            
-point_zeta     = zeros(n_times, OPTIONS.n_points);
-point_tke     = zeros(n_times, OPTIONS.n_points);
-point_spd     = zeros(n_times, OPTIONS.n_points);
-profile_speed_avg = zeros(n_times, OPTIONS.n_points);
-% profile_spd_aa = zeros(n_times, OPTIONS.n_points);
-for m = 1:numel(ROMS.point_x1)
-    
-%         ind_lon = findClosest(ROMS.G.lon_rho(1,:), ROMS.point_x1(m));
-%         ind_lat = findClosest(ROMS.G.lat_rho(:,1), ROMS.point_y1(m));
-        ind_lon = findClosest(ROMS.lon_aa(1,:), ROMS.point_x1(m));
-        ind_lat = findClosest(ROMS.lat_aa(:,1), ROMS.point_y1(m));
-        
-%     for n = 1:n_times
-    parfor n = 1:n_times
-%     for n = time_idx(1):time_idx(end)
-        
-n
-
-        file_time = time_idx(1):time_idx(end);
-        nc_file = file_time(n);
-        % open NetCDF
-        file_ROMS = ['/mnt/data-RAID-1/danny/ainlet_Kristen/pong.tamu.edu/~kthyng/ai65/OUT/ocean_his_' sprintf('%4.4d',nc_file) '.nc'];
-        
-        [~, profile_ROMS] = get_ROMS_fields(file_ROMS,OPTIONS,ROMS,false);
-        
-%         nc = netcdf(file_ROMS);
-
-        % read variables, these files only 1 time step per file
-%         point.zeta(n,m) = squeeze(nc{'zeta'}(1,ind_lat,ind_lon));
-        point_zeta(n,m) = profile_ROMS.zeta_aa(ind_lat,ind_lon);
-        
-        profile_tke = profile_ROMS.tke_aa(:,ind_lat,ind_lon);
-        profile_spd = profile_ROMS.spd_rho_aa(:,ind_lat,ind_lon);
-        
-        depth = -1*profile_ROMS.zDown_aa(:,ind_lat,ind_lon);
-        elev = max(depth) - OPTIONS.hubHeight;
-        [~, mind] = min(abs(depth - elev));
-        
-        point_tke(n,m) = profile_tke(mind); % at hub height
-        point_spd(n,m) = profile_spd(mind); % at hub height
-        
-%         zeta    = squeeze(nc{'zeta'}(1,:,:));
-%     %     dt(n) = nc{'dt'}(:); % dt of the simulation, seconds
-% 
-%         profile_spd_aa = sqrt(ROMS.u_rho_aa(:,ind_lat,ind_lon).^2 + ...
-%                               ROMS.v_rho_aa(:,ind_lat,ind_lon).^2 + ...
-%                               ROMS.w_rho_aa(:,ind_lat,ind_lon).^2);
-%         profile_spd_aa_avg = trapz(
-    
-        profile_speed     = profile_ROMS.spd_rho_aa(:,ind_lat,ind_lon);
-        d_max = abs( min(profile_ROMS.z_rho_aa(:,ind_lat,ind_lon)) );
-        zq = linspace(0, d_max, profile_ROMS.S.N)';
-        profile_speed_avg(n,m) = trapz(zq, profile_speed) / d_max; 
-            % compute some other time series
-            % depth averaged speed
-%             u = squeeze(nc{'zeta'}(1,ind_lat,ind_lon));
-%             v = squeeze(nc{'zeta'}(1,ind_lat,ind_lon));
-%             w = squeeze(nc{'zeta'}(1,ind_lat,ind_lon));
-%             spd = 
-%             spd_depth_avg `= 
-
-%             [z_rho,z_w] = Z_s2z(ROMS.G.h, zeta, ROMS.S);
-%             u_rho = zeros(size(z_rho,1), 1);
-%             v_rho = zeros(size(z_rho,1), 1);
-%             w_rho = zeros(size(z_rho,1), 1);
-%             for k = 1:size(z_rho,1);
-%                 u_rho(k,:,:) = u2rho_2d( squeeze( ROMS.u_rho_aa(k,:,:) ));
-%                 v_rho(k,:,:) = v2rho_2d( squeeze( ROMS.v_rho_aa(k,:,:) ));
-%                 % the rho points of the w grid can be found by midpoints of the w points
-%                 w_rho(k,:,:) = ROMS.w_rho_aa(k,:,:);
-% %                 w_rho(k,:,:)   =   (w(k,:,:) +   w(k+1,:,:)) ./ 2;
-%                 
-% %                 tke_rho(k,:,:) = (tke(k,:,:) + tke(k+1,:,:)) ./ 2;
-% %                 gls_rho(k,:,:) = (gls(k,:,:) + gls(k+1,:,:)) ./ 2;
-% 
-%             end
-%             spd_rho = sqrt(u_rho.^2 + u_rho.^2 + w_rho.^2);
-
-        % close NetCDF
-%         close(nc)
-    end
-end
-
-% profile viewer
-
-% time step was 5 seconds and model output saved every 15 minutes
-max_time = n_times * 15; % minutes
-hours    = 0 : 15/60 : (max_time-15)/60;
-
-figure
-subplot(4,1,1)
-    hold on
-    plot(hours, point_zeta(:,1), '-r')
-    plot(hours, point_zeta(:,2), '-b')
-    legend('point 1', 'point 2')
-    xlabel('time (hours)')
-    ylabel('free surface (meters)')
-    grid on
-    box on
-
-subplot(4,1,2)
-    hold on
-    plot(hours, profile_speed_avg(:,1), '-r')
-    plot(hours, profile_speed_avg(:,2), '-b')
-    legend('point 1', 'point 2')
-    xlabel('time (hours)')
-    ylabel('depth averaged speed (m/s)')
-    grid on
-    box on
-
-    % speed at hub-height / ADV height
-subplot(4,1,3)
-    hold on
-    plot(hours, point_spd(:,1), '-r')
-    plot(hours, point_spd(:,2), '-b')
-    legend('point 1', 'point 2')
-    xlabel('time (hours)')
-    ylabel('speed at hub-height (m/s)')
-    grid on
-    box on
-    
-    % TKE at hub-height / ADV height
-subplot(4,1,4)
-    hold on
-    plot(hours, point_tke(:,1), '-r')
-    plot(hours, point_tke(:,2), '-b')
-    legend('point 1', 'point 2')
-    xlabel('time (hours)')
-    ylabel('TKE at hub-height (m^2/s^2)')
-    grid on
-    box on
-    
-    
+   
 %%
 
 % Run STARCCM to create the mesh and then import into Matlab
@@ -363,88 +220,34 @@ subplot(4,1,4)
 
 cwd = pwd;
 
-% run the starccm meshing
+% run the starccm meshing ... NOTE: this does NOT include any turbines in this mesh yet
 cd(OPTIONS.dir_case)
-status1 = system(OPTIONS.run_starccm_command1);
+status_mesh = system(OPTIONS.run_starccm_Meshing);
 cd(cwd)
 
-% perform interpolation from ROMS RHO points to the STAR-CCM+ cell centroids
-mesh_mapping(OPTIONS, ROMS)
 
-% load ROMS boundary conditions to starccm and then run solver
+% optionally, can run the solver for all cases without turbines now
+
+
+% now add the turbines and re-mesh
 cd(OPTIONS.dir_case)
-status2 = system(OPTIONS.run_starccm_command2);
+status_turbines = system(OPTIONS.run_starccm_Turbines);
 cd(cwd)
+
+
+
+
+% % perform interpolation from ROMS RHO points to the STAR-CCM+ cell
+% % centroids, need to re-map at every time in the tidal cycle
+% csv_filename_aa = [OPTIONS.dir_case filesep 'STARCCM_tables_ROMS_area_interest.csv'];
+% mesh_mapping(OPTIONS, ROMS, csv_filename_aa)
+% 
+% % load ROMS boundary conditions to starccm and then run solver
+% cd(OPTIONS.dir_case)
+% status2 = system(OPTIONS.run_starccm_command2);
+% cd(cwd)
 
  
-% plot the fields, 3D point cloud overlay with topography/turbine map
-% OPTIONS = plot_ROMS_fields(OPTIONS, NED, ROMS);
-% mesh_mapping(OPTIONS, ROMS)
-% map the ROMS variables onto the STAR-CCM+ mesh
-% interpolate the ROMS rho points onto a higher resolution mesh
-% including inlet/outlet/coastline boundaries would be unknown
-% at this point, until after the STAR-CCM+ mesh is already built
-% so load the mesh directory as an STL file and then 3D interpolate
-% onto the vertices of the STL file, or can load the mesh points
-% as a point cloud of CSV values with the cell centroids.
-% Then 3D interpolate onto this point cloud and load the 
-% CSV File Table back into starccm.
-% Do this with the velocity field, and turbuluence fields (and pressure?)
-% 
-% 
-% 
-
-% % read the CSV for the cell centroids of STARCCM mesh
-% M      = csvread(['cases' filesep OPTIONS.casename filesep 'mesh_centroids_domain.csv'],2,1);
-% mesh_x = M(:,1);
-% mesh_y = M(:,2);
-% mesh_z = M(:,3);
-% mesh_n = size(M,1);
-% 
-% % initialize velocities, turbulent kinetic energy, and dissipation rate
-% mesh_vel_x = zeros(mesh_n,1);
-% mesh_vel_y = zeros(mesh_n,1);
-% mesh_vel_z = zeros(mesh_n,1);
-% % mesh_tke   = zeros(mesh_n,1);
-% % mesh_eps   = zeros(mesh_n,1);
-% 
-% % build the scattered interpolation functions
-% F_vel_x = scatteredInterpolant(ROMS.yEast_aa(:), ROMS.xNorth_aa(:), ROMS.zDown_aa(:), ROMS.u_rho_aa(:),'linear','nearest');
-% F_vel_y = scatteredInterpolant(ROMS.yEast_aa(:), ROMS.xNorth_aa(:), ROMS.zDown_aa(:), ROMS.v_rho_aa(:),'linear','nearest');
-% F_vel_z = scatteredInterpolant(ROMS.yEast_aa(:), ROMS.xNorth_aa(:), ROMS.zDown_aa(:), ROMS.w_rho_aa(:),'linear','nearest');
-% % F_tke   = asdf;
-% % F_eps   = asdf;
-% 
-% for n = 1:mesh_n
-%     
-%     mesh_vel_x(n) = F_vel_x(mesh_x(n), mesh_y(n), mesh_z(n));
-%     mesh_vel_y(n) = F_vel_y(mesh_x(n), mesh_y(n), mesh_z(n));
-%     mesh_vel_z(n) = F_vel_z(mesh_x(n), mesh_y(n), mesh_z(n));
-% %     mesh_tke(n)   = F_tke(mesh_x(n), mesh_y(n), mesh_z(n));
-% %     mesh_eps(n)   = F_eps(mesh_x(n), mesh_y(n), mesh_z(n));
-% %     n/mesh_n
-% end
-% 
-% % now write the field data again
-% % save data in CSV file format, for reading by STAR-CCM+
-% 
-% % over area of interest
-% csv_filename_aa = [OPTIONS.dir_case filesep 'STARCCM_xyzuvw_area_interest.csv'];
-% xyzuvw_aa       = [mesh_x(:) mesh_y(:) mesh_z(:) mesh_vel_x(:) mesh_vel_y(:) mesh_vel_z(:)];
-% 
-% % if the file already exists, overwrite
-% if exist(csv_filename_aa, 'file')==2
-%   delete(csv_filename_aa);
-% end
-% 
-% % write the header and then append the data
-% fid = fopen(csv_filename_aa, 'w');
-% fprintf(fid, 'X,Y,Z,u,v,w\n');
-% fclose(fid);
-% dlmwrite(csv_filename_aa, xyzuvw_aa, '-append', 'precision', '%.6f', 'delimiter', ',');
-
-
-
 
 
 
@@ -452,18 +255,66 @@ cd(cwd)
 % grdwrite2(lat(:,1),lon(1,:),u,'/mnt/data-RAID-1/danny/topo-cascadia/vfplot_ainlet/u.grd');
 % grdwrite2(lat(:,1),lon(1,:),v,'/mnt/data-RAID-1/danny/topo-cascadia/vfplot_ainlet/v.grd');
 
-disp('cool dude')
+disp('all done. cool dude.')
 
 
-%% extract solution from the ROMS mesh and map to the CFD mesh
+%%  NOW, all the above was to create the mesh
+% here, we can use the same mesh, but apply different boundary conditions
+% from different ROMS files
+% loop through the ROMS files you want to use
 
-% try to get RSLICE or AGRIF to work here
+% keep a copy of the STARCCM sim file before boundary conditions are applied
+oldName  = [OPTIONS.dir_case filesep OPTIONS.casename '.sim'];          % the original file is setup always for Flood Tide
+initName = [OPTIONS.dir_case filesep OPTIONS.casename '__init.sim'];    % this file is temporary
 
-% try rslice first
+% nesting_times = [1812 1840 1912 1936];
+% nesting_tide  = {'flood' 'ebb' 'flood' 'ebb'};
+nesting_times = [1812 1840];
+nesting_tide  = {'flood' 'ebb'};
 
-%% is it time to interpolate the two meshes together
-% try to use RegularizeData3D
-% [zgrid,xgrid,ygrid] = RegularizeData3D(x,y,z,xnodes,ynodes,varargin)
+for n = 1:numel(nesting_times)
+    
+    % get the ROMS fields for current timestep
+    file_ROMS                = [OPTIONS.dir_ROMS filesep 'ocean_his_' sprintf('%4.4d',nesting_times(n)) '.nc'];
+    [OPTIONS, ROMS_snapshot] = get_ROMS_fields_v2(file_ROMS,OPTIONS,true);
+    
+    % write the ROMS field variables at mesh locations of the STARCCM mesh
+    csv_filename_aa = [OPTIONS.dir_case filesep 'STARCCM_tables_ROMS-ocean_his_' sprintf('%4.4d',nesting_times(n)) '.csv'];
+    mesh_mapping(OPTIONS, ROMS_snapshot, csv_filename_aa)
+    
+    % copy this mesh file and rename since the starccm macros always looks for the same temporary filename
+    system(['cp ' csv_filename_aa ' ' OPTIONS.dir_case filesep 'STARCCM_tables_ROMS.csv']);
+    system(['cp ' oldName ' ' initName]);
+    
+    % Mapping between ROMS and STARCCM meshes, swap the inlets/outlets if needed   
+    switch nesting_tide{n}
+        case 'flood'
+            cd(OPTIONS.dir_case)
+            status_map = system(OPTIONS.run_starccm_Mapping_Flood);
+            cd(cwd)
+            
+        case 'ebb'
+            cd(OPTIONS.dir_case)
+            status_map = system(OPTIONS.run_starccm_Mapping_Ebb);
+            cd(cwd)
+    end
+    
+%     % Now add the turbines and re-mesh
+%     cd(OPTIONS.dir_case)
+% 	status_map = system(OPTIONS.run_starccm_AddTurbines);
+% 	cd(cwd)
+    
+    % now for each ROMS timestep, rename the file for corresponding timestep
+    newName = [OPTIONS.dir_case filesep OPTIONS.casename '__ocean_his_' sprintf('%4.4d',nesting_times(n)) '.sim'];
+    system(['mv ' initName ' ' newName]);
+    
+end
 
-
+         
+    
+% % run the solver on each time
+% for n = 1:numel(nesting_times)
+%     
+%     
+% end
 

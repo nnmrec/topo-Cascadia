@@ -63,21 +63,24 @@ public class scene_Topography_Turbines extends StarMacro {
       simulation_0.getRegionManager().getRegion("Region");
 
     Boundary boundary_0 = 
-      region_0.getBoundaryManager().getBoundary("Subtract.coast");
+      region_0.getBoundaryManager().getBoundary("Region.Inlet");
+      // region_0.getBoundaryManager().getBoundary("Subtract.coast");
 
     Boundary boundary_1 = 
-      region_0.getBoundaryManager().getBoundary("Subtract.east");
+      region_0.getBoundaryManager().getBoundary("Region.Outlet");
+      // region_0.getBoundaryManager().getBoundary("Subtract.east");
 
-    Boundary boundary_2 = 
-      region_0.getBoundaryManager().getBoundary("Subtract.north");
+    // Boundary boundary_2 = 
+    //   region_0.getBoundaryManager().getBoundary("Subtract.north");
 
-    Boundary boundary_3 = 
-      region_0.getBoundaryManager().getBoundary("Subtract.south");
+    // Boundary boundary_3 = 
+    //   region_0.getBoundaryManager().getBoundary("Subtract.south");
 
-    Boundary boundary_4 = 
-      region_0.getBoundaryManager().getBoundary("Subtract.west");
+    // Boundary boundary_4 = 
+    //   region_0.getBoundaryManager().getBoundary("Subtract.west");
 
-    scalarDisplayer_3.getInputParts().setObjects(boundary_0, boundary_1, boundary_2, boundary_3, boundary_4);
+    scalarDisplayer_3.getInputParts().setObjects(boundary_0, boundary_1);
+    // scalarDisplayer_3.getInputParts().setObjects(boundary_0, boundary_1, boundary_2, boundary_3, boundary_4);
 
     CurrentView currentView_1 = 
       scene_6.getCurrentView();

@@ -28,7 +28,7 @@ public class load_ROMS_BoundaryConditions_KEpsilon extends StarMacro {
 
     FileTable fileTable_0 = 
       // (FileTable) simulation_0.getTableManager().createFromFile(resolvePath("ROMS_xyzuvw_area_interest.csv"));
-      (FileTable) simulation_0.getTableManager().createFromFile(resolvePath("../cases/" + caseName.getText()  + "/STARCCM_xyzuvw_area_interest.csv"));  
+      (FileTable) simulation_0.getTableManager().createFromFile(resolvePath("../cases/" + caseName.getText()  + "/STARCCM_tables_ROMS_area_interest.csv"));  
 
     // FileTable fileTable_0 = 
     //   (FileTable) simulation_0.getTableManager().createFromFile(resolvePath("STARCCM_xyzuvw_area_interest.csv"));

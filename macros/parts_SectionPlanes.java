@@ -55,12 +55,14 @@ public class parts_SectionPlanes extends StarMacro {
       UserFieldFunction userFieldFunction_5 = 
       ((UserFieldFunction) simulation_0.getFieldFunctionManager().getFunction("__depth"));
 
-
-
-
       double xx   = Double.parseDouble(userFieldFunction_0.getDefinition())+(Double.parseDouble(userFieldFunction_3.getDefinition())-Double.parseDouble(userFieldFunction_0.getDefinition()))/2;
       double yy   = Double.parseDouble(userFieldFunction_1.getDefinition())+(Double.parseDouble(userFieldFunction_4.getDefinition())-Double.parseDouble(userFieldFunction_1.getDefinition()))/2;
       double zz   = Double.parseDouble(userFieldFunction_2.getDefinition())+(Double.parseDouble(userFieldFunction_5.getDefinition())-Double.parseDouble(userFieldFunction_2.getDefinition()))/2;
+      
+      // double xx   = 0.0;
+      // double yy   = 0.0;
+      // double zz   = -15.0;
+      
       simulation_0.println("DEBUG 0: xx = " + xx);
       simulation_0.println("DEBUG 0: yy = " + yy);
       simulation_0.println("DEBUG 0: zz = " + zz);

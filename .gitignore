@@ -4,6 +4,7 @@
 /inputs/bathymetry/topo/2_psdem/ocean_his_0001.nc
 /inputs/bathymetry/coast/1_Cascadia/psdem_2005_plaid_27m.nc
 /inputs/bathymetry/coast/1_Cascadia/psdem_2005_plaid_9m.nc
+/inputs/ROMS/OUT/*
 
 # ignore temporary Matlab files
 *.m~

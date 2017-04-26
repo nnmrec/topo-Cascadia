@@ -106,6 +106,7 @@ OPTIONS.n_points = 2; % number of single-point comparisons
 
 OPTIONS.DEBUG_LEVEL = 0;
 
+OPTIONS.dir_ROMS = '/mnt/data-RAID-1/danny/ainlet_Kristen/pong.tamu.edu/~kthyng/ai65/OUT'; % directory with ROMS *.nc output files
 
 %% END OF USER INPUTS %%
 
@@ -114,10 +115,22 @@ OPTIONS.DEBUG_LEVEL = 0;
 % OPTIONS.casename = 'topo-Cascadia-ROMS-nesting';
 % topoCascadia(OPTIONS);
 
+% try Kristen's dataset on the METS 2016 'Small Test Domain'
+OPTIONS.casename = 'topo-Cascadia-ROMS-nesting';
+% OPTIONS.aa = [-122.69 -122.68 48.152 48.1569];         % ULTRA TINY smaller ~3 million cells test domain
+OPTIONS.aa = [-122.7355 -122.6783 48.1473 48.1821];    % Alberto's choice ~6 milld?
+% OPTIONS.fileTopo_ROMS = '/mnt/data-RAID-1/danny/ainlet_Kristen/pong.tamu.edu/~kthyng/ai65/OUT/ocean_his_1812.nc'; % hour 5, flood
+OPTIONS.fileTopo_ROMS = 'inputs/ROMS/OUT/ocean_his_1812.nc'; % hour 5, flood
+OPTIONS.Seabed_Source = 'ROMS';
+topoCascadia(OPTIONS);
+
 % try Kristen's dataset on the METS 2016 'Big Domain'
 OPTIONS.casename = 'topo-Cascadia-ROMS-nesting';
 OPTIONS.aa = [-122.7355 -122.6783 48.1473 48.1821];    % Alberto's choice ~6 milld?
-OPTIONS.fileTopo_ROMS = '/mnt/data-RAID-1/danny/ainlet_Kristen/pong.tamu.edu/~kthyng/ai65/OUT/ocean_his_0290.nc';
+OPTIONS.fileTopo_ROMS = '/mnt/data-RAID-1/danny/ainlet_Kristen/pong.tamu.edu/~kthyng/ai65/OUT/ocean_his_1812.nc'; % hour 5, flood
+% OPTIONS.fileTopo_ROMS = '/mnt/data-RAID-1/danny/ainlet_Kristen/pong.tamu.edu/~kthyng/ai65/OUT/ocean_his_1840.nc'; % hour 12, ebb
+% OPTIONS.fileTopo_ROMS = '/mnt/data-RAID-1/danny/ainlet_Kristen/pong.tamu.edu/~kthyng/ai65/OUT/ocean_his_1912.nc'; % hour 30, flood
+% OPTIONS.fileTopo_ROMS = '/mnt/data-RAID-1/danny/ainlet_Kristen/pong.tamu.edu/~kthyng/ai65/OUT/ocean_his_1936.nc'; % hour 36, ebb
 OPTIONS.Seabed_Source = 'ROMS';
 topoCascadia(OPTIONS);
 

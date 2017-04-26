@@ -18,16 +18,18 @@ end
 
 % the actual command to run starccm+
 if OPTIONS.runOnHPC
-    OPTIONS.run_starccm_command1 = ['starccm+ -new -batch ../../macros/_main_ROMS_nesting_step1_Meshing.java -np ${PBS_NP} -machinefile ${PBS_NODEFILE} -licpath ' lic_server ' -batch-report ' OPTIONS.casename '.sim 2>&1 | tee log.' OPTIONS.casename];
-    OPTIONS.run_starccm_command2 = ['starccm+      -batch ../../macros/_main_ROMS_nesting_step2_Solution.java -np ${PBS_NP} -machinefile ${PBS_NODEFILE} -licpath ' lic_server ' -batch-report ' OPTIONS.casename '.sim 2>&1 | tee log.' OPTIONS.casename];
-%     run_starccm_command2 = ['starccm+ -batch macros/AMR_Initialize.java -np ${PBS_NP} -machinefile ${PBS_NODEFILE} -licpath ' lic_server ' -batch-report runs_' Mooring.casename '.sim 2>&1 | tee log.' Mooring.casename];
-%     run_starccm_command3 = ['starccm+ -batch macros/AMR_Main.java -np ${PBS_NP} -machinefile ${PBS_NODEFILE} -licpath ' lic_server ' -batch-report runs_' Mooring.casename '.sim 2>&1 | tee log.' Mooring.casename];
+    OPTIONS.run_starccm_Meshing       = ['starccm+ -new -batch ../../macros/_main_ROMS_nesting_step1_Meshing.java       -np ${PBS_NP} -machinefile ${PBS_NODEFILE} -licpath ' lic_server ' -batch-report ' OPTIONS.casename       '.sim 2>&1 | tee log.' OPTIONS.casename];
+    OPTIONS.run_starccm_Turbines      = ['starccm+      -batch ../../macros/_main_ROMS_nesting_step2_Turbines.java      -np ${PBS_NP} -machinefile ${PBS_NODEFILE} -licpath ' lic_server ' -batch-report ' OPTIONS.casename       '.sim 2>&1 | tee log.' OPTIONS.casename];
+    OPTIONS.run_starccm_Mapping_Flood = ['starccm+      -batch ../../macros/_main_ROMS_nesting_step3_Mapping_Flood.java -np ${PBS_NP} -machinefile ${PBS_NODEFILE} -licpath ' lic_server ' -batch-report ' OPTIONS.casename '__init.sim 2>&1 | tee log.' OPTIONS.casename];
+    OPTIONS.run_starccm_Mapping_Ebb   = ['starccm+      -batch ../../macros/_main_ROMS_nesting_step3_Mapping_Ebb.java   -np ${PBS_NP} -machinefile ${PBS_NODEFILE} -licpath ' lic_server ' -batch-report ' OPTIONS.casename '__init.sim 2>&1 | tee log.' OPTIONS.casename];
+    OPTIONS.run_starccm_Solver        = ['starccm+      -batch ../../macros/_main_ROMS_nesting_step4_Solution.java      -np ${PBS_NP} -machinefile ${PBS_NODEFILE} -licpath ' lic_server ' -batch-report ' OPTIONS.casename '__init.sim 2>&1 | tee log.' OPTIONS.casename];
 else
     % if on your local workstation, PBS variables are not used, and the license server is different
-    OPTIONS.run_starccm_command1 = ['starccm+ -new -batch ../../macros/_main_ROMS_nesting_step1_Meshing.java -np ' num2str(OPTIONS.nCPUs) ' -licpath ' lic_server ' -batch-report ' OPTIONS.casename '.sim 2>&1 | tee log.' OPTIONS.casename];
-    OPTIONS.run_starccm_command2 = ['starccm+      -batch ../../macros/_main_ROMS_nesting_step2_Solution.java -np ' num2str(OPTIONS.nCPUs) ' -licpath ' lic_server ' -batch-report ' OPTIONS.casename '.sim 2>&1 | tee log.' OPTIONS.casename];
-%     run_starccm_command2 = ['starccm+ -batch macros/AMR_Initialize.java -np ' num2str(Mooring.OptionsCFD.nCPUs) ' -licpath ' lic_server ' -batch-report runs_' Mooring.casename '.sim 2>&1 | tee log.' Mooring.casename];
-%     run_starccm_command3 = ['starccm+ -batch macros/AMR_Main.java -np ' num2str(Mooring.OptionsCFD.nCPUs) ' -licpath ' lic_server ' -batch-report runs_' Mooring.casename '.sim 2>&1 | tee log.' Mooring.casename];
+    OPTIONS.run_starccm_Meshing       = ['starccm+ -new -batch ../../macros/_main_ROMS_nesting_step1_Meshing.java       -np ' num2str(OPTIONS.nCPUs) ' -licpath ' lic_server ' -batch-report ' OPTIONS.casename       '.sim 2>&1 | tee log.' OPTIONS.casename];
+    OPTIONS.run_starccm_Turbines      = ['starccm+      -batch ../../macros/_main_ROMS_nesting_step2_Turbines.java      -np ' num2str(OPTIONS.nCPUs) ' -licpath ' lic_server ' -batch-report ' OPTIONS.casename       '.sim 2>&1 | tee log.' OPTIONS.casename];
+    OPTIONS.run_starccm_Mapping_Flood = ['starccm+      -batch ../../macros/_main_ROMS_nesting_step3_Mapping_Flood.java -np ' num2str(OPTIONS.nCPUs) ' -licpath ' lic_server ' -batch-report ' OPTIONS.casename '__init.sim 2>&1 | tee log.' OPTIONS.casename];
+    OPTIONS.run_starccm_Mapping_Ebb   = ['starccm+      -batch ../../macros/_main_ROMS_nesting_step3_Mapping_Ebb.java   -np ' num2str(OPTIONS.nCPUs) ' -licpath ' lic_server ' -batch-report ' OPTIONS.casename '__init.sim 2>&1 | tee log.' OPTIONS.casename];
+    OPTIONS.run_starccm_Solver        = ['starccm+      -batch ../../macros/_main_ROMS_nesting_step4_Solution.java      -np ' num2str(OPTIONS.nCPUs) ' -licpath ' lic_server ' -batch-report ' OPTIONS.casename '__init.sim 2>&1 | tee log.' OPTIONS.casename];
 end
 
 

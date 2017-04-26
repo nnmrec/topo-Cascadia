@@ -39,21 +39,32 @@ public class physics_BC_InflowUniform_KEpsilon extends StarMacro {
       ((PressureBoundary) simulation_0.get(ConditionTypeManager.class).get(PressureBoundary.class));
 
 
-    Boundary boundary_1 = 
-      region_0.getBoundaryManager().getBoundary("Subtract.north");
-      boundary_1.setBoundaryType(inletBoundary_0);
+    Boundary boundary_12 = 
+      region_0.getBoundaryManager().getBoundary("Inlet");
 
-    Boundary boundary_2 = 
-      region_0.getBoundaryManager().getBoundary("Subtract.west");
-      boundary_2.setBoundaryType(inletBoundary_0);
+      boundary_12.setBoundaryType(inletBoundary_0);
 
-    Boundary boundary_3 = 
-      region_0.getBoundaryManager().getBoundary("Subtract.south");
-      boundary_3.setBoundaryType(pressureBoundary_0);
+    // Boundary boundary_1 = 
+    //   region_0.getBoundaryManager().getBoundary("Subtract.north");
+    //   boundary_1.setBoundaryType(inletBoundary_0);
 
-    Boundary boundary_4 = 
-      region_0.getBoundaryManager().getBoundary("Subtract.east");
-      boundary_4.setBoundaryType(pressureBoundary_0);
+    // Boundary boundary_2 = 
+    //   region_0.getBoundaryManager().getBoundary("Subtract.west");
+    //   boundary_2.setBoundaryType(inletBoundary_0);
+
+
+    Boundary boundary_34 = 
+      region_0.getBoundaryManager().getBoundary("Outlet");
+      
+      boundary_34.setBoundaryType(pressureBoundary_0);
+
+    // Boundary boundary_3 = 
+    //   region_0.getBoundaryManager().getBoundary("Subtract.south");
+    //   boundary_3.setBoundaryType(pressureBoundary_0);
+
+    // Boundary boundary_4 = 
+    //   region_0.getBoundaryManager().getBoundary("Subtract.east");
+    //   boundary_4.setBoundaryType(pressureBoundary_0);
 
     Boundary boundary_5 = 
       region_0.getBoundaryManager().getBoundary("Subtract.seasurface");
@@ -142,20 +153,12 @@ public class physics_BC_InflowUniform_KEpsilon extends StarMacro {
 
 
 
-    
+    boundary_12.getConditions().get(KeTurbSpecOption.class).setSelected(KeTurbSpecOption.Type.INTENSITY_LENGTH_SCALE);
 
-    // Boundary boundary_1 = 
-    //   // region_0.getBoundaryManager().getBoundary("Inlet");
-    // // region_0.getBoundaryManager().getBoundary("Block.Inlet");
-    // region_0.getBoundaryManager().getBoundary("Subtract.north");
-
-    // boundary_1.getConditions().get(KwTurbSpecOption.class).setSelected(KwTurbSpecOption.Type.INTENSITY_LENGTH_SCALE);
-    boundary_1.getConditions().get(KeTurbSpecOption.class).setSelected(KeTurbSpecOption.Type.INTENSITY_LENGTH_SCALE);
-
-    boundary_1.getConditions().get(InletVelocityOption.class).setSelected(InletVelocityOption.Type.COMPONENTS);
+    boundary_12.getConditions().get(InletVelocityOption.class).setSelected(InletVelocityOption.Type.COMPONENTS);
 
     TurbulenceIntensityProfile turbulenceIntensityProfile_1 = 
-      boundary_1.getValues().get(TurbulenceIntensityProfile.class);
+      boundary_12.getValues().get(TurbulenceIntensityProfile.class);
 
     turbulenceIntensityProfile_1.setMethod(FunctionScalarProfileMethod.class);
 
@@ -165,7 +168,7 @@ public class physics_BC_InflowUniform_KEpsilon extends StarMacro {
     turbulenceIntensityProfile_1.getMethod(ConstantScalarProfileMethod.class).getQuantity().setValue(Double.parseDouble(userFieldFunction_init_TI.getDefinition()));
 
     TurbulentLengthScaleProfile turbulentLengthScaleProfile_1 = 
-      boundary_1.getValues().get(TurbulentLengthScaleProfile.class);
+      boundary_12.getValues().get(TurbulentLengthScaleProfile.class);
 
     turbulentLengthScaleProfile_1.setMethod(FunctionScalarProfileMethod.class);
 
@@ -175,9 +178,9 @@ public class physics_BC_InflowUniform_KEpsilon extends StarMacro {
     turbulentLengthScaleProfile_1.getMethod(ConstantScalarProfileMethod.class).getQuantity().setValue(Double.parseDouble(userFieldFunction_init_Lturb.getDefinition()));
 
     VelocityProfile velocityProfile_1 = 
-      boundary_1.getValues().get(VelocityProfile.class);
+      boundary_12.getValues().get(VelocityProfile.class);
 
-    // boundary_1.getConditions().get(InletVelocityOption.class).setSelected(InletVelocityOption.Type.COMPONENTS);
+    // boundary_12.getConditions().get(InletVelocityOption.class).setSelected(InletVelocityOption.Type.COMPONENTS);
 
     velocityProfile_1.setMethod(ConstantVectorProfileMethod.class);
 
@@ -188,61 +191,101 @@ public class physics_BC_InflowUniform_KEpsilon extends StarMacro {
 
 
 
+//     // Boundary boundary_1 = 
+//     //   // region_0.getBoundaryManager().getBoundary("Inlet");
+//     // // region_0.getBoundaryManager().getBoundary("Block.Inlet");
+//     // region_0.getBoundaryManager().getBoundary("Subtract.north");
+
+//     // boundary_1.getConditions().get(KwTurbSpecOption.class).setSelected(KwTurbSpecOption.Type.INTENSITY_LENGTH_SCALE);
+//     boundary_1.getConditions().get(KeTurbSpecOption.class).setSelected(KeTurbSpecOption.Type.INTENSITY_LENGTH_SCALE);
+
+//     boundary_1.getConditions().get(InletVelocityOption.class).setSelected(InletVelocityOption.Type.COMPONENTS);
+
+//     TurbulenceIntensityProfile turbulenceIntensityProfile_1 = 
+//       boundary_1.getValues().get(TurbulenceIntensityProfile.class);
+
+//     turbulenceIntensityProfile_1.setMethod(FunctionScalarProfileMethod.class);
+
+//     turbulenceIntensityProfile_1.setMethod(ConstantScalarProfileMethod.class);
+
+//     // turbulenceIntensityProfile_1.getMethod(ConstantScalarProfileMethod.class).getQuantity().setValue(init_TI);
+//     turbulenceIntensityProfile_1.getMethod(ConstantScalarProfileMethod.class).getQuantity().setValue(Double.parseDouble(userFieldFunction_init_TI.getDefinition()));
+
+//     TurbulentLengthScaleProfile turbulentLengthScaleProfile_1 = 
+//       boundary_1.getValues().get(TurbulentLengthScaleProfile.class);
+
+//     turbulentLengthScaleProfile_1.setMethod(FunctionScalarProfileMethod.class);
+
+//     turbulentLengthScaleProfile_1.setMethod(ConstantScalarProfileMethod.class);
+
+//     // turbulentLengthScaleProfile_1.getMethod(ConstantScalarProfileMethod.class).getQuantity().setValue(init_Lturb);
+//     turbulentLengthScaleProfile_1.getMethod(ConstantScalarProfileMethod.class).getQuantity().setValue(Double.parseDouble(userFieldFunction_init_Lturb.getDefinition()));
+
+//     VelocityProfile velocityProfile_1 = 
+//       boundary_1.getValues().get(VelocityProfile.class);
+
+//     // boundary_1.getConditions().get(InletVelocityOption.class).setSelected(InletVelocityOption.Type.COMPONENTS);
+
+//     velocityProfile_1.setMethod(ConstantVectorProfileMethod.class);
+
+//     // velocityProfile_1.getMethod(ConstantVectorProfileMethod.class).getQuantity().setComponents(inlet_Vx, inlet_Vy, inlet_Vz);
+//     velocityProfile_1.getMethod(ConstantVectorProfileMethod.class).getQuantity().setComponents(Double.parseDouble(userFieldFunction_inlet_Vx.getDefinition()), 
+//                                                                                                Double.parseDouble(userFieldFunction_inlet_Vy.getDefinition()), 
+//                                                                                                Double.parseDouble(userFieldFunction_inlet_Vz.getDefinition()));
 
 
-// Boundary boundary_2 = 
-//       // region_0.getBoundaryManager().getBoundary("Inlet");
-//     // region_0.getBoundaryManager().getBoundary("Block.Inlet");
-//     region_0.getBoundaryManager().getBoundary("Subtract.west");
-
-    // boundary_2.getConditions().get(KwTurbSpecOption.class).setSelected(KwTurbSpecOption.Type.INTENSITY_LENGTH_SCALE);
-    boundary_2.getConditions().get(KeTurbSpecOption.class).setSelected(KeTurbSpecOption.Type.INTENSITY_LENGTH_SCALE);
-
-    boundary_2.getConditions().get(InletVelocityOption.class).setSelected(InletVelocityOption.Type.COMPONENTS);
-
-    TurbulenceIntensityProfile turbulenceIntensityProfile_2 = 
-      boundary_2.getValues().get(TurbulenceIntensityProfile.class);
-
-    turbulenceIntensityProfile_2.setMethod(FunctionScalarProfileMethod.class);
-
-    turbulenceIntensityProfile_2.setMethod(ConstantScalarProfileMethod.class);
-
-    // turbulenceIntensityProfile_2.getMethod(ConstantScalarProfileMethod.class).getQuantity().setValue(init_TI);
-    turbulenceIntensityProfile_2.getMethod(ConstantScalarProfileMethod.class).getQuantity().setValue(Double.parseDouble(userFieldFunction_init_TI.getDefinition()));
-
-    TurbulentLengthScaleProfile turbulentLengthScaleProfile_2 = 
-      boundary_2.getValues().get(TurbulentLengthScaleProfile.class);
-
-    turbulentLengthScaleProfile_2.setMethod(FunctionScalarProfileMethod.class);
-
-    turbulentLengthScaleProfile_2.setMethod(ConstantScalarProfileMethod.class);
-
-    // turbulentLengthScaleProfile_2.getMethod(ConstantScalarProfileMethod.class).getQuantity().setValue(init_Lturb);
-    turbulentLengthScaleProfile_2.getMethod(ConstantScalarProfileMethod.class).getQuantity().setValue(Double.parseDouble(userFieldFunction_init_Lturb.getDefinition()));
-
-    VelocityProfile velocityProfile_2 = 
-      boundary_2.getValues().get(VelocityProfile.class);
-
-    // boundary_2.getConditions().get(InletVelocityOption.class).setSelected(InletVelocityOption.Type.COMPONENTS);
-
-    velocityProfile_2.setMethod(ConstantVectorProfileMethod.class);
-
-    // velocityProfile_2.getMethod(ConstantVectorProfileMethod.class).getQuantity().setComponents(inlet_Vx, inlet_Vy, inlet_Vz);
-    velocityProfile_2.getMethod(ConstantVectorProfileMethod.class).getQuantity().setComponents(Double.parseDouble(userFieldFunction_inlet_Vx.getDefinition()), 
-                                                                                               Double.parseDouble(userFieldFunction_inlet_Vy.getDefinition()), 
-                                                                                               Double.parseDouble(userFieldFunction_inlet_Vz.getDefinition()));
 
 
 
-    // Boundary boundary_3 = 
-    //   // region_0.getBoundaryManager().getBoundary("Block.Outlet");
-    //   region_0.getBoundaryManager().getBoundary("Subtract.south");
+// // Boundary boundary_2 = 
+// //       // region_0.getBoundaryManager().getBoundary("Inlet");
+// //     // region_0.getBoundaryManager().getBoundary("Block.Inlet");
+// //     region_0.getBoundaryManager().getBoundary("Subtract.west");
 
-    // boundary_3.getConditions().get(KwTurbSpecOption.class).setSelected(KwTurbSpecOption.Type.INTENSITY_LENGTH_SCALE);
-    boundary_3.getConditions().get(KeTurbSpecOption.class).setSelected(KeTurbSpecOption.Type.INTENSITY_LENGTH_SCALE);
+//     // boundary_2.getConditions().get(KwTurbSpecOption.class).setSelected(KwTurbSpecOption.Type.INTENSITY_LENGTH_SCALE);
+//     boundary_2.getConditions().get(KeTurbSpecOption.class).setSelected(KeTurbSpecOption.Type.INTENSITY_LENGTH_SCALE);
+
+//     boundary_2.getConditions().get(InletVelocityOption.class).setSelected(InletVelocityOption.Type.COMPONENTS);
+
+//     TurbulenceIntensityProfile turbulenceIntensityProfile_2 = 
+//       boundary_2.getValues().get(TurbulenceIntensityProfile.class);
+
+//     turbulenceIntensityProfile_2.setMethod(FunctionScalarProfileMethod.class);
+
+//     turbulenceIntensityProfile_2.setMethod(ConstantScalarProfileMethod.class);
+
+//     // turbulenceIntensityProfile_2.getMethod(ConstantScalarProfileMethod.class).getQuantity().setValue(init_TI);
+//     turbulenceIntensityProfile_2.getMethod(ConstantScalarProfileMethod.class).getQuantity().setValue(Double.parseDouble(userFieldFunction_init_TI.getDefinition()));
+
+//     TurbulentLengthScaleProfile turbulentLengthScaleProfile_2 = 
+//       boundary_2.getValues().get(TurbulentLengthScaleProfile.class);
+
+//     turbulentLengthScaleProfile_2.setMethod(FunctionScalarProfileMethod.class);
+
+//     turbulentLengthScaleProfile_2.setMethod(ConstantScalarProfileMethod.class);
+
+//     // turbulentLengthScaleProfile_2.getMethod(ConstantScalarProfileMethod.class).getQuantity().setValue(init_Lturb);
+//     turbulentLengthScaleProfile_2.getMethod(ConstantScalarProfileMethod.class).getQuantity().setValue(Double.parseDouble(userFieldFunction_init_Lturb.getDefinition()));
+
+//     VelocityProfile velocityProfile_2 = 
+//       boundary_2.getValues().get(VelocityProfile.class);
+
+//     // boundary_2.getConditions().get(InletVelocityOption.class).setSelected(InletVelocityOption.Type.COMPONENTS);
+
+//     velocityProfile_2.setMethod(ConstantVectorProfileMethod.class);
+
+//     // velocityProfile_2.getMethod(ConstantVectorProfileMethod.class).getQuantity().setComponents(inlet_Vx, inlet_Vy, inlet_Vz);
+//     velocityProfile_2.getMethod(ConstantVectorProfileMethod.class).getQuantity().setComponents(Double.parseDouble(userFieldFunction_inlet_Vx.getDefinition()), 
+//                                                                                                Double.parseDouble(userFieldFunction_inlet_Vy.getDefinition()), 
+//                                                                                                Double.parseDouble(userFieldFunction_inlet_Vz.getDefinition()));
+
+
+
+
+    boundary_34.getConditions().get(KeTurbSpecOption.class).setSelected(KeTurbSpecOption.Type.INTENSITY_LENGTH_SCALE);
 
     TurbulenceIntensityProfile turbulenceIntensityProfile_3 = 
-      boundary_3.getValues().get(TurbulenceIntensityProfile.class);
+      boundary_34.getValues().get(TurbulenceIntensityProfile.class);
 
     turbulenceIntensityProfile_3.setMethod(FunctionScalarProfileMethod.class);
 
@@ -252,7 +295,7 @@ public class physics_BC_InflowUniform_KEpsilon extends StarMacro {
     turbulenceIntensityProfile_3.getMethod(ConstantScalarProfileMethod.class).getQuantity().setValue(Double.parseDouble(userFieldFunction_init_TI.getDefinition()));
 
     TurbulentLengthScaleProfile turbulentLengthScaleProfile_3 = 
-      boundary_3.getValues().get(TurbulentLengthScaleProfile.class);
+      boundary_34.getValues().get(TurbulentLengthScaleProfile.class);
 
     turbulentLengthScaleProfile_3.setMethod(FunctionScalarProfileMethod.class);
 
@@ -262,32 +305,61 @@ public class physics_BC_InflowUniform_KEpsilon extends StarMacro {
     turbulentLengthScaleProfile_3.getMethod(ConstantScalarProfileMethod.class).getQuantity().setValue(Double.parseDouble(userFieldFunction_init_Lturb.getDefinition()));
 
 
-    // Boundary boundary_4 = 
-    //   // region_0.getBoundaryManager().getBoundary("Block.Outlet");
-    //   region_0.getBoundaryManager().getBoundary("Subtract.east");
 
-    // boundary_4.getConditions().get(KwTurbSpecOption.class).setSelected(KwTurbSpecOption.Type.INTENSITY_LENGTH_SCALE);
-    boundary_4.getConditions().get(KeTurbSpecOption.class).setSelected(KeTurbSpecOption.Type.INTENSITY_LENGTH_SCALE);
+    // // Boundary boundary_3 = 
+    // //   // region_0.getBoundaryManager().getBoundary("Block.Outlet");
+    // //   region_0.getBoundaryManager().getBoundary("Subtract.south");
 
-    TurbulenceIntensityProfile turbulenceIntensityProfile_4 = 
-      boundary_4.getValues().get(TurbulenceIntensityProfile.class);
+    // // boundary_3.getConditions().get(KwTurbSpecOption.class).setSelected(KwTurbSpecOption.Type.INTENSITY_LENGTH_SCALE);
+    // boundary_3.getConditions().get(KeTurbSpecOption.class).setSelected(KeTurbSpecOption.Type.INTENSITY_LENGTH_SCALE);
 
-    turbulenceIntensityProfile_4.setMethod(FunctionScalarProfileMethod.class);
+    // TurbulenceIntensityProfile turbulenceIntensityProfile_3 = 
+    //   boundary_3.getValues().get(TurbulenceIntensityProfile.class);
 
-    turbulenceIntensityProfile_4.setMethod(ConstantScalarProfileMethod.class);
+    // turbulenceIntensityProfile_3.setMethod(FunctionScalarProfileMethod.class);
 
-    // turbulenceIntensityProfile_4.getMethod(ConstantScalarProfileMethod.class).getQuantity().setValue(init_TI);
-    turbulenceIntensityProfile_4.getMethod(ConstantScalarProfileMethod.class).getQuantity().setValue(Double.parseDouble(userFieldFunction_init_TI.getDefinition()));
+    // turbulenceIntensityProfile_3.setMethod(ConstantScalarProfileMethod.class);
 
-    TurbulentLengthScaleProfile turbulentLengthScaleProfile_4 = 
-      boundary_4.getValues().get(TurbulentLengthScaleProfile.class);
+    // // turbulenceIntensityProfile_3.getMethod(ConstantScalarProfileMethod.class).getQuantity().setValue(init_TI);
+    // turbulenceIntensityProfile_3.getMethod(ConstantScalarProfileMethod.class).getQuantity().setValue(Double.parseDouble(userFieldFunction_init_TI.getDefinition()));
 
-    turbulentLengthScaleProfile_4.setMethod(FunctionScalarProfileMethod.class);
+    // TurbulentLengthScaleProfile turbulentLengthScaleProfile_3 = 
+    //   boundary_3.getValues().get(TurbulentLengthScaleProfile.class);
 
-    turbulentLengthScaleProfile_4.setMethod(ConstantScalarProfileMethod.class);
+    // turbulentLengthScaleProfile_3.setMethod(FunctionScalarProfileMethod.class);
 
-    // turbulentLengthScaleProfile_4.getMethod(ConstantScalarProfileMethod.class).getQuantity().setValue(init_Lturb);
-    turbulentLengthScaleProfile_4.getMethod(ConstantScalarProfileMethod.class).getQuantity().setValue(Double.parseDouble(userFieldFunction_init_Lturb.getDefinition()));
+    // turbulentLengthScaleProfile_3.setMethod(ConstantScalarProfileMethod.class);
+
+    // // turbulentLengthScaleProfile_3.getMethod(ConstantScalarProfileMethod.class).getQuantity().setValue(init_Lturb);
+    // turbulentLengthScaleProfile_3.getMethod(ConstantScalarProfileMethod.class).getQuantity().setValue(Double.parseDouble(userFieldFunction_init_Lturb.getDefinition()));
+
+
+    // // Boundary boundary_4 = 
+    // //   // region_0.getBoundaryManager().getBoundary("Block.Outlet");
+    // //   region_0.getBoundaryManager().getBoundary("Subtract.east");
+
+    // // boundary_4.getConditions().get(KwTurbSpecOption.class).setSelected(KwTurbSpecOption.Type.INTENSITY_LENGTH_SCALE);
+    // boundary_4.getConditions().get(KeTurbSpecOption.class).setSelected(KeTurbSpecOption.Type.INTENSITY_LENGTH_SCALE);
+
+    // TurbulenceIntensityProfile turbulenceIntensityProfile_4 = 
+    //   boundary_4.getValues().get(TurbulenceIntensityProfile.class);
+
+    // turbulenceIntensityProfile_4.setMethod(FunctionScalarProfileMethod.class);
+
+    // turbulenceIntensityProfile_4.setMethod(ConstantScalarProfileMethod.class);
+
+    // // turbulenceIntensityProfile_4.getMethod(ConstantScalarProfileMethod.class).getQuantity().setValue(init_TI);
+    // turbulenceIntensityProfile_4.getMethod(ConstantScalarProfileMethod.class).getQuantity().setValue(Double.parseDouble(userFieldFunction_init_TI.getDefinition()));
+
+    // TurbulentLengthScaleProfile turbulentLengthScaleProfile_4 = 
+    //   boundary_4.getValues().get(TurbulentLengthScaleProfile.class);
+
+    // turbulentLengthScaleProfile_4.setMethod(FunctionScalarProfileMethod.class);
+
+    // turbulentLengthScaleProfile_4.setMethod(ConstantScalarProfileMethod.class);
+
+    // // turbulentLengthScaleProfile_4.getMethod(ConstantScalarProfileMethod.class).getQuantity().setValue(init_Lturb);
+    // turbulentLengthScaleProfile_4.getMethod(ConstantScalarProfileMethod.class).getQuantity().setValue(Double.parseDouble(userFieldFunction_init_Lturb.getDefinition()));
 
 
 

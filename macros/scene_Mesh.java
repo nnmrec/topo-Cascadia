@@ -58,11 +58,15 @@ public class scene_Mesh extends StarMacro {
 
     // Boundary boundary_3 = 
     //   region_0.getBoundaryManager().getBoundary("Block.Seabed");
-    Boundary boundary_0 = 
-      region_0.getBoundaryManager().getBoundary("Subtract.north");
+    
+    Boundary boundary_01 = 
+      region_0.getBoundaryManager().getBoundary("Inlet");
 
-    Boundary boundary_1 = 
-      region_0.getBoundaryManager().getBoundary("Subtract.west");
+    // Boundary boundary_0 = 
+    //   region_0.getBoundaryManager().getBoundary("Subtract.north");
+
+    // Boundary boundary_1 = 
+    //   region_0.getBoundaryManager().getBoundary("Subtract.west");
 
     Boundary boundary_2 = 
       region_0.getBoundaryManager().getBoundary("Subtract.coast");
@@ -78,7 +82,9 @@ public class scene_Mesh extends StarMacro {
       ((PlaneSection) simulation_0.getPartManager().getObject("plane_streamwise"));
 
     // partDisplayer_1.getInputParts().setObjects(boundary_0, boundary_1, boundary_2, boundary_3, planeSection_0, planeSection_2);
-      partDisplayer_1.getInputParts().setObjects(boundary_0, boundary_1, boundary_2, planeSection_0, planeSection_2);
+      // partDisplayer_1.getInputParts().setObjects(boundary_0, boundary_1, boundary_2, planeSection_0, planeSection_2);
+
+      partDisplayer_1.getInputParts().setObjects(boundary_01, boundary_2, planeSection_0, planeSection_2);
 
     currentView_1.setInput(new DoubleVector(new double[] {553.4529778303305, 189.8165607578913, -72.61363492928587}), new DoubleVector(new double[] {-264.8548074343063, -429.9371091534496, 300.23575644638913}), new DoubleVector(new double[] {0.10216892545106032, 0.41040478437746775, 0.9061619191029051}), 431.53794734646476, 0);
 
@@ -106,7 +112,8 @@ public class scene_Mesh extends StarMacro {
 
     partDisplayer_1.getInputParts().setQuery(null);
 
-    partDisplayer_1.getInputParts().setObjects(boundary_0, boundary_1, boundary_2, boundary_3, planeSection_0, planeSection_2);
+    // partDisplayer_1.getInputParts().setObjects(boundary_0, boundary_1, boundary_2, boundary_3, planeSection_0, planeSection_2);
+    partDisplayer_1.getInputParts().setObjects(boundary_01, boundary_2, planeSection_0, planeSection_2);
 
     Legend legend_1 = 
       scalarDisplayer_1.getLegend();
