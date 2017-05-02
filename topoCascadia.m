@@ -284,8 +284,10 @@ disp('all done. cool dude.')
 oldName  = [OPTIONS.dir_case filesep OPTIONS.casename '.sim'];          % the original file is setup always for Flood Tide
 initName = [OPTIONS.dir_case filesep OPTIONS.casename '__init.sim'];    % this file is temporary
 
-nesting_times = [1812 1840 1912 1936];
-nesting_tide  = {'flood' 'ebb' 'flood' 'ebb'};
+nesting_times = OPTIONS.nesting_times;
+nesting_tide  = OPTIONS.nesting_tide;
+% nesting_times = [1812 1840 1912 1936];
+% nesting_tide  = {'flood' 'ebb' 'flood' 'ebb'};
 % nesting_times = [1812 1840];
 % nesting_tide  = {'flood' 'ebb'};
 
@@ -326,12 +328,4 @@ for n = 1:numel(nesting_times)
     system(['mv ' initName ' ' newName]);
     
 end
-
-         
-    
-% % run the solver on each time
-% for n = 1:numel(nesting_times)
-%     
-%     
-% end
 
