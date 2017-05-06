@@ -12,7 +12,7 @@
 #PBS -W group_list=hyak-motley
 
 ## NUMBER nodes, CPUs per node, and MEMORY
-#PBS -l nodes=1:ppn=16,mem=180gb
+#PBS -l nodes=1:ppn=16,mem=60gb
 
 ## WALLTIME (defaults to 1 hour, always specify for longer jobs)
 #PBS -l walltime=01:00:00
