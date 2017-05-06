@@ -241,7 +241,7 @@ cwd = pwd;
 cd(OPTIONS.dir_case)
 status_mesh = system(OPTIONS.run_starccm_Meshing);
 cd(cwd)
-
+disp('run_starccm_Meshing complete')
 
 % optionally, can run the solver for all cases without turbines now
 
@@ -250,6 +250,7 @@ cd(cwd)
 cd(OPTIONS.dir_case)
 status_turbines = system(OPTIONS.run_starccm_Turbines);
 cd(cwd)
+disp('run_starccm_Turbines complete')
 
 
 

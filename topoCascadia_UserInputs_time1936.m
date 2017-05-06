@@ -97,7 +97,7 @@ OPTIONS.fileTopo_ROMS       = 'inputs/ROMS/OUT/ocean_his_1812.nc';
 
 % OPTIONS.typeDEM = 'dem';
 OPTIONS.typeDEM = 'shadem';
-OPTIONS.runOnHPC = false;       % if true, modifies the STARCCM license server and commands
+OPTIONS.runOnHPC = true;       % if true, modifies the STARCCM license server and commands
 OPTIONS.runHeadless = true;     % if true, does not open any figures, does not open any interactive prompts (reads input files for all probe, turbine, figure inputs)
 OPTIONS.nCPUs    = 16;
 
@@ -121,12 +121,10 @@ OPTIONS.dir_ROMS = 'inputs/ROMS/OUT'; % directory with ROMS *.nc output files
 %% END OF USER INPUTS %%
 
 %% run the main topo_Cascadia program
-
 OPTIONS.casename = 'topo-Cascadia-ROMS-nesting';
 % OPTIONS.aa = [-122.69 -122.68 48.152 48.1569];         % ULTRA TINY smaller ~3 million cells test domain
 OPTIONS.aa = [-122.7355 -122.6783 48.1473 48.1821];    % Alberto's choice ~6 milld?
-OPTIONS.fileTopo_ROMS = 'inputs/ROMS/OUT/ocean_his_1936.nc'; % hour 5, flood
-OPTIONS.Seabed_Source = 'ROMS';
+OPTIONS.fileTopo_ROMS = 'inputs/ROMS/OUT/ocean_his_1936.nc';
 OPTIONS.nesting_times = [1936];
 OPTIONS.nesting_tide  = {'ebb'};
 topoCascadia(OPTIONS);

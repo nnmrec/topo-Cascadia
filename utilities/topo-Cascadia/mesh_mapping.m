@@ -44,7 +44,7 @@ for n = 1:mesh_n
     mesh_tke(n)   = F_tke(mesh_x(n), mesh_y(n), mesh_z(n));
     mesh_eps(n)   = F_eps(mesh_x(n), mesh_y(n), mesh_z(n));
     mesh_omg(n)   = F_omg(mesh_x(n), mesh_y(n), mesh_z(n));
-    n/mesh_n * 100 % progress
+    % n/mesh_n * 100 % progress ... careful this can make the log files very large (millions of lines)
 %     parfor_progress; % Count 
 end
 % parfor_progress(0); % Clean up

@@ -37,8 +37,10 @@ end
 % because of reasons, ensure that you have no files open when opening the parallel pool
 fclose('all');
 
-delete(gcp('nocreate')); % in case we are re-sizing the pool, or this option deactivated
-if OPTIONS.nCPUs > 1           
-    parpool('local',OPTIONS.nCPUs);
-end
+% delete(gcp('nocreate')); % in case we are re-sizing the pool, or this option deactivated
+% if OPTIONS.nCPUs > 1           
+%     parpool('local',OPTIONS.nCPUs);
+%     parpool(OPTIONS.nCPUs, 'IdleTimeout', Inf)
+% end
+
 
