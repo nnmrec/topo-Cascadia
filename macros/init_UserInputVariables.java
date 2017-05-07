@@ -57,7 +57,8 @@ public class init_UserInputVariables extends StarMacro {
 	// USER INPUTS (all these user inputs should be read from a CSV file instead)
 	// String path0    = "../inputs/user_inputs.csv";
 	// String path0    = "../../inputs/user_inputs_ROMS_nesting.csv";
-  String path0    = "../../inputs/user_inputs.csv";
+  // String path0    = "../../inputs/user_inputs.csv";
+  String path0    = "user_inputs.csv";
 
 	///////////////////////////////////////////////////////////////////////////////
 

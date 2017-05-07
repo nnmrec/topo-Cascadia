@@ -40,11 +40,13 @@ public class export_STAR_mesh_CSV extends StarMacro {
     Region region_0 = 
       simulation_0.getRegionManager().getRegion("Region");
 
-    // Boundary boundary_0 = 
-    //   region_0.getBoundaryManager().getBoundary("Subtract.coast");
+    Boundary boundary_0 = 
+      region_0.getBoundaryManager().getBoundary("Inlet");
+      // region_0.getBoundaryManager().getBoundary("Subtract.coast");
 
-    // Boundary boundary_1 = 
-    //   region_0.getBoundaryManager().getBoundary("Subtract.east");
+    Boundary boundary_1 = 
+      region_0.getBoundaryManager().getBoundary("Outlet");
+      // region_0.getBoundaryManager().getBoundary("Subtract.east");
 
     // Boundary boundary_2 = 
     //   region_0.getBoundaryManager().getBoundary("Subtract.north");
@@ -62,30 +64,28 @@ public class export_STAR_mesh_CSV extends StarMacro {
     //   region_0.getBoundaryManager().getBoundary("Subtract.west");
 
     // xyzInternalTable_1.getParts().setObjects(boundary_0, boundary_1, boundary_2, boundary_3, boundary_6, boundary_4, boundary_5);
+    xyzInternalTable_1.getParts().setObjects(boundary_0, boundary_1);
 
-    // xyzInternalTable_1.setPresentationName("mesh_centroids_BC");
+    xyzInternalTable_1.setPresentationName("mesh_centroids_BC");
 
-    XyzInternalTable xyzInternalTable_2 = 
-      simulation_0.getTableManager().createTable(XyzInternalTable.class);
+    xyzInternalTable_1.extract();
 
-    xyzInternalTable_2.setPresentationName("mesh_centroids_domain");
+    xyzInternalTable_1.export("mesh_centroids_BC.csv", ",");
 
-    xyzInternalTable_2.setFieldFunctions(new NeoObjectVector(new Object[] {vectorComponentFieldFunction_0, vectorComponentFieldFunction_1, vectorComponentFieldFunction_2}));
 
-    xyzInternalTable_2.getParts().setObjects(region_0);
+    // XyzInternalTable xyzInternalTable_2 = 
+    //   simulation_0.getTableManager().createTable(XyzInternalTable.class);
+
+    // xyzInternalTable_2.setPresentationName("mesh_centroids_domain");
+
+    // xyzInternalTable_2.setFieldFunctions(new NeoObjectVector(new Object[] {vectorComponentFieldFunction_0, vectorComponentFieldFunction_1, vectorComponentFieldFunction_2}));
+
+    // xyzInternalTable_2.getParts().setObjects(region_0);
+
+    // xyzInternalTable_2.extract();
+
+    // xyzInternalTable_2.export("mesh_centroids_domain.csv", ",");
 
     
-
-    xyzInternalTable_2.extract();
-
-
-    // xyzInternalTable_1.extract();
-    // xyzInternalTable_1.setPresentationName("mesh_centroids_boundaries");
-
-    // // xyzInternalTable_1.export("/mnt/data-RAID-1/danny/marine-star-master/topo-Cascadia/cases/test_ROMS_nesting/mesh_centroids_boundaries.csv", ",");
-    // xyzInternalTable_1.export("mesh_centroids_boundaries.csv", ",");
-
-    // xyzInternalTable_2.export("/mnt/data-RAID-1/danny/marine-star-master/topo-Cascadia/cases/test_ROMS_nesting/mesh_centroids_domain.csv", ",");
-    xyzInternalTable_2.export("mesh_centroids_domain.csv", ",");
   }
 }

@@ -9,7 +9,8 @@ function [] = mesh_mapping(OPTIONS, ROMS, csv_filename_aa)
 % pwd
 
 % read the CSV for the cell centroids of STARCCM mesh
-M      = csvread(['cases' filesep OPTIONS.casename filesep 'mesh_centroids_domain.csv'],2,1);
+% M      = csvread(['cases' filesep OPTIONS.casename filesep 'mesh_centroids_domain.csv'],2,1);
+M      = csvread(['cases' filesep OPTIONS.casename filesep 'mesh_centroids_BC.csv'],2,1);
 mesh_x = M(:,1);
 mesh_y = M(:,2);
 mesh_z = M(:,3);
@@ -33,7 +34,7 @@ F_tke   = scatteredInterpolant(ROMS.yEast_aa(:), ROMS.xNorth_aa(:), ROMS.zDown_a
 F_eps   = scatteredInterpolant(ROMS.yEast_aa(:), ROMS.xNorth_aa(:), ROMS.zDown_aa(:), ROMS.eps_aa(:),'linear','nearest');
 F_omg   = scatteredInterpolant(ROMS.yEast_aa(:), ROMS.xNorth_aa(:), ROMS.zDown_aa(:), ROMS.omg_aa(:),'linear','nearest');
 
-
+init_progress = 5; % 5 percent
 % for some reason this is much slower in a parfor loop
 % parfor_progress(mesh_n); % Initialize a progress bar that works in a parallel loop                            
 for n = 1:mesh_n
@@ -44,7 +45,14 @@ for n = 1:mesh_n
     mesh_tke(n)   = F_tke(mesh_x(n), mesh_y(n), mesh_z(n));
     mesh_eps(n)   = F_eps(mesh_x(n), mesh_y(n), mesh_z(n));
     mesh_omg(n)   = F_omg(mesh_x(n), mesh_y(n), mesh_z(n));
-    % n/mesh_n * 100 % progress ... careful this can make the log files very large (millions of lines)
+    
+    progress = n/mesh_n * 100; % progress
+    if progress >= init_progress
+        disp('mesh mapping completed percent (%)')
+        disp(progress)
+        init_progress = init_progress + 5;
+    end
+    
 %     parfor_progress; % Count 
 end
 % parfor_progress(0); % Clean up

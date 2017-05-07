@@ -224,7 +224,7 @@ OPTIONS = make_CFD_mesh(OPTIONS, Topo);
 % profile viewer
 
 save(['cases' filesep OPTIONS.casename filesep 'mesh_ROMS.mat'], ...
-     'OPTIONS','ROMS')
+     'OPTIONS','ROMS');
 
 %%
 % select_times_interest(OPTIONS, ROMS);
@@ -282,8 +282,8 @@ disp('all done. cool dude.')
 % loop through the ROMS files you want to use
 
 % keep a copy of the STARCCM sim file before boundary conditions are applied
-oldName  = [OPTIONS.dir_case filesep OPTIONS.casename '.sim'];          % the original file is setup always for Flood Tide
-initName = [OPTIONS.dir_case filesep OPTIONS.casename '__init.sim'];    % this file is temporary
+% oldName  = [OPTIONS.dir_case filesep OPTIONS.casename '.sim'];          % the original file is setup always for Flood Tide
+% initName = [OPTIONS.dir_case filesep OPTIONS.casename '__init.sim'];    % this file is temporary
 
 nesting_times = OPTIONS.nesting_times;
 nesting_tide  = OPTIONS.nesting_tide;
@@ -304,7 +304,7 @@ for n = 1:numel(nesting_times)
     
     % copy this mesh file and rename since the starccm macros always looks for the same temporary filename
     system(['cp ' csv_filename_aa ' ' OPTIONS.dir_case filesep 'STARCCM_tables_ROMS.csv']);
-    system(['cp ' oldName ' ' initName]);
+%     system(['cp ' oldName ' ' initName]);
     
     % Mapping between ROMS and STARCCM meshes, swap the inlets/outlets if needed   
     switch nesting_tide{n}
@@ -325,8 +325,8 @@ for n = 1:numel(nesting_times)
 % 	cd(cwd)
     
     % now for each ROMS timestep, rename the file for corresponding timestep
-    newName = [OPTIONS.dir_case filesep OPTIONS.casename '__ocean_his_' sprintf('%4.4d',nesting_times(n)) '.sim'];
-    system(['mv ' initName ' ' newName]);
+%     newName = [OPTIONS.dir_case filesep OPTIONS.casename '__ocean_his_' sprintf('%4.4d',nesting_times(n)) '.sim'];
+%     system(['mv ' initName ' ' newName]);
     
 end
 
