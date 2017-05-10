@@ -1,9 +1,11 @@
 function [] = select_times_interest(OPTIONS,ROMS)
 
+OPTIONS.dir_ROMS = '/mnt/data-RAID-1/danny/ainlet_Kristen/pong.tamu.edu/~kthyng/ai65/OUT'; % directory with ROMS *.nc output files
+
 % load the sea-surface elevation data
-% time_idx = [2 2880]; % begin and end time index
+time_idx = [2 2880]; % begin and end time index
 % time_idx = [1 100]; % begin and end time index
-time_idx = [1792 1965]; % begin and end time index, from Kristen's paper
+% time_idx = [1792 1965]; % begin and end time index, from Kristen's paper
 % time_idx = [4 10]; % begin and end time index, from Kristen's paper
 
 % time index
@@ -63,13 +65,13 @@ end
 %      'OPTIONS','ROMS')
 
 % profile viewer
-
+%%
 % time step was 5 seconds and model output saved every 15 minutes
 max_time = n_times * 15; % minutes
 hours    = ( 0 : 15/60 : (max_time-15)/60 )';
 
 figure
-subplot(4,1,1)
+subplot(3,1,1)
     hold on
     plot(hours, point_zeta(:,1), '-r')
     plot(hours, point_zeta(:,2), '-b')
@@ -81,20 +83,20 @@ subplot(4,1,1)
     box on
     xlim([0 ceil(max(hours))])
     
-subplot(4,1,2)
-    hold on
-    plot(hours, profile_speed_avg(:,1), '-r')
-    plot(hours, profile_speed_avg(:,2), '-b')
-    legend('point 1', 'point 2')
-    title('depth averaged speed')
-    xlabel('time (hours)')
-    ylabel('speed (m/s)')
-    grid on
-    box on
-    xlim([0 ceil(max(hours))])
+% subplot(4,1,2)
+%     hold on
+%     plot(hours, profile_speed_avg(:,1), '-r')
+%     plot(hours, profile_speed_avg(:,2), '-b')
+%     legend('point 1', 'point 2')
+%     title('depth averaged speed')
+%     xlabel('time (hours)')
+%     ylabel('speed (m/s)')
+%     grid on
+%     box on
+%     xlim([0 ceil(max(hours))])
     
     % speed at hub-height / ADV height
-subplot(4,1,3)
+subplot(3,1,2)
     hold on
     plot(hours, point_spd(:,1), '-r', 'LineWidth', 2)
     plot(hours, point_spd(:,2), '-b', 'LineWidth', 2)
@@ -120,7 +122,7 @@ subplot(4,1,3)
     xlim([0 ceil(max(hours))])
     
     % TKE at hub-height / ADV height
-subplot(4,1,4)
+subplot(3,1,3)
     hold on
     plot(hours, point_tke(:,1), '-r')
     plot(hours, point_tke(:,2), '-b')
@@ -131,7 +133,61 @@ subplot(4,1,4)
     grid on
     box on
     xlim([0 ceil(max(hours))])
+%%
 
+figure
+subplot(3,1,1)
+    hold on
+    plot(file_time, point_zeta(:,1), '-r')
+    plot(file_time, point_zeta(:,2), '-b')
+    legend('point 1', 'point 2')
+    title('free surface')
+    xlabel('timestamp')
+    ylabel('elevation (meters)')
+    grid on
+    box on
+    xlim([0 ceil(max(file_time))])
+        
+    % speed at hub-height / ADV height
+subplot(3,1,2)
+    hold on
+    plot(file_time, point_spd(:,1), '-r', 'LineWidth', 2)
+    plot(file_time, point_spd(:,2), '-b', 'LineWidth', 2)
+    legend('point 1', 'point 2')
+    title('current speed and direction at hub-height')
+    xlabel('timestamp')
+    ylabel('speed (m/s)')
+    grid on
+    box on
+    
+%     sf = 0.5;
+%     quiver(file_time', point_spd(:,1), ...
+%        sf.*point_u(:,1), sf.*point_v(:,1), ...
+%        'AutoScale','off', ...
+%        'ShowArrowHead','off', ...
+%        'Color', 'r');
+%     quiver(file_time', point_spd(:,2), ...
+%        sf.*point_u(:,2), sf.*point_v(:,2), ...
+%        'AutoScale','off', ...
+%        'ShowArrowHead','off', ...
+%        'Color', 'b');
+   
+    xlim([0 ceil(max(file_time))])
+    
+    % TKE at hub-height / ADV height
+subplot(3,1,3)
+    hold on
+    plot(file_time, point_tke(:,1), '-r')
+    plot(file_time, point_tke(:,2), '-b')
+    legend('point 1', 'point 2')
+    title('Turbulent Kinetic Energy at hub-height')
+    xlabel('timestamp')
+    ylabel('TKE (m^2/s^2)')
+    grid on
+    box on
+    xlim([0 ceil(max(file_time))])
+    
+    %%
 % figure
 % sf = 0.5;
 % % quiver(hours, zeros(size(hours)), point_u(:,1), point_v(:,1)); %quiver(x,y,u,v), where y = zeros(size(u))

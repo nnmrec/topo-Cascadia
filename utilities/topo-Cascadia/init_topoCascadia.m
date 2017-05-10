@@ -6,7 +6,7 @@ OPTIONS.dir_case = ['cases' filesep OPTIONS.casename];
 mkdir(OPTIONS.dir_case);
 
 %% copy the user_inputs file into the starccm case directory, then add the casename to the file
-system(['cp inputs/user_inputs.csv ' OPTIONS.dir_case filesep 'user_inputs.csv'])
+system(['cp inputs/user_inputs.csv ' OPTIONS.dir_case filesep 'user_inputs.csv']);
 % now append the CASE_NAME
 fid=fopen([OPTIONS.dir_case filesep 'user_inputs.csv'],'a');
 fprintf(fid,['CASE_NAME,' OPTIONS.casename]);

@@ -73,12 +73,12 @@ OPTIONS.dir_ROMS = 'inputs/ROMS/OUT'; % directory with ROMS *.nc output files
 %% END OF USER INPUTS %%
 
 %% run the main topo_Cascadia program
-OPTIONS.casename      = 'time-1812';
+OPTIONS.casename      = 'time-0568';
 OPTIONS.turbineFile   = 'rotors.csv';
-OPTIONS.runOnHPC      = false;
+OPTIONS.runOnHPC      = true;
 OPTIONS.aa            = [-122.7355 -122.6783 48.1473 48.1821];    % large domain for IJOME paper, and of the METS 2016 paper
-OPTIONS.fileTopo_ROMS = 'inputs/ROMS/OUT/ocean_his_1812.nc';
-OPTIONS.nesting_times = [1812];
+OPTIONS.fileTopo_ROMS = 'inputs/ROMS/OUT/ocean_his_0568.nc';
+OPTIONS.nesting_times = [0568];
 OPTIONS.nesting_tide  = {'flood'};
 topoCascadia(OPTIONS);
 
