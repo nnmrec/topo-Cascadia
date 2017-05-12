@@ -29,6 +29,7 @@ public class _main_ROMS_nesting_step5_PostProcessing extends StarMacro {
     // POST-PROCESSING
     // 
     // export important data here    
+    new StarScript(getActiveSimulation(), new java.io.File(resolvePath("scene_Velocity_2.java"))).play(); 
     new StarScript(getActiveSimulation(), new java.io.File(resolvePath("export_PointProbes.java"))).play(); 
     new StarScript(getActiveSimulation(), new java.io.File(resolvePath("export_VirtualDisks.java"))).play(); 
     new StarScript(getActiveSimulation(), new java.io.File(resolvePath("scene_SaveHardcopies.java"))).play();

@@ -41,8 +41,8 @@ public class fieldFunction_TurbulenceIntensity extends StarMacro {
     simulation_0.getRegionManager().getRegion("Region");
 
     Boundary boundary_0 = 
-      // region_0.getBoundaryManager().getBoundary("Inlet");
-    region_0.getBoundaryManager().getBoundary("Block.Inlet");
+    region_0.getBoundaryManager().getBoundary("Inlet");
+    // region_0.getBoundaryManager().getBoundary("Block.Inlet");
 
 
 
