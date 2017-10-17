@@ -25,11 +25,22 @@ end
 
 % the actual command to run starccm+
 if OPTIONS.runOnHPC
+
+if exist('OPTIONS.SLURM', 'var')
+    OPTIONS.run_starccm_Meshing       = ['starccm+ -new -batch ../../macros/_main_ROMS_nesting_step1_Meshing.java       -np 28 -licpath 27005@swlic01.s.uw.edu -mpi platform -mppflags "-e MPI_IB_PKEY=0xffff" -batch-report ' OPTIONS.casename '.sim 2>&1 | tee log.' OPTIONS.casename];
+    OPTIONS.run_starccm_Turbines      = ['starccm+      -batch ../../macros/_main_ROMS_nesting_step2_Turbines.java      -np 28 -licpath 27005@swlic01.s.uw.edu -mpi platform -mppflags "-e MPI_IB_PKEY=0xffff" -batch-report ' OPTIONS.casename '.sim 2>&1 | tee log.' OPTIONS.casename];
+    OPTIONS.run_starccm_Mapping_Flood = ['starccm+      -batch ../../macros/_main_ROMS_nesting_step3_Mapping_Flood.java -np 28 -licpath 27005@swlic01.s.uw.edu -mpi platform -mppflags "-e MPI_IB_PKEY=0xffff" -batch-report ' OPTIONS.casename '.sim 2>&1 | tee log.' OPTIONS.casename];
+    OPTIONS.run_starccm_Mapping_Ebb   = ['starccm+      -batch ../../macros/_main_ROMS_nesting_step3_Mapping_Ebb.java   -np 28 -licpath 27005@swlic01.s.uw.edu -mpi platform -mppflags "-e MPI_IB_PKEY=0xffff" -batch-report ' OPTIONS.casename '.sim 2>&1 | tee log.' OPTIONS.casename];
+    OPTIONS.run_starccm_Solver        = ['starccm+      -batch ../../macros/_main_ROMS_nesting_step4_Solution.java      -np 28 -licpath 27005@swlic01.s.uw.edu -mpi platform -mppflags "-e MPI_IB_PKEY=0xffff" -batch-report ' OPTIONS.casename '.sim 2>&1 | tee log.' OPTIONS.casename];
+
+else
     OPTIONS.run_starccm_Meshing       = ['starccm+ -new -batch ../../macros/_main_ROMS_nesting_step1_Meshing.java       -np ${PBS_NP} -machinefile ${PBS_NODEFILE} -licpath ' lic_server ' -batch-report ' OPTIONS.casename '.sim 2>&1 | tee log.' OPTIONS.casename];
     OPTIONS.run_starccm_Turbines      = ['starccm+      -batch ../../macros/_main_ROMS_nesting_step2_Turbines.java      -np ${PBS_NP} -machinefile ${PBS_NODEFILE} -licpath ' lic_server ' -batch-report ' OPTIONS.casename '.sim 2>&1 | tee log.' OPTIONS.casename];
     OPTIONS.run_starccm_Mapping_Flood = ['starccm+      -batch ../../macros/_main_ROMS_nesting_step3_Mapping_Flood.java -np ${PBS_NP} -machinefile ${PBS_NODEFILE} -licpath ' lic_server ' -batch-report ' OPTIONS.casename '.sim 2>&1 | tee log.' OPTIONS.casename];
     OPTIONS.run_starccm_Mapping_Ebb   = ['starccm+      -batch ../../macros/_main_ROMS_nesting_step3_Mapping_Ebb.java   -np ${PBS_NP} -machinefile ${PBS_NODEFILE} -licpath ' lic_server ' -batch-report ' OPTIONS.casename '.sim 2>&1 | tee log.' OPTIONS.casename];
     OPTIONS.run_starccm_Solver        = ['starccm+      -batch ../../macros/_main_ROMS_nesting_step4_Solution.java      -np ${PBS_NP} -machinefile ${PBS_NODEFILE} -licpath ' lic_server ' -batch-report ' OPTIONS.casename '.sim 2>&1 | tee log.' OPTIONS.casename];
+end
+
 else
     % if on your local workstation, PBS variables are not used, and the license server is different
     OPTIONS.run_starccm_Meshing       = ['starccm+ -new -batch ../../macros/_main_ROMS_nesting_step1_Meshing.java       -np ' num2str(OPTIONS.nCPUs) ' -licpath ' lic_server ' -batch-report ' OPTIONS.casename '.sim 2>&1 | tee log.' OPTIONS.casename];
