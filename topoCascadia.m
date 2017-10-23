@@ -59,6 +59,7 @@ addpath(genpath('utilities/topo-Cascadia'))
 
 % lots of these tools were found around the web, especially matlab file
 % exchange, some great stuff, thanks world ;)
+%
 % more info about MexCDF is here: http://mexcdf.sourceforge.net/downloads/
 % addpath(genpath('utilities/mexcdf/R2013a-and-above'))
 %     javaaddpath('utilities/mexcdf/R2013a-and-above/netcdfAll-4.3.jar');
@@ -83,6 +84,9 @@ addpath('utilities/writedxfline')
 addpath('utilities/circlePlane3D')
 addpath('utilities/CsvWriter')
 addpath('utilities/vtkwrite')
+addpath('utilities/par_save')
+addpath('utilities/hline')
+addpath('utilities/addaxis6')
 % csvwrite_with_headers
 % addpath(genpath('utilities/Roms_tools'))  note: this has errors related to function 'netcdf', use the mexcdf version included within ROMS_AGRIF
 addpath(genpath('utilities/ROMS_AGRIF'))
@@ -92,43 +96,6 @@ addpath(genpath('utilities/arrow'))
 % addpath(genpath('utilities/roms_wilkin'))
 % addpath('utilities/Arango_SVN_tools')
 
-% %% here are a bunch of other codes i tried to incorporate at some stage,
-% perhaps later they will be included within the code repository, but I
-% have to check all the licenses to make sure it's okay
-% 
-% % add the Pandora functions to search path (do I really need these? maybe just snctools, in case add my own versions)
-% addpath('/mnt/data-RAID-1/danny/marine-star-master/topo-Cascadia/utilities/pandora')
-% % addpath('/mnt/data-RAID-1/danny/marine-star-master/topo-Cascadia/utilities/pandora/Z_functions')
-% % 
-% % addpath(genpath('/mnt/data-RAID-1/danny/marine-star-master/topo-Cascadia/utilities/rslice'))
-% addpath(genpath('/mnt/data-RAID-1/danny/marine-star-master/topo-Cascadia/utilities/snc_roms_get_grid'))
-% 
-% addpath(genpath('/mnt/data-RAID-1/danny/marine-star-master/topo-Cascadia/utilities/shadem_v6/'))
-% addpath(genpath('/mnt/data-RAID-1/danny/marine-star-master/topo-Cascadia/utilities/stlTools/'))
-% addpath(genpath('/mnt/data-RAID-1/danny/marine-star-master/topo-Cascadia/utilities/linecurvature_version1b/'))
-% addpath('/mnt/data-RAID-1/danny/marine-star-master/topo-Cascadia/utilities/nearestneighbour/')
-% 
-% 
-% addpath('/mnt/data-RAID-1/danny/marine-star-master/topo-Cascadia/utilities/bezier_/')
-% % addpath('/mnt/data-RAID-1/danny/marine-star-master/topo-Cascadia/utilities/akima/')
-% addpath('/mnt/data-RAID-1/danny/marine-star-master/topo-Cascadia/utilities/interparc/')
-% addpath(genpath('/mnt/data-RAID-1/danny/marine-star-master/topo-Cascadia/utilities/RegularizeData3D/'))
-% addpath(genpath('/mnt/data-RAID-1/danny/marine-star-master/topo-Cascadia/utilities/lldistkm/'))
-% addpath(genpath('/mnt/data-RAID-1/danny/marine-star-master/topo-Cascadia/utilities/geodetic297/'))
-% addpath(genpath('/mnt/data-RAID-1/danny/marine-star-master/topo-Cascadia/utilities/InterPointDistanceMatrix/'))
-% addpath(genpath('/mnt/data-RAID-1/danny/marine-star-master/topo-Cascadia/utilities/geom3d-2016.03.02/'))
-% addpath(genpath('/mnt/data-RAID-1/danny/marine-star-master/topo-Cascadia/utilities/surf2solid/'))
-% addpath(genpath('/mnt/data-RAID-1/danny/marine-star-master/topo-Cascadia/utilities/writedxfline/'))
-% addpath(genpath('/mnt/data-RAID-1/danny/marine-star-master/topo-Cascadia/utilities/DXFLib_v0.9.1/'))
-
-% addpath(genpath('/mnt/data-RAID-1/danny/marine-star-master/topo-Cascadia/utilities/CsvWriter/'))
-% % addpath(genpath('/mnt/data-RAID-1/danny/marine-star-master/topo-Cascadia/utilities/Roms_tools/'))
-% addpath(genpath('/mnt/data-RAID-1/danny/marine-star-master/topo-Cascadia/utilities/ROMS_AGRIF/'))
-% % addpath(genpath('/mnt/data-RAID-1/danny/marine-star-master/topo-Cascadia/utilities/strings/'))
-% % addpath('/mnt/data-RAID-1/danny/marine-star-master/topo-Cascadia/utilities/fixgaps/')
-% % addpath(genpath('/mnt/data-RAID-1/danny/marine-star-master/topo-Cascadia/utilities/near2/'))
-% % addpath(genpath('/mnt/data-RAID-1/danny/marine-star-master/topo-Cascadia/utilities/lla2eceg/'))
-% % addpath('/mnt/data-RAID-1/danny/marine-star-master/topo-Cascadia/utilities/haxby/')
 
 %% 
 

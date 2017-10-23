@@ -1,4 +1,4 @@
-// STAR-CCM+ macro: scene_Velocity_2.java
+// STAR-CCM+ macro: scene_Velocity_2_ebb.java
 // Written by STAR-CCM+ 12.02.010
 package macro;
 
@@ -8,7 +8,7 @@ import star.common.*;
 import star.base.neo.*;
 import star.vis.*;
 
-public class scene_Velocity_2 extends StarMacro {
+public class scene_Velocity_2_ebb extends StarMacro {
 
   public void execute() {
     execute0();
@@ -257,6 +257,6 @@ public class scene_Velocity_2 extends StarMacro {
 
     legend_0.setNumberOfLabels(7);
 
-    scalarDisplayer_0.getScalarDisplayQuantity().setRange(new DoubleVector(new double[] {1.2, 2.4}));
+    scalarDisplayer_0.getScalarDisplayQuantity().setRange(new DoubleVector(new double[] {0.0, 1.4}));
   }
 }

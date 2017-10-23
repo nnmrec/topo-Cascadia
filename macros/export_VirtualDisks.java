@@ -27,7 +27,7 @@ public class export_VirtualDisks extends StarMacro {
     // String path2 = "../outputs/rotors-torque.csv";
     // String path0 = "rotors-velocity.csv";
     // String path1 = "rotors-thrust.csv";
-    String path2 = "rotors-torque.csv";
+    // String path2 = "rotors-torque.csv";
     ///////////////////////////////////////////////////////////////////////////////
     
     public void execute() {
@@ -47,13 +47,18 @@ public class export_VirtualDisks extends StarMacro {
         MonitorPlot monitorPlot_1 = 
           ((MonitorPlot) simulation_0.getPlotManager().getPlot("rotors-thrust"));
         // monitorPlot_1.export(resolvePath(path1), ",");
-        monitorPlot_0.export(resolvePath("../cases/" + caseName.getText()  + "/rotors-thrust.csv"), ",");
+        monitorPlot_1.export(resolvePath("../cases/" + caseName.getText()  + "/rotors-thrust.csv"), ",");
 
 
         MonitorPlot monitorPlot_2 = 
           ((MonitorPlot) simulation_0.getPlotManager().getPlot("rotors-torque"));
         // monitorPlot_2.export(resolvePath(path2), ",");
-          monitorPlot_0.export(resolvePath("../cases/" + caseName.getText()  + "/rotors-torque.csv"), ",");
+          monitorPlot_2.export(resolvePath("../cases/" + caseName.getText()  + "/rotors-torque.csv"), ",");
+
+        MonitorPlot monitorPlot_3 = 
+          ((MonitorPlot) simulation_0.getPlotManager().getPlot("Power"));
+        // monitorPlot_2.export(resolvePath(path2), ",");
+          monitorPlot_3.export(resolvePath("../cases/" + caseName.getText()  + "/rotors-power.csv"), ",");
 
 
     } 

@@ -24,19 +24,55 @@
 #PBS -m abe -M sale.danny@gmail.com
 
 ## LOAD modules needed
-module load matlab_2015b
 module load contrib/starccm_12.02.010
 
 ## RUN my simulation file in batch mode
-starSimFile="topo-Cascadia-ROMS-nesting"
-# ROMStime="1812"
 
-# matlab -nodesktop -nosplash < topoCascadia_UserInputs_time${ROMStime}.m 2>&1 | tee log.topoCascadia-time${ROMStime}
+# macro1='_main_ROMS_nesting_step5_PostProcessing.java'
+macro1='export_VerticalProfiles.java'
+PBS_NP='2'
+PBS_NODEFILE=''
+
+starSimFile="time-0568"
 cd cases/${starSimFile}
-echo 'running starccm from directory:'
-pwd
-starccm+ -batch ../../macros/_main_ROMS_nesting_step5_PostProcessing.java -np ${PBS_NP} -machinefile ${PBS_NODEFILE} -licpath 1999@mgmt2.hyak.local -batch-report ${starSimFile}.sim 2>&1 | tee log.post_${starSimFile}
-# cd ../..
-# mv cases/${starSimFile} cases/${starSimFile}_time${ROMStime}
+starccm+ -batch ../../macros/$macro1 -np ${PBS_NP} -machinefile ${PBS_NODEFILE} -licpath 27005@swlic01.s.uw.edu -batch-report ${starSimFile}.sim 2>&1 | tee log.post_${starSimFile}
+cd ../..
+
+starSimFile="time-0592"
+cd cases/${starSimFile}
+starccm+ -batch ../../macros/$macro1 -np ${PBS_NP} -machinefile ${PBS_NODEFILE} -licpath 27005@swlic01.s.uw.edu -batch-report ${starSimFile}.sim 2>&1 | tee log.post_${starSimFile}
+cd ../..
+
+starSimFile="time-0666"
+cd cases/${starSimFile}
+starccm+ -batch ../../macros/$macro1 -np ${PBS_NP} -machinefile ${PBS_NODEFILE} -licpath 27005@swlic01.s.uw.edu -batch-report ${starSimFile}.sim 2>&1 | tee log.post_${starSimFile}
+cd ../..
+
+starSimFile="time-0689"
+cd cases/${starSimFile}
+starccm+ -batch ../../macros/$macro1 -np ${PBS_NP} -machinefile ${PBS_NODEFILE} -licpath 27005@swlic01.s.uw.edu -batch-report ${starSimFile}.sim 2>&1 | tee log.post_${starSimFile}
+cd ../..
+
+
+
+starSimFile="time-1812"
+cd cases/${starSimFile}
+starccm+ -batch ../../macros/$macro1 -np ${PBS_NP} -machinefile ${PBS_NODEFILE} -licpath 27005@swlic01.s.uw.edu -batch-report ${starSimFile}.sim 2>&1 | tee log.post_${starSimFile}
+cd ../..
+
+starSimFile="time-1840"
+cd cases/${starSimFile}
+starccm+ -batch ../../macros/$macro1 -np ${PBS_NP} -machinefile ${PBS_NODEFILE} -licpath 27005@swlic01.s.uw.edu -batch-report ${starSimFile}.sim 2>&1 | tee log.post_${starSimFile}
+cd ../..
+
+starSimFile="time-1912"
+cd cases/${starSimFile}
+starccm+ -batch ../../macros/$macro1 -np ${PBS_NP} -machinefile ${PBS_NODEFILE} -licpath 27005@swlic01.s.uw.edu -batch-report ${starSimFile}.sim 2>&1 | tee log.post_${starSimFile}
+cd ../..
+
+starSimFile="time-1936"
+cd cases/${starSimFile}
+starccm+ -batch ../../macros/$macro1 -np ${PBS_NP} -machinefile ${PBS_NODEFILE} -licpath 27005@swlic01.s.uw.edu -batch-report ${starSimFile}.sim 2>&1 | tee log.post_${starSimFile}
+cd ../..
 
 echo 'all finished, have a nice day'
