@@ -52,8 +52,8 @@ OPTIONS.fileTopo_ROMS       = 'inputs/ROMS/OUT/ocean_his_1812.nc';
 % OPTIONS.typeDEM = 'dem';
 OPTIONS.typeDEM = 'shadem';
 
-OPTIONS.runOnHPC = true;        % if true, modifies the STARCCM license server and commands
-OPTIONS.runHeadless = true;     % if true, does not open any figures, does not open any interactive prompts (reads input files for all probe, turbine, figure inputs)
+OPTIONS.runOnHPC = false;        % if true, modifies the STARCCM license server and commands
+OPTIONS.runHeadless = false;     % if true, does not open any figures, does not open any interactive prompts (reads input files for all probe, turbine, figure inputs)
 OPTIONS.nCPUs    = 16;          % number of CPUs to run on local computer, ignored if running on supercomputer (set CPUs within a PBS script)
 
 % OPTIONS.aa                  = [-122.69 -122.68 48.152 48.1569];         % ULTRA TINY smaller ~3 million cells test domain (runs fast for debugging) 
@@ -63,6 +63,9 @@ OPTIONS.n_points = 2;                       % choose number of point probes to p
 % OPTIONS.point_y1 = [];                      % y-coordinate NED, point probe to plot ROMS tidal cycles, can be empty or a vector
 OPTIONS.point_x1 = [-122.7223, -122.7115];  % x-coordinate LON-LAT, point probe to plot ROMS tidal cycles, can be empty or a vector
 OPTIONS.point_y1 = [48.1617,     48.1767];  % y-coordinate LON-LAT, point probe to plot ROMS tidal cycles, can be empty or a vector
+
+OPTIONS.profile_x1 = [-122.7223, -122.7115];  % x-coordinate LON-LAT, point probe to plot ROMS tidal cycles, can be empty or a vector
+OPTIONS.profile_y1 = [48.1617,     48.1767];  % y-coordinate LON-LAT, point probe to plot ROMS tidal cycles, can be empty or a vector
 
 OPTIONS.DEBUG_LEVEL = 0;
 

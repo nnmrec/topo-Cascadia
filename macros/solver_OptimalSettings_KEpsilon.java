@@ -51,6 +51,12 @@ public class solver_OptimalSettings_KEpsilon extends StarMacro {
 
     // keTurbSolver_0.setTurbulenceInitialization(false);
 
+    
+    ContinuityInitializer continuityInitializer_0 = 
+      segregatedFlowSolver_0.getContinuityInitializer();
+
+    continuityInitializer_0.setTolerance(0.001);
+
 
     KeTurbViscositySolver keTurbViscositySolver_0 = 
       ((KeTurbViscositySolver) simulation_0.getSolverManager().getSolver(KeTurbViscositySolver.class));

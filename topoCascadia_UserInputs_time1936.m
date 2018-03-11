@@ -58,11 +58,11 @@ OPTIONS.nCPUs    = 16;          % number of CPUs to run on local computer, ignor
 
 % OPTIONS.aa                  = [-122.69 -122.68 48.152 48.1569];         % ULTRA TINY smaller ~3 million cells test domain (runs fast for debugging) 
 
-OPTIONS.n_points = 2;                       % choose number of point probes to plot ROMS tidal cycles (ignored if point_x or point_y1 are non-empty)
+% OPTIONS.n_points = 2;                       % choose number of point probes to plot ROMS tidal cycles (ignored if point_x or point_y1 are non-empty)
 % OPTIONS.point_x1 = [];                      % x-coordinate NED, point probe to plot ROMS tidal cycles, can be empty or a vector
 % OPTIONS.point_y1 = [];                      % y-coordinate NED, point probe to plot ROMS tidal cycles, can be empty or a vector
-OPTIONS.point_x1 = [-122.7223, -122.7115];  % x-coordinate LON-LAT, point probe to plot ROMS tidal cycles, can be empty or a vector
-OPTIONS.point_y1 = [48.1617,     48.1767];  % y-coordinate LON-LAT, point probe to plot ROMS tidal cycles, can be empty or a vector
+% OPTIONS.point_x1 = [-122.7223, -122.7115];  % x-coordinate LON-LAT, point probe to plot ROMS tidal cycles, can be empty or a vector
+% OPTIONS.point_y1 = [48.1617,     48.1767];  % y-coordinate LON-LAT, point probe to plot ROMS tidal cycles, can be empty or a vector
 
 OPTIONS.DEBUG_LEVEL = 0;
 

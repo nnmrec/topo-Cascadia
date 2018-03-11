@@ -28,7 +28,7 @@ public class load_ROMS_BoundaryConditions_KEpsilon extends StarMacro {
 
     FileTable fileTable_0 = 
       // (FileTable) simulation_0.getTableManager().createFromFile(resolvePath("ROMS_xyzuvw_area_interest.csv"));
-      (FileTable) simulation_0.getTableManager().createFromFile(resolvePath("../cases/" + caseName.getText()  + "/STARCCM_tables_ROMS_area_interest.csv"));  
+      (FileTable) simulation_0.getTableManager().createFromFile(resolvePath("../cases/" + caseName.getText()  + "/STARCCM_tables_ROMS.csv"));  
 
     // FileTable fileTable_0 = 
     //   (FileTable) simulation_0.getTableManager().createFromFile(resolvePath("STARCCM_xyzuvw_area_interest.csv"));
@@ -90,38 +90,38 @@ public class load_ROMS_BoundaryConditions_KEpsilon extends StarMacro {
     // INLETS
 
     Boundary boundary_0 = 
-      region_0.getBoundaryManager().getBoundary("Subtract.north");
+      region_0.getBoundaryManager().getBoundary("Inlet");
 
     boundary_0.getConditions().get(KeTurbSpecOption.class).setSelected(KeTurbSpecOption.Type.K_EPSILON);
 
-    Boundary boundary_1 = 
-      region_0.getBoundaryManager().getBoundary("Subtract.west");
+    // Boundary boundary_1 = 
+    //   region_0.getBoundaryManager().getBoundary("Subtract.west");
 
-    boundary_1.getConditions().get(KeTurbSpecOption.class).setSelected(KeTurbSpecOption.Type.K_EPSILON);
+    // boundary_1.getConditions().get(KeTurbSpecOption.class).setSelected(KeTurbSpecOption.Type.K_EPSILON);
 
     VelocityProfile velocityProfile_1 = 
       boundary_0.getValues().get(VelocityProfile.class);
 
     velocityProfile_1.setMethod(XyzTabularVectorProfileMethod.class);
 
-    VelocityProfile velocityProfile_2 = 
-      boundary_1.getValues().get(VelocityProfile.class);
+    // VelocityProfile velocityProfile_2 = 
+    //   boundary_1.getValues().get(VelocityProfile.class);
 
-    velocityProfile_2.setMethod(XyzTabularVectorProfileMethod.class);
+    // velocityProfile_2.setMethod(XyzTabularVectorProfileMethod.class);
 
-    velocityProfile_2.getMethod(XyzTabularVectorProfileMethod.class).setTable(fileTable_0);
+    // velocityProfile_2.getMethod(XyzTabularVectorProfileMethod.class).setTable(fileTable_0);
 
     velocityProfile_1.getMethod(XyzTabularVectorProfileMethod.class).setTable(fileTable_0);
 
-    velocityProfile_2.getMethod(XyzTabularVectorProfileMethod.class).setXData("u");
+    // velocityProfile_2.getMethod(XyzTabularVectorProfileMethod.class).setXData("u");
 
     velocityProfile_1.getMethod(XyzTabularVectorProfileMethod.class).setXData("u");
 
-    velocityProfile_2.getMethod(XyzTabularVectorProfileMethod.class).setYData("v");
+    // velocityProfile_2.getMethod(XyzTabularVectorProfileMethod.class).setYData("v");
 
     velocityProfile_1.getMethod(XyzTabularVectorProfileMethod.class).setYData("v");
 
-    velocityProfile_2.getMethod(XyzTabularVectorProfileMethod.class).setZData("w");
+    // velocityProfile_2.getMethod(XyzTabularVectorProfileMethod.class).setZData("w");
 
     velocityProfile_1.getMethod(XyzTabularVectorProfileMethod.class).setZData("w");
 
@@ -130,24 +130,24 @@ public class load_ROMS_BoundaryConditions_KEpsilon extends StarMacro {
 
     turbulentKineticEnergyProfile_1.setMethod(TimeXyzTabularScalarProfileMethod.class);
 
-    TurbulentKineticEnergyProfile turbulentKineticEnergyProfile_2 = 
-      boundary_1.getValues().get(TurbulentKineticEnergyProfile.class);
+    // TurbulentKineticEnergyProfile turbulentKineticEnergyProfile_2 = 
+    //   boundary_1.getValues().get(TurbulentKineticEnergyProfile.class);
 
-    turbulentKineticEnergyProfile_2.setMethod(TimeXyzTabularScalarProfileMethod.class);
+    // turbulentKineticEnergyProfile_2.setMethod(TimeXyzTabularScalarProfileMethod.class);
 
     turbulentKineticEnergyProfile_1.getMethod(TimeXyzTabularScalarProfileMethod.class).setTable(fileTable_0);
 
-    turbulentKineticEnergyProfile_2.getMethod(TimeXyzTabularScalarProfileMethod.class).setTable(fileTable_0);
+    // turbulentKineticEnergyProfile_2.getMethod(TimeXyzTabularScalarProfileMethod.class).setTable(fileTable_0);
 
     turbulentKineticEnergyProfile_1.setMethod(XyzTabularScalarProfileMethod.class);
 
-    turbulentKineticEnergyProfile_2.setMethod(XyzTabularScalarProfileMethod.class);
+    // turbulentKineticEnergyProfile_2.setMethod(XyzTabularScalarProfileMethod.class);
 
-    turbulentKineticEnergyProfile_2.getMethod(XyzTabularScalarProfileMethod.class).setTable(fileTable_0);
+    // turbulentKineticEnergyProfile_2.getMethod(XyzTabularScalarProfileMethod.class).setTable(fileTable_0);
 
     turbulentKineticEnergyProfile_1.getMethod(XyzTabularScalarProfileMethod.class).setTable(fileTable_0);
 
-    turbulentKineticEnergyProfile_2.getMethod(XyzTabularScalarProfileMethod.class).setData("tke");
+    // turbulentKineticEnergyProfile_2.getMethod(XyzTabularScalarProfileMethod.class).setData("tke");
 
     turbulentKineticEnergyProfile_1.getMethod(XyzTabularScalarProfileMethod.class).setData("tke");
 
@@ -156,16 +156,16 @@ public class load_ROMS_BoundaryConditions_KEpsilon extends StarMacro {
 
     turbulentDissipationRateProfile_1.setMethod(XyzTabularScalarProfileMethod.class);
 
-    TurbulentDissipationRateProfile turbulentDissipationRateProfile_2 = 
-      boundary_1.getValues().get(TurbulentDissipationRateProfile.class);
+    // TurbulentDissipationRateProfile turbulentDissipationRateProfile_2 = 
+    //   boundary_1.getValues().get(TurbulentDissipationRateProfile.class);
 
-    turbulentDissipationRateProfile_2.setMethod(XyzTabularScalarProfileMethod.class);
+    // turbulentDissipationRateProfile_2.setMethod(XyzTabularScalarProfileMethod.class);
 
-    turbulentDissipationRateProfile_2.getMethod(XyzTabularScalarProfileMethod.class).setTable(fileTable_0);
+    // turbulentDissipationRateProfile_2.getMethod(XyzTabularScalarProfileMethod.class).setTable(fileTable_0);
 
     turbulentDissipationRateProfile_1.getMethod(XyzTabularScalarProfileMethod.class).setTable(fileTable_0);
 
-    turbulentDissipationRateProfile_2.getMethod(XyzTabularScalarProfileMethod.class).setData("eps");
+    // turbulentDissipationRateProfile_2.getMethod(XyzTabularScalarProfileMethod.class).setData("eps");
 
     turbulentDissipationRateProfile_1.getMethod(XyzTabularScalarProfileMethod.class).setData("eps");
 
@@ -179,59 +179,67 @@ public class load_ROMS_BoundaryConditions_KEpsilon extends StarMacro {
     // OUTLETS
 
     Boundary boundary_2 = 
-      region_0.getBoundaryManager().getBoundary("Subtract.east");
+      region_0.getBoundaryManager().getBoundary("Outlet");
 
     boundary_2.getConditions().get(KeTurbSpecOption.class).setSelected(KeTurbSpecOption.Type.K_EPSILON);
 
-    Boundary boundary_3 = 
-      region_0.getBoundaryManager().getBoundary("Subtract.south");
+    // // Boundary boundary_3 = 
+    // //   region_0.getBoundaryManager().getBoundary("Subtract.south");
 
-    boundary_3.getConditions().get(KeTurbSpecOption.class).setSelected(KeTurbSpecOption.Type.K_EPSILON);
+    // // boundary_3.getConditions().get(KeTurbSpecOption.class).setSelected(KeTurbSpecOption.Type.K_EPSILON);
 
     TurbulentKineticEnergyProfile turbulentKineticEnergyProfile_3 = 
       boundary_2.getValues().get(TurbulentKineticEnergyProfile.class);
 
     turbulentKineticEnergyProfile_3.setMethod(XyzTabularScalarProfileMethod.class);
 
-    TurbulentKineticEnergyProfile turbulentKineticEnergyProfile_4 = 
-      boundary_3.getValues().get(TurbulentKineticEnergyProfile.class);
+    // // TurbulentKineticEnergyProfile turbulentKineticEnergyProfile_4 = 
+    // //   boundary_3.getValues().get(TurbulentKineticEnergyProfile.class);
 
-    turbulentKineticEnergyProfile_4.setMethod(XyzTabularScalarProfileMethod.class);
+    // // turbulentKineticEnergyProfile_4.setMethod(XyzTabularScalarProfileMethod.class);
 
     turbulentKineticEnergyProfile_3.getMethod(XyzTabularScalarProfileMethod.class).setTable(fileTable_0);
 
-    turbulentKineticEnergyProfile_4.getMethod(XyzTabularScalarProfileMethod.class).setTable(fileTable_0);
+    // // turbulentKineticEnergyProfile_4.getMethod(XyzTabularScalarProfileMethod.class).setTable(fileTable_0);
 
     turbulentKineticEnergyProfile_3.getMethod(XyzTabularScalarProfileMethod.class).setData("tke");
 
-    turbulentKineticEnergyProfile_4.getMethod(XyzTabularScalarProfileMethod.class).setData("tke");
+    // // turbulentKineticEnergyProfile_4.getMethod(XyzTabularScalarProfileMethod.class).setData("tke");
 
     TurbulentDissipationRateProfile turbulentDissipationRateProfile_3 = 
       boundary_2.getValues().get(TurbulentDissipationRateProfile.class);
 
     turbulentDissipationRateProfile_3.setMethod(XyzTabularScalarProfileMethod.class);
 
-    TurbulentDissipationRateProfile turbulentDissipationRateProfile_4 = 
-      boundary_3.getValues().get(TurbulentDissipationRateProfile.class);
+    // TurbulentDissipationRateProfile turbulentDissipationRateProfile_4 = 
+    //   boundary_3.getValues().get(TurbulentDissipationRateProfile.class);
 
-    turbulentDissipationRateProfile_4.setMethod(XyzTabularScalarProfileMethod.class);
+    // // turbulentDissipationRateProfile_4.setMethod(XyzTabularScalarProfileMethod.class);
 
     turbulentDissipationRateProfile_3.getMethod(XyzTabularScalarProfileMethod.class).setTable(fileTable_0);
 
-    turbulentDissipationRateProfile_4.getMethod(XyzTabularScalarProfileMethod.class).setTable(fileTable_0);
+    // // turbulentDissipationRateProfile_4.getMethod(XyzTabularScalarProfileMethod.class).setTable(fileTable_0);
 
     turbulentDissipationRateProfile_3.getMethod(XyzTabularScalarProfileMethod.class).setData("eps");
 
-    turbulentDissipationRateProfile_4.getMethod(XyzTabularScalarProfileMethod.class).setData("eps");
+    // // turbulentDissipationRateProfile_4.getMethod(XyzTabularScalarProfileMethod.class).setData("eps");
+
+
+    // AmbientTurbulenceSpecification ambientTurbulenceSpecification_0 = 
+    //   region_0.getValues().get(AmbientTurbulenceSpecification.class);
+
+    // ambientTurbulenceSpecification_0.setInflowBoundary(boundary_0);
+
+
+    region_0.getConditions().get(TwoEquationTurbulenceUserSourceOption.class).setSelected(TwoEquationTurbulenceUserSourceOption.Type.AMBIENT);
+
+    AmbientTurbulenceSpecification ambientTurbulenceSpecification_0 = 
+      region_0.getValues().get(AmbientTurbulenceSpecification.class);
+
+    ambientTurbulenceSpecification_0.setInflowBoundary(boundary_0);
 
 
 
-    Solution solution_0 = 
-      simulation_0.getSolution();
-
-    solution_0.clearSolution(Solution.Clear.History, Solution.Clear.Fields);
-
-    solution_0.initializeSolution();
 
 
   }

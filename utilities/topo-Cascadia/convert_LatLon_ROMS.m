@@ -105,8 +105,12 @@ for n = 1:ROMS.S.N;
 %                                                           	   lon0, ...
 %                                                                OPTIONS.z0, ...
 %                                                            	   spheroid);
+
+
 end
 % zDown = -1*zDown; % prefer this convention better
+
+
 
 % overwrite any outliers (DONT NEED TO DO THIS IF MEXCDF options are set to ignore the fill values)
 % xNorth(abs(xNorth) > outlier_thold) = outlier_value;

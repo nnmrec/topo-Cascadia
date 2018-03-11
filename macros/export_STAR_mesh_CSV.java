@@ -35,35 +35,15 @@ public class export_STAR_mesh_CSV extends StarMacro {
 
     xyzInternalTable_1.setFieldFunctions(new NeoObjectVector(new Object[] {vectorComponentFieldFunction_0, vectorComponentFieldFunction_1, vectorComponentFieldFunction_2}));
 
-    xyzInternalTable_1.setPresentationName("mesh_centroids");
-
     Region region_0 = 
       simulation_0.getRegionManager().getRegion("Region");
 
     Boundary boundary_0 = 
       region_0.getBoundaryManager().getBoundary("Inlet");
-      // region_0.getBoundaryManager().getBoundary("Subtract.coast");
 
     Boundary boundary_1 = 
       region_0.getBoundaryManager().getBoundary("Outlet");
-      // region_0.getBoundaryManager().getBoundary("Subtract.east");
 
-    // Boundary boundary_2 = 
-    //   region_0.getBoundaryManager().getBoundary("Subtract.north");
-
-    // Boundary boundary_3 = 
-    //   region_0.getBoundaryManager().getBoundary("Subtract.seabed");
-
-    // Boundary boundary_6 = 
-    //   region_0.getBoundaryManager().getBoundary("Subtract.seasurface");
-
-    // Boundary boundary_4 = 
-    //   region_0.getBoundaryManager().getBoundary("Subtract.south");
-
-    // Boundary boundary_5 = 
-    //   region_0.getBoundaryManager().getBoundary("Subtract.west");
-
-    // xyzInternalTable_1.getParts().setObjects(boundary_0, boundary_1, boundary_2, boundary_3, boundary_6, boundary_4, boundary_5);
     xyzInternalTable_1.getParts().setObjects(boundary_0, boundary_1);
 
     xyzInternalTable_1.setPresentationName("mesh_centroids_BC");
@@ -73,18 +53,18 @@ public class export_STAR_mesh_CSV extends StarMacro {
     xyzInternalTable_1.export("mesh_centroids_BC.csv", ",");
 
 
-    // XyzInternalTable xyzInternalTable_2 = 
-    //   simulation_0.getTableManager().createTable(XyzInternalTable.class);
+    XyzInternalTable xyzInternalTable_2 = 
+      simulation_0.getTableManager().createTable(XyzInternalTable.class);
 
-    // xyzInternalTable_2.setPresentationName("mesh_centroids_domain");
+    xyzInternalTable_2.setPresentationName("mesh_centroids_domain");
 
-    // xyzInternalTable_2.setFieldFunctions(new NeoObjectVector(new Object[] {vectorComponentFieldFunction_0, vectorComponentFieldFunction_1, vectorComponentFieldFunction_2}));
+    xyzInternalTable_2.setFieldFunctions(new NeoObjectVector(new Object[] {vectorComponentFieldFunction_0, vectorComponentFieldFunction_1, vectorComponentFieldFunction_2}));
 
-    // xyzInternalTable_2.getParts().setObjects(region_0);
+    xyzInternalTable_2.getParts().setObjects(region_0);
 
-    // xyzInternalTable_2.extract();
+    xyzInternalTable_2.extract();
 
-    // xyzInternalTable_2.export("mesh_centroids_domain.csv", ",");
+    xyzInternalTable_2.export("mesh_centroids_domain.csv", ",");
 
     
   }

@@ -1,19 +1,25 @@
+clc; close all; fclose all; clear all;
+
+%% optional: can load a mat file
 % function [] = select_times_interest(OPTIONS,ROMS)
 load test_select_times.mat  % note: this has ALL times 2:2880
+load test_select_times_IJOME.mat  % note: this has ALL times 2:2880
 
+%%
 OPTIONS.dir_ROMS    = '/mnt/data-RAID-1/danny/ainlet_Kristen/pong.tamu.edu/~kthyng/ai65/OUT'; % directory with ROMS *.nc output files
 
 dir_figures = ['cases' filesep 'figs_vertical_profiles'];
 mkdir(dir_figures)
 
-
-
+% select points of interest (NED coordinate system in STAR-CCM+)
+xNorth_ccm = [-1512 -857 -684 -140];
+yEast_ccm  = [  -42 -657 1540 1045];
+zDown_ccm  = [    0    0    0    0];
 
 % select the time range of interest, or only specific times
 time_style = 'range';
     time_idx = [2 2880];        % begin and end time index, all times
     time_idx = [1792 1965];     % begin and end time index, subset from Kristen's paper
-    time_idx = [568, 592, 666, 689]; % small, test subset
 
 time_style = 'select';
     time_idx = [1812];          % flood 1
@@ -26,7 +32,8 @@ switch time_style
         file_time = time_idx(1):time_idx(end);
         max_time  = n_times * 15; % minutes   % time step was 5 seconds and model output saved every 15 minutes
         hours     = ( 0 : 15/60 : (max_time-15)/60 )';
-                
+        hours_range     = ( 0 : 15/60 : (max_time-15)/60 )';   
+         
     case 'select'
         n_times   = numel(time_idx);
         file_time = time_idx;    
@@ -35,27 +42,60 @@ switch time_style
         time_idx2 = time_idx(1):time_idx(end);
         [~,~,ib]  = intersect(time_idx', time_idx2', 'rows');
         hours     = hours(ib);
-
 end
 
-point_zeta        = zeros(n_times, OPTIONS.n_points);
-% point_tke         = zeros(n_times, OPTIONS.n_points);
-% point_eps         = zeros(n_times, OPTIONS.n_points);
-% point_spd         = zeros(n_times, OPTIONS.n_points);
-% point_u           = zeros(n_times, OPTIONS.n_points);
-% point_v           = zeros(n_times, OPTIONS.n_points);
-profile_speed_avg = zeros(n_times, OPTIONS.n_points);
-profile_zq   = zeros(20, n_times, OPTIONS.n_points); % 20 is the size of ROMS z-mesh
-profile_tke  = zeros(20, n_times, OPTIONS.n_points);
-profile_eps  = zeros(20, n_times, OPTIONS.n_points);
-profile_spd  = zeros(20, n_times, OPTIONS.n_points);
-profile_u    = zeros(20, n_times, OPTIONS.n_points);
-profile_v    = zeros(20, n_times, OPTIONS.n_points);
-for m = 1:numel(ROMS.point_x1)
+%% Initialize
+% file_ROMS = [OPTIONS.dir_ROMS filesep 'ocean_his_' sprintf('%4.4d',file_time(1)) '.nc']; 
+% [~, profile_ROMS] = get_ROMS_fields(file_ROMS,OPTIONS,ROMS,false);
+% [OPTIONS, ROMS] = get_ROMS_fields(ROMS_file,OPTIONS,ROMS,save_full_fields)
 
-        ind_lon = findClosest(ROMS.lon_aa(1,:), ROMS.point_x1(m));
-        ind_lat = findClosest(ROMS.lat_aa(:,1), ROMS.point_y1(m));
+% transform coordinate sys of points-of-interest
+spheroid    = referenceSphere('earth');
+ilat0       = floor( size(ROMS.lat_aa,1)/2 ); % choose index for center of domain
+ilon0       = floor( size(ROMS.lon_aa,2)/2 ); % choose index for center of domain
+lat0        = ROMS.lat_aa(ilat0,ilon0);
+lon0        = ROMS.lon_aa(ilat0,ilon0);   
+% requires Mapping Toolbox ... last tested with R2015
+[lat_ccm, lon_ccm, h_ccm] = ned2geodetic( ...
+  xNorth_ccm, yEast_ccm, zDown_ccm, lat0, lon0, OPTIONS.z0, spheroid)
+% work-around for academic versions of Matlab ... b/c maybe sometimes you lose support
 
+
+
+%%
+n_profiles = numel(xNorth_ccm);
+
+point_zeta        = zeros(n_times, n_profiles);
+% point_tke         = zeros(n_times, n_profiles);
+% point_eps         = zeros(n_times, n_profiles);
+% point_spd         = zeros(n_times, n_profiles);
+% point_u           = zeros(n_times, n_profiles);
+% point_v           = zeros(n_times, n_profiles);
+profile_speed_avg = zeros(n_times, n_profiles);
+profile_zq   = zeros(20, n_times, n_profiles); % 20 is the size of ROMS z-mesh
+profile_spd  = zeros(20, n_times, n_profiles);
+profile_u    = zeros(20, n_times, n_profiles);
+profile_v    = zeros(20, n_times, n_profiles);
+profile_tke  = zeros(20, n_times, n_profiles);
+profile_eps  = zeros(20, n_times, n_profiles);
+profile_omg  = zeros(20, n_times, n_profiles);
+lat3D = permute( repmat(ROMS.lat_aa, 1,1,size(ROMS.z_rho_aa,1)), [3 1 2]); 
+lon3D = permute( repmat(ROMS.lon_aa, 1,1,size(ROMS.z_rho_aa,1)), [3 1 2]); 
+% instantaneous profiles
+% profile_type = 'grid';
+% profile_type = 'interp';
+
+% preallocate interpolant functions
+% build the scattered interpolation functions
+zzz     = -1 .* squeeze(ROMS.z_rho_aa(1,:,:)); % getting creative with variable names, eh?
+F_d_max = scatteredInterpolant(ROMS.lat_aa(:), ROMS.lon_aa(:), zzz(:),'linear','nearest'); 
+F_tke   = scatteredInterpolant(lat3D(:), lon3D(:), ROMS.tke_aa(:),'linear','nearest'); 
+
+for m = 1:n_profiles
+
+        ind_lon = findClosest(ROMS.lon_aa(1,:), lon_ccm(m));
+        ind_lat = findClosest(ROMS.lat_aa(:,1), lat_ccm(m));
+        
 %     for n = 1:n_times
     parfor n = 1:n_times
 
@@ -64,16 +104,42 @@ for m = 1:numel(ROMS.point_x1)
         % read variables, these files only 1 time step per file
         file_ROMS = [OPTIONS.dir_ROMS filesep 'ocean_his_' sprintf('%4.4d',file_time(n)) '.nc']; 
         [~, profile_ROMS] = get_ROMS_fields(file_ROMS,OPTIONS,ROMS,false);
-        
-        % instantaneous profiles
-        d_max              = abs( min(profile_ROMS.z_rho_aa(:,ind_lat,ind_lon)) ); % max depth at given point
-        profile_zq(:,n,m)  = linspace(0, d_max, profile_ROMS.S.N)';                % depth values at given point
-        profile_tke(:,n,m) = profile_ROMS.tke_aa(:,ind_lat,ind_lon);
-        profile_eps(:,n,m) = profile_ROMS.eps_aa(:,ind_lat,ind_lon);
-        profile_spd(:,n,m) = profile_ROMS.spd_rho_aa(:,ind_lat,ind_lon);
-        profile_u(:,n,m)   = profile_ROMS.u_rho_aa(:,ind_lat,ind_lon);
-        profile_v(:,n,m)   = profile_ROMS.v_rho_aa(:,ind_lat,ind_lon);
 
+%         switch profile_type
+%             case 'grid'
+                %
+                % using the closest lat/lon index
+                d_max              = abs( min(profile_ROMS.z_rho_aa(:,ind_lat,ind_lon)) ); % max depth at given point
+                profile_zq(:,n,m)  = linspace(0, d_max, profile_ROMS.S.N)';                % depth values at given point
+                profile_spd(:,n,m) = profile_ROMS.spd_rho_aa(:,ind_lat,ind_lon);
+                profile_u(:,n,m)   = profile_ROMS.u_rho_aa(:,ind_lat,ind_lon);
+                profile_v(:,n,m)   = profile_ROMS.v_rho_aa(:,ind_lat,ind_lon);   
+                profile_tke(:,n,m) = profile_ROMS.tke_aa(:,ind_lat,ind_lon);
+                profile_eps(:,n,m) = profile_ROMS.eps_aa(:,ind_lat,ind_lon);
+                profile_omg(:,n,m) = profile_ROMS.omg_aa(:,ind_lat,ind_lon);
+%             case 'interp'
+%                 % using interpolation
+%                 d_max              = F_d_max(lat_ccm(m), lon_ccm(m));  %mesh_vel_x(n) = F_vel_x(mesh_x(n), mesh_y(n), mesh_z(n));
+%                 profile_lat        = asdf;
+%                 profile_lon        = asdf;
+%                 for k = 1:size(ROMS.z_rho_aa,1)
+%                     z3D                = linspace(0, d_max, profile_ROMS.S.N)';
+%                     profile_tke(:,n,m) = F_tke(lat_ccm(m), lon_ccm(m));
+%                     
+%                                     
+%                     profile_tke(:,n,m) = interp3(lat3D, lon3D, profile_ROMS.zeta_aa, profile_ROMS.tke_aa, lat_ccm(m), lon_ccm(m), );
+%                     profile_eps(:,n,m) = profile_ROMS.eps_aa(:,ind_lat,ind_lon);
+%                     profile_spd(:,n,m) = profile_ROMS.spd_rho_aa(:,ind_lat,ind_lon);
+%                     profile_u(:,n,m)   = profile_ROMS.u_rho_aa(:,ind_lat,ind_lon);
+%                     profile_v(:,n,m)   = profile_ROMS.v_rho_aa(:,ind_lat,ind_lon);
+%                 end       
+%         end
+        
+        
+        
+        
+
+%         
         profile_speed_avg(n,m) = trapz(profile_zq(:,n,m), profile_spd(:,n,m)) / d_max; % depth averaged speed
              
         % point values at a given elevation
@@ -95,13 +161,13 @@ end
 % save the data ... it takes a long time to read ALL the netcdf files
 % save(['cases' filesep OPTIONS.casename filesep 'ROMS_TimeSeries.mat'], ...
 %      'OPTIONS','ROMS')
-save 'test_select_times.mat'
+save 'test_select_times_IJOME.mat'
 
 % profile viewer
 
 %% plot the vertical profiles and save for making a movie
 
-for m = 1:numel(ROMS.point_x1)
+for m = 1:numel(OPTIONS.point_x1)
     %parfor n = 1:n_times
     for n = 1:n_times
         
@@ -125,10 +191,10 @@ for m = 1:numel(ROMS.point_x1)
         % figure
         subplot(4,3,1:3)
         hold on
-        plot(hours, point_zeta(:,1), '-r')
-        plot(hours, point_zeta(:,2), '-b')
+        plot(hours_range, point_zeta(:,1), '-r')
+        plot(hours_range, point_zeta(:,2), '-b')
         legend('Mid-Channel', 'Nearshore')
-        title({['[lat, lon] = ' num2str(ROMS.point_x1(m)) ',' num2str(ROMS.point_y1(m)) ', ocean__his__' sprintf('%4.4d',file_time(n)) '.nc'], ...
+        title({['[lat, lon] = ' num2str(OPTIONS.point_x1(m)) ',' num2str(OPTIONS.point_y1(m)) ', ocean__his__' sprintf('%4.4d',file_time(n)) '.nc'], ...
                'free surface'})
 %         xlabel('time (hours)')
         ylabel('elevation (meters)')
@@ -145,7 +211,7 @@ for m = 1:numel(ROMS.point_x1)
         title('current speed and direction at hub-height')
 %         xlabel('time (hours)')
         set(gca,'xtick',[])
-        xlim([0 n_times])
+        xlim([0 numel(hours_range)])
         ylabel('speed (m/s)')
         vline(n,'k')
         grid on
@@ -159,7 +225,7 @@ for m = 1:numel(ROMS.point_x1)
         xlabel('horizontal speed [m/s]')
         ylabel('depth [m]')
         ylim([-70 0]);
-        xlim([0 3]); 
+        xlim([0 2]); 
         
         % plot TKE
         subplot(4,3,11)
@@ -187,14 +253,14 @@ for m = 1:numel(ROMS.point_x1)
             [~,ia_end,~] = unique(all_vert_profiles(:,4),'last');
             ia_str       = sort(ia_str);
             ia_end       = sort(ia_end);
-            line_probe(numel(ia_str)) = struct('spd',[],'tke',[],'eps',[],'x',[],'y',[],'z',[]); 
+            line_probe(numel(ia_str)) = struct('spd',[],'tke',[],'omg',[],'x',[],'y',[],'z',[]); 
             % note: each vertical profile may have different number of points, due to different water depths
             for k = 1:numel(ia_str)
                 a = ia_str(k);
                 b = ia_end(k);
                 line_probe(k).spd = all_vert_profiles(a:b, 1);
                 line_probe(k).tke = all_vert_profiles(a:b, 2);
-                line_probe(k).eps = all_vert_profiles(a:b, 3);
+                line_probe(k).omg = all_vert_profiles(a:b, 3);
                 line_probe(k).x   = all_vert_profiles(a:b, 4);
                 line_probe(k).y   = all_vert_profiles(a:b, 5);
                 line_probe(k).z   = all_vert_profiles(a:b, 6);
@@ -212,7 +278,8 @@ for m = 1:numel(ROMS.point_x1)
                 % plot EPSILON
                 subplot(4,3,12)
                 hold on
-                plot(line_probe(k).eps, line_probe(k).z);
+                starccm_eps = 0.5477^4 .* line_probe(k).tke .* line_probe(k).omg;
+                plot(starccm_eps, line_probe(k).z);
             end
 
         end
@@ -271,7 +338,7 @@ cd(cwd)
 
 %%
 
-for m = 1:numel(ROMS.point_x1)
+for m = 1:numel(OPTIONS.point_x1)
     parfor n = 1:n_times
         % rename things for notation convenience
         zq  = profile_zq (:,n,m);
@@ -295,7 +362,7 @@ for m = 1:numel(ROMS.point_x1)
         subplot(1,3,1)
         plot(flipud(spd), -1*zq, '-r');
         grid on
-        title({['[lat, lon] = ' num2str(ROMS.point_x1(m)) ',' num2str(ROMS.point_y1(m))], ...
+        title({['[lat, lon] = ' num2str(OPTIONS.point_x1(m)) ',' num2str(OPTIONS.point_y1(m))], ...
                ['ocean__his__' sprintf('%4.4d',file_time(n)) '.nc']})
         xlabel('horizontal speed [m/s]')
         ylabel('depth [m]')
@@ -311,7 +378,7 @@ for m = 1:numel(ROMS.point_x1)
         subplot(1,3,2)
         plot(flipud(tke), -1*zq, '-b');
         grid on
-%         title({['vertical profiles at [lat, lon] = ' num2str(ROMS.point_x1(m)) ',' num2str(ROMS.point_y1(m))], ...
+%         title({['vertical profiles at [lat, lon] = ' num2str(OPTIONS.point_x1(m)) ',' num2str(OPTIONS.point_y1(m))], ...
 %                ['ocean__his__' sprintf('%4.4d',file_time(n)) '.nc']})        
         xlabel('turbulent kinetic energy [m^2/s^2]')
 %         ylabel('depth [m]')
@@ -327,7 +394,7 @@ for m = 1:numel(ROMS.point_x1)
         subplot(1,3,3)
         plot(flipud(eps), -1*zq, '-g');
         grid on
-%         title({['vertical profiles at [lat, lon] = ' num2str(ROMS.point_x1(m)) ',' num2str(ROMS.point_y1(m))], ...
+%         title({['vertical profiles at [lat, lon] = ' num2str(OPTIONS.point_x1(m)) ',' num2str(OPTIONS.point_y1(m))], ...
 %                ['ocean__his__' sprintf('%4.4d',file_time(n)) '.nc']})        
         xlabel('turbulent dissipation rate (m^2/s^3)')
 %         ylabel('depth [m]')

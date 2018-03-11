@@ -171,9 +171,13 @@ if isempty(OPTIONS.turbineFile)
     OPTIONS = placeTurbines(Topo.xNorth, Topo.yEast, Topo.zDown, OPTIONS); % this requires the figure handle as input
     % OPTIONS = placeTurbines(ROMS.xNorth, ROMS.yEast, ROMS.zDown, OPTIONS);
 
-else
+elseif ischar(OPTIONS.turbineFile)
     % the turbine input file already exists, copy into case directory
     system(['cp inputs' filesep OPTIONS.turbineFile ' cases' filesep OPTIONS.casename filesep 'rotors.csv']);
+    
+elseif islogical(OPTIONS.turbineFile) && OPTIONS.turbineFile < 1
+    % study the flow without turbines
+    disp('study the flow without turbines')
 end
 
 
@@ -210,17 +214,14 @@ status_mesh = system(OPTIONS.run_starccm_Meshing);
 cd(cwd)
 disp('run_starccm_Meshing complete')
 
-% optionally, can run the solver for all cases without turbines now
-
-
-% now add the turbines and re-mesh
-cd(OPTIONS.dir_case)
-status_turbines = system(OPTIONS.run_starccm_Turbines);
-cd(cwd)
-disp('run_starccm_Turbines complete')
-
-
-
+% now add the turbines and re-mesh (optionally, can run the solver for all cases without turbines)
+% OPTIONS.noTurbines = true;
+if islogical(OPTIONS.turbineFile) && OPTIONS.turbineFile > 0
+    cd(OPTIONS.dir_case)
+    status_turbines = system(OPTIONS.run_starccm_Turbines);
+    cd(cwd)
+    disp('run_starccm_Turbines complete')
+end
 
 % % perform interpolation from ROMS RHO points to the STAR-CCM+ cell
 % % centroids, need to re-map at every time in the tidal cycle

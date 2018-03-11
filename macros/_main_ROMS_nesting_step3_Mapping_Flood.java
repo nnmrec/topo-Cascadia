@@ -32,8 +32,10 @@ public class _main_ROMS_nesting_step3_Mapping_Flood extends StarMacro {
     // 
     // READ the file tables, and apply ROMS BC on inlet, outlets, and initial conditions
     // 
-    new StarScript(getActiveSimulation(), new java.io.File(resolvePath("load_ROMS_BoundaryConditions_SSTKOmega.java"))).play();
-    
+    // new StarScript(getActiveSimulation(), new java.io.File(resolvePath("load_ROMS_BoundaryConditions_SSTKOmega.java"))).play();
+    new StarScript(getActiveSimulation(), new java.io.File(resolvePath("load_ROMS_BoundaryConditions_KEpsilon.java"))).play();
+
+
     simulation_0.saveState(getSimulation().getPresentationName()+".sim");   
 
   }

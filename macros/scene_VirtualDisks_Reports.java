@@ -212,77 +212,98 @@ simulation_0.println("nVirtualDisks = " + nVirtualDisks);
 
 			    ///////////////////////////////////////////////////////////////////////////////
 				// create volume average reports and monitors on the threshold parts
-			    VolumeAverageReport volumeAverageReport_0 = 
-			      simulation_0.getReportManager().createReport(VolumeAverageReport.class);
-
-		      	FvRepresentation fvRepresentation_0 = 
+			    FvRepresentation fvRepresentation_0 = 
       			  ((FvRepresentation) simulation_0.getRepresentationManager().getObject("Volume Mesh"));
 
-    			volumeAverageReport_0.setRepresentation(fvRepresentation_0);
+			    VolumeAverageReport volumeAverageReport_vel = 
+			      simulation_0.getReportManager().createReport(VolumeAverageReport.class);
+    			volumeAverageReport_vel.setRepresentation(fvRepresentation_0);
 
-			    PrimitiveFieldFunction primitiveFieldFunction_2 = 
+    			VolumeAverageReport volumeAverageReport_tke = 
+			      simulation_0.getReportManager().createReport(VolumeAverageReport.class);
+    			volumeAverageReport_tke.setRepresentation(fvRepresentation_0);
+
+    			VolumeAverageReport volumeAverageReport_omg = 
+			      simulation_0.getReportManager().createReport(VolumeAverageReport.class);
+    			volumeAverageReport_omg.setRepresentation(fvRepresentation_0);
+
+
+			    PrimitiveFieldFunction primitiveFieldFunction_vel = 
 			      ((PrimitiveFieldFunction) simulation_0.getFieldFunctionManager().getFunction("Velocity"));
+			    VectorMagnitudeFieldFunction vectorMagnitudeFieldFunction_vel = 
+			      ((VectorMagnitudeFieldFunction) primitiveFieldFunction_vel.getMagnitudeFunction());
+			    volumeAverageReport_vel.setScalar(vectorMagnitudeFieldFunction_vel);
+			    volumeAverageReport_vel.getParts().setObjects(thresholdPart_1);
+			    volumeAverageReport_vel.setPresentationName("volume avg. inflow (" + names.get(i) + ")");
 
-			    VectorMagnitudeFieldFunction vectorMagnitudeFieldFunction_0 = 
-			      ((VectorMagnitudeFieldFunction) primitiveFieldFunction_2.getMagnitudeFunction());
+			    PrimitiveFieldFunction primitiveFieldFunction_tke = 
+      			  ((PrimitiveFieldFunction) simulation_0.getFieldFunctionManager().getFunction("TurbulentKineticEnergy"));
+			    volumeAverageReport_tke.setScalar(primitiveFieldFunction_tke);
+			    volumeAverageReport_tke.getParts().setObjects(thresholdPart_1);
+			    volumeAverageReport_tke.setPresentationName("TKE inflow (" + names.get(i) + ")");
 
-			    volumeAverageReport_0.setScalar(vectorMagnitudeFieldFunction_0);
+			    PrimitiveFieldFunction primitiveFieldFunction_omg = 
+      			  ((PrimitiveFieldFunction) simulation_0.getFieldFunctionManager().getFunction("SpecificDissipationRate"));
+			    volumeAverageReport_omg.setScalar(primitiveFieldFunction_omg);
+			    volumeAverageReport_omg.getParts().setObjects(thresholdPart_1);
+			    volumeAverageReport_omg.setPresentationName("Omega inflow (" + names.get(i) + ")");
 
-			    volumeAverageReport_0.getParts().setObjects(thresholdPart_1);
 
-			    volumeAverageReport_0.setPresentationName("volume avg. inflow (" + names.get(i) + ")");
-
-
-			    VolumeAverageReport volumeAverageReport_1 = 
+			    VolumeAverageReport volumeAverageReport_inflowvel = 
 			      ((VolumeAverageReport) simulation_0.getReportManager().getReport("volume avg. inflow (" + names.get(i) + ")"));
+			    ReportMonitor reportMonitor_vel = 
+				  volumeAverageReport_inflowvel.createMonitor();
 
-			    ReportMonitor reportMonitor_0 = 
-				  volumeAverageReport_1.createMonitor();
+				VolumeAverageReport volumeAverageReport_inflowtke = 
+			      ((VolumeAverageReport) simulation_0.getReportManager().getReport("TKE inflow (" + names.get(i) + ")"));
+			    ReportMonitor reportMonitor_tke = 
+				  volumeAverageReport_inflowtke.createMonitor();
 
-
-
-
+				VolumeAverageReport volumeAverageReport_inflowomg = 
+			      ((VolumeAverageReport) simulation_0.getReportManager().getReport("Omega inflow (" + names.get(i) + ")"));
+			    ReportMonitor reportMonitor_omg = 
+				  volumeAverageReport_inflowomg.createMonitor();
 
 
 
 			    // FIELD FUNCTIONS
 				// tip-speed ratio
-				UserFieldFunction userFieldFunction_0 = 
+				UserFieldFunction userFieldFunction_tsr = 
 			      simulation_0.getFieldFunctionManager().createFieldFunction();
-			    userFieldFunction_0.getTypeOption().setSelected(FieldFunctionTypeOption.Type.SCALAR);
-			    userFieldFunction_0.setPresentationName("Tip-Speed-Ratio (" + names.get(i) + ")");
-			    userFieldFunction_0.setFunctionName("Tip-Speed-Ratio (" + names.get(i) + ")");
-			    userFieldFunction_0.setDefinition(rotor_radius[i] + " * ${RotorSpeed(" + names.get(i) + ")Report} * (3.14159/30) / ${volumeavg.inflow(" + names.get(i) + ")Report}");
+			    userFieldFunction_tsr.getTypeOption().setSelected(FieldFunctionTypeOption.Type.SCALAR);
+			    userFieldFunction_tsr.setPresentationName("Tip-Speed-Ratio (" + names.get(i) + ")");
+			    userFieldFunction_tsr.setFunctionName("Tip-Speed-Ratio (" + names.get(i) + ")");
+			    userFieldFunction_tsr.setDefinition(rotor_radius[i] + " * ${RotorSpeed(" + names.get(i) + ")Report} * (3.14159/30) / ${volumeavg.inflow(" + names.get(i) + ")Report}");
 
 			    // power
-			    UserFieldFunction userFieldFunction_1 = 
+			    UserFieldFunction userFieldFunction_power = 
 			      simulation_0.getFieldFunctionManager().createFieldFunction();
-			    userFieldFunction_1.getTypeOption().setSelected(FieldFunctionTypeOption.Type.SCALAR);
-			    userFieldFunction_1.setPresentationName("Power (" + names.get(i) + ")");
-			    userFieldFunction_1.setFunctionName("Power (" + names.get(i) + ")");
-			    userFieldFunction_1.setDefinition("${Torque(" + names.get(i) + ")Report} *${RotorSpeed(" + names.get(i) + ")Report} * (3.14159/30)");
+			    userFieldFunction_power.getTypeOption().setSelected(FieldFunctionTypeOption.Type.SCALAR);
+			    userFieldFunction_power.setPresentationName("Power (" + names.get(i) + ")");
+			    userFieldFunction_power.setFunctionName("Power (" + names.get(i) + ")");
+			    userFieldFunction_power.setDefinition("${Torque(" + names.get(i) + ")Report} *${RotorSpeed(" + names.get(i) + ")Report} * (3.14159/30)");
 
 
 			    // REPORTS
-				ExpressionReport expressionReport_0 = 
+				ExpressionReport expressionReport_power = 
       				simulation_0.getReportManager().createReport(ExpressionReport.class);
-			    expressionReport_0.setDefinition("${Power (" + names.get(i) + ")}");
-			    expressionReport_0.setPresentationName("Power (" + names.get(i) + ")");
-				    ReportMonitor reportMonitor_00 = 
-				      expressionReport_0.createMonitor();
+			    expressionReport_power.setDefinition("${Power (" + names.get(i) + ")}");
+			    expressionReport_power.setPresentationName("Power (" + names.get(i) + ")");
+				    ReportMonitor reportMonitor_power = 
+				      expressionReport_power.createMonitor();
 
 
-			    ExpressionReport expressionReport_1 = 
+			    ExpressionReport expressionReport_tsr = 
       				simulation_0.getReportManager().createReport(ExpressionReport.class);
-			    expressionReport_1.setDefinition("${Tip-Speed-Ratio (" + names.get(i) + ")}");
-			    expressionReport_1.setPresentationName("Tip-Speed-Ratio (" + names.get(i) + ")");
-					ReportMonitor reportMonitor_11 = 
-					      expressionReport_1.createMonitor();
+			    expressionReport_tsr.setDefinition("${Tip-Speed-Ratio (" + names.get(i) + ")}");
+			    expressionReport_tsr.setPresentationName("Tip-Speed-Ratio (" + names.get(i) + ")");
+					ReportMonitor reportMonitor_tsr = 
+					      expressionReport_tsr.createMonitor();
 
 
 
 				// reports on rotor speeds
-				ExpressionReport expressionReport_2 = 
+				ExpressionReport expressionReport_rotorspeed = 
 				  ((ExpressionReport) simulation_0.getReportManager().getReport("Rotor Speed (" + names.get(i) + ")"));
 
 
@@ -294,10 +315,10 @@ simulation_0.println("nVirtualDisks = " + nVirtualDisks);
 
 
 
-		ReportMonitor reportMonitor_0 = 
+		ReportMonitor reportMonitor_vel = 
 		  ((ReportMonitor) simulation_0.getMonitorManager().getMonitor("volume avg. inflow (" + names.get(0) + ") Monitor"));
 	    MonitorPlot monitorPlot_0 = 
-	      simulation_0.getPlotManager().createMonitorPlot(new NeoObjectVector(new Object[] {reportMonitor_0}), "volume avg. inflow");
+	      simulation_0.getPlotManager().createMonitorPlot(new NeoObjectVector(new Object[] {reportMonitor_vel}), "volume avg. inflow");
 	    monitorPlot_0.setPresentationName("rotors-inflow");
 
 	    ReportMonitor reportMonitor_1 = 
@@ -333,8 +354,17 @@ simulation_0.println("nVirtualDisks = " + nVirtualDisks);
 	    monitorPlot_5.setPresentationName("Power");
 
 
+	    ReportMonitor reportMonitor_tke = 
+		  ((ReportMonitor) simulation_0.getMonitorManager().getMonitor("TKE inflow (" + names.get(0) + ") Monitor"));
+	    MonitorPlot monitorPlot_tke = 
+	      simulation_0.getPlotManager().createMonitorPlot(new NeoObjectVector(new Object[] {reportMonitor_tke}), "TKE inflow");
+	    monitorPlot_tke.setPresentationName("rotors-inflow-tke");
 
-
+	    ReportMonitor reportMonitor_omg = 
+		  ((ReportMonitor) simulation_0.getMonitorManager().getMonitor("Omega inflow (" + names.get(0) + ") Monitor"));
+	    MonitorPlot monitorPlot_omg = 
+	      simulation_0.getPlotManager().createMonitorPlot(new NeoObjectVector(new Object[] {reportMonitor_tke}), "Omega inflow");
+	    monitorPlot_omg.setPresentationName("rotors-inflow-omg");
 
 
 	    // Total Power
@@ -374,9 +404,9 @@ simulation_0.println("nVirtualDisks = " + nVirtualDisks);
 
 
 	    for (int i = 1; i < nVirtualDisks; i++) {
-            ReportMonitor reportMonitor_0n = 
+            ReportMonitor reportMonitor_veln = 
               ((ReportMonitor) simulation_0.getMonitorManager().getMonitor("volume avg. inflow (" + names.get(i) + ") Monitor"));
-            monitorPlot_0.getDataSetManager().addDataProviders(new NeoObjectVector(new Object[] {reportMonitor_0n}));
+            monitorPlot_0.getDataSetManager().addDataProviders(new NeoObjectVector(new Object[] {reportMonitor_veln}));
 
             ReportMonitor reportMonitor_1n = 
               ((ReportMonitor) simulation_0.getMonitorManager().getMonitor("Thrust (" + names.get(i) + ") Monitor"));
@@ -400,6 +430,15 @@ simulation_0.println("nVirtualDisks = " + nVirtualDisks);
             ReportMonitor reportMonitor_5n = 
               ((ReportMonitor) simulation_0.getMonitorManager().getMonitor("Power (" + names.get(i) + ") Monitor"));
             monitorPlot_5.getDataSetManager().addDataProviders(new NeoObjectVector(new Object[] {reportMonitor_5n}));
+
+
+            ReportMonitor reportMonitor_tken = 
+              ((ReportMonitor) simulation_0.getMonitorManager().getMonitor("TKE inflow (" + names.get(i) + ") Monitor"));
+            monitorPlot_tke.getDataSetManager().addDataProviders(new NeoObjectVector(new Object[] {reportMonitor_tken}));
+
+            ReportMonitor reportMonitor_omgn = 
+              ((ReportMonitor) simulation_0.getMonitorManager().getMonitor("Omega inflow (" + names.get(i) + ") Monitor"));
+            monitorPlot_omg.getDataSetManager().addDataProviders(new NeoObjectVector(new Object[] {reportMonitor_omgn}));
 
 
         }

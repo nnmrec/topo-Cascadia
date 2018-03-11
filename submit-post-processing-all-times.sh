@@ -30,49 +30,49 @@ module load contrib/starccm_12.02.010
 
 # macro1='_main_ROMS_nesting_step5_PostProcessing.java'
 macro1='export_VerticalProfiles.java'
-PBS_NP='2'
-PBS_NODEFILE=''
+# PBS_NP='2'
+# PBS_NODEFILE=''
 
 starSimFile="time-0568"
 cd cases/${starSimFile}
-starccm+ -batch ../../macros/$macro1 -np ${PBS_NP} -machinefile ${PBS_NODEFILE} -licpath 27005@swlic01.s.uw.edu -batch-report ${starSimFile}.sim 2>&1 | tee log.post_${starSimFile}
+starccm+ -batch ../../macros/${macro1} -np 6 -licpath 27005@swlic01.s.uw.edu -batch-report ${starSimFile}.sim 2>&1 | tee log.post_${starSimFile}
 cd ../..
 
 starSimFile="time-0592"
 cd cases/${starSimFile}
-starccm+ -batch ../../macros/$macro1 -np ${PBS_NP} -machinefile ${PBS_NODEFILE} -licpath 27005@swlic01.s.uw.edu -batch-report ${starSimFile}.sim 2>&1 | tee log.post_${starSimFile}
+starccm+ -batch ../../macros/${macro1} -np 6 -licpath 27005@swlic01.s.uw.edu -batch-report ${starSimFile}.sim 2>&1 | tee log.post_${starSimFile}
 cd ../..
 
 starSimFile="time-0666"
 cd cases/${starSimFile}
-starccm+ -batch ../../macros/$macro1 -np ${PBS_NP} -machinefile ${PBS_NODEFILE} -licpath 27005@swlic01.s.uw.edu -batch-report ${starSimFile}.sim 2>&1 | tee log.post_${starSimFile}
+starccm+ -batch ../../macros/${macro1} -np 6 -licpath 27005@swlic01.s.uw.edu -batch-report ${starSimFile}.sim 2>&1 | tee log.post_${starSimFile}
 cd ../..
 
 starSimFile="time-0689"
 cd cases/${starSimFile}
-starccm+ -batch ../../macros/$macro1 -np ${PBS_NP} -machinefile ${PBS_NODEFILE} -licpath 27005@swlic01.s.uw.edu -batch-report ${starSimFile}.sim 2>&1 | tee log.post_${starSimFile}
+starccm+ -batch ../../macros/${macro1} -np 6 -licpath 27005@swlic01.s.uw.edu -batch-report ${starSimFile}.sim 2>&1 | tee log.post_${starSimFile}
 cd ../..
 
 
 
 starSimFile="time-1812"
 cd cases/${starSimFile}
-starccm+ -batch ../../macros/$macro1 -np ${PBS_NP} -machinefile ${PBS_NODEFILE} -licpath 27005@swlic01.s.uw.edu -batch-report ${starSimFile}.sim 2>&1 | tee log.post_${starSimFile}
+starccm+ -batch ../../macros/${macro1} -np 6 -licpath 27005@swlic01.s.uw.edu -batch-report ${starSimFile}.sim 2>&1 | tee log.post_${starSimFile}
 cd ../..
 
 starSimFile="time-1840"
 cd cases/${starSimFile}
-starccm+ -batch ../../macros/$macro1 -np ${PBS_NP} -machinefile ${PBS_NODEFILE} -licpath 27005@swlic01.s.uw.edu -batch-report ${starSimFile}.sim 2>&1 | tee log.post_${starSimFile}
+starccm+ -batch ../../macros/${macro1} -np 6 -licpath 27005@swlic01.s.uw.edu -batch-report ${starSimFile}.sim 2>&1 | tee log.post_${starSimFile}
 cd ../..
 
 starSimFile="time-1912"
 cd cases/${starSimFile}
-starccm+ -batch ../../macros/$macro1 -np ${PBS_NP} -machinefile ${PBS_NODEFILE} -licpath 27005@swlic01.s.uw.edu -batch-report ${starSimFile}.sim 2>&1 | tee log.post_${starSimFile}
+starccm+ -batch ../../macros/${macro1} -np 6 -licpath 27005@swlic01.s.uw.edu -batch-report ${starSimFile}.sim 2>&1 | tee log.post_${starSimFile}
 cd ../..
 
 starSimFile="time-1936"
 cd cases/${starSimFile}
-starccm+ -batch ../../macros/$macro1 -np ${PBS_NP} -machinefile ${PBS_NODEFILE} -licpath 27005@swlic01.s.uw.edu -batch-report ${starSimFile}.sim 2>&1 | tee log.post_${starSimFile}
+starccm+ -batch ../../macros/${macro1} -np 6 -licpath 27005@swlic01.s.uw.edu -batch-report ${starSimFile}.sim 2>&1 | tee log.post_${starSimFile}
 cd ../..
 
 echo 'all finished, have a nice day'
